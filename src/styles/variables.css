@@ -1,0 +1,36 @@
+:root {
+  --color-primary: #3b82f6;
+  --color-secondary: #8b5cf6;
+  --color-accent: #f59e0b;
+  --color-background: #ffffff;
+  --color-text: #1f2937;
+
+--pj_blue_90: #001F3D;
+--pj_blue_80: #003366;
+--pj_blue_70: #3D4089;
+--pj_blue_60: #4F51A9;
+--pj_blue_50: #6D6FBB;
+--pj_blue_40: #748DD2;
+--pj_blue_30: #92ACE2;
+--pj_blue_20: #BFD1F3;
+--pj_blue_10: #DDEBF8;
+--pj_blue_05: #F3F6F6;
+
+--pj_grey_90: #241A1E;
+--pj_grey_80: #392930;
+--pj_grey_70: #543C44;
+--pj_grey_60: #6E4F5A;
+--pj_grey_50: #876A75;
+--pj_grey_40: #A48C98;
+--pj_grey_30: #C3B6BD;
+--pj_grey_20: #E3D9E1;
+--pj_grey_10: #F1EFF0;
+
+--pj_brand_blue: #003366;
+  
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 2rem;
+
+
+}
