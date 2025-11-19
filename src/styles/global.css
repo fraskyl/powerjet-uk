@@ -20,6 +20,8 @@ body {
   box-sizing: border-box;
 }
 
+/* heading styles */
+
 h1 {
   margin: 1rem 0;
   font-size: 2.5rem;
@@ -31,6 +33,17 @@ h1 {
     "wdth" 100;
 }
 
+@media screen and (min-width: 320px){
+  h1 {
+    font-size: 1.6rem;
+}
+}
+
+@media screen and (min-width: 768px){
+  h1 {
+    font-size: 2.5rem;
+}
+}
 
 /* nav styles */
 
@@ -62,7 +75,7 @@ nav ul {
 
 .nav__links a:hover,
 a:focus {
-  text-decoration: underline;
+  border-bottom: 1px solid #fff;
 }
 
 
