@@ -1,23 +1,23 @@
 ---
 interface Props {
-    PageTitle: string;
+    Headline: string,
+    SubHeadline: string;
 }
 
-const { PageTitle } = Astro.props;
+const { Headline } = Astro.props;
+const { SubHeadline } = Astro.props;
 ---
 
 <div class="hero__text">
     <div class="hero__content">
         <div class="hero__headline">
             <h1>
-                {PageTitle}
+                {Headline}
             </h1>
         </div>
         <div class="hero__subheadline">
             <p>
-                We can provide experienced operators — fully qualified with WJA
-                — for offshore, onshore and overseas workscope. This is
-                particularly beneficial for ensuring product optimisation.
+               {SubHeadline}
             </p>
         </div>
     </div>
