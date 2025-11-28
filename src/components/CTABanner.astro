@@ -12,25 +12,27 @@ import Button from "./Button.astro";
                 industry throughout the U.K.
             </p>
         </div>
-        <Button href="/services" variant="secondary">Find out more</Button> 
+        <Button href="/services" variant="secondary">Find out more</Button>
     </div>
     <div class="cta__banner__image">
         <img
             src="/src/assets/PJ-Screen-cap-tst-wash.png"
-            alt="Power jetting operative wearing TST safety gear whilst operating jet hose"
+            alt="Power jetting operative wearing TST safety gear whilst operating power jet washer"
         />
     </div>
 </div>
 
 <style>
     .cta__banner__wrapper {
+        grid-column: 3 / 13; /* Skip first and last content column (inset by 1) */
         display: flex;
+        height: 335px;
         flex-direction: row;
         align-items: left;
         justify-content: space-between;
         background-color: var(--pj_brand_blue);
         color: white;
-        border-radius: 8px;
+        border-radius: 0.25rem;
         gap: 2rem;
     }
 
@@ -43,10 +45,13 @@ import Button from "./Button.astro";
         max-width: 1106px;
         width: 100%;
         height: 100%;
+        border-radius: 0 0.25rem 0.25rem 0;
+
     }
 
     @media screen and (max-width: 768px) {
         .cta__banner__wrapper {
+            grid-column: 4 / 12; /* Skip first and last content column (inset by 1) */
             flex-direction: column;
             text-align: left;
         }

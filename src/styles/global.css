@@ -1,6 +1,5 @@
 @import './variables.css';
 
-
 html {
   background-color: #f1f5f9;
   font-family: "Instrument Sans", sans-serif;
@@ -20,6 +19,48 @@ body {
   box-sizing: border-box;
 }
 
+/* grid utility styles */
+/* Span utilities */
+.span-full {
+  grid-column: 2 / 14;
+  /* All 12 columns */
+}
+
+.span-10 {
+  grid-column: 3 / 13;
+  /* 10 columns (inset by 1 on each side) */
+}
+
+.span-8 {
+  grid-column: 4 / 12;
+  /* 8 columns (inset by 2 on each side) */
+}
+
+.span-6 {
+  grid-column: 5 / 11;
+  /* 6 columns (centered) */
+}
+
+/* Specific positioning */
+.col-start-1 {
+  grid-column-start: 2;
+}
+
+.col-end-12 {
+  grid-column-end: 14;
+}
+
+/* Two column layout */
+.two-col-left {
+  grid-column: 2 / 8;
+  /* First 6 columns */
+}
+
+.two-col-right {
+  grid-column: 8 / 14;
+  /* Last 6 columns */
+}
+
 /* heading styles */
 
 h1 {
@@ -33,16 +74,16 @@ h1 {
     "wdth" 100;
 }
 
-@media screen and (min-width: 320px){
+@media screen and (min-width: 320px) {
   h1 {
     font-size: 1.6rem;
-}
+  }
 }
 
-@media screen and (min-width: 768px){
+@media screen and (min-width: 768px) {
   h1 {
     font-size: 2.5rem;
-}
+  }
 }
 
 /* nav styles */

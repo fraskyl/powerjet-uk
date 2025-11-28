@@ -1,11 +1,16 @@
 ---
-import '../styles/global.css';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import VideoHero from '../components/VideoHero.astro';
-import CTABanner from '../components/CTABanner.astro';
+import "../styles/global.css";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import VideoHero from "../components/VideoHero.astro";
 
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
 ---
+
 <!doctype html>
 <html lang="en">
 	<head>
@@ -14,27 +19,52 @@ import CTABanner from '../components/CTABanner.astro';
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>Powerjet Rentals UK</title>
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap"
+			rel="stylesheet"
+		/>
 	</head>
 	<Header />
-	 <!-- <VideoHero /> -->
+	<!-- <VideoHero /> -->
 
 	<body>
-
-		
+		<div class="page-grid">
 		<slot />
-		
+		</div>	
 	</body>
 	<!-- <Footer /> -->
-</html>
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+	<style>
+		.page-grid {
+			display: grid;
+			grid-template-columns:
+				3rem /* Left margin */
+				repeat(12, 1fr) /* 12 columns */
+				3rem; /* Right margin */
+			grid-auto-rows: var(--grid-header-height) var(--grid-content-ratio);
+			column-gap: 1.5rem; /* Gutter between columns */
+			min-height: 100vh;
+		}
+
+		/* Default: span all 12 content columns */
+		.page-grid > * {
+			grid-column: 2 / 14; /* Start at column 2, end at column 14 (spans all 12) */
+		}
+
+		/* Full width (including margins) */
+		.page-grid > .full-width {
+			grid-column: 1 / -1;
+		}
+
+		html,
+		body {
+			margin: 0;
+			width: 100%;
+			height: 100%;
+		}
+	</style>
+
+
+</html>
