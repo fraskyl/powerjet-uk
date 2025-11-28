@@ -1,0 +1,32 @@
+---
+const { link, buttonText } = Astro.props;
+const { button__style } = Astro.props;
+---
+
+<div class="button__container">
+    <a href={link}>{buttonText}</a>
+</div>
+
+<style>
+    .button__container {
+        display: inline-block;
+        border-radius: 100px;
+        background-color: var(--pj_brand_blue);
+        border: 1px solid var(--pj_blue_10);
+        padding: 0.5rem 1.5rem;
+        text-align: left;
+    }
+    
+    .button__container a {
+ 
+        text-size: 0.875rem;
+        font-weight: 400;
+        color: white;
+        text-decoration: none; 
+        transition: background-color 0.3s ease;
+    }
+
+    .button__container a:hover {
+        background-color: var(--pj_brand_dark_blue);
+    }
+</style>

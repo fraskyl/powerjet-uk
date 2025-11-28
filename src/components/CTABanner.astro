@@ -1,0 +1,58 @@
+---
+import Button from "./Button.astro";
+---
+
+<div class="cta__banner__wrapper">
+    <div class="cta__banner__content">
+        <div class="cta__banner__text">
+            <h2>WJA Training</h2>
+            <p>
+                We offer fully registered training with The Water Jetting
+                Association, the benchmark for safety in the water jetting
+                industry throughout the U.K.
+            </p>
+        </div>
+        <Button link="/services" buttonText="Find Out More" />
+    </div>
+    <div class="cta__banner__image">
+        <img
+            src="/src/assets/PJ-Screen-cap-tst-wash.png"
+            alt="Power jetting operative wearing TST safety gear whilst operating jet hose"
+        />
+    </div>
+</div>
+
+<style>
+    .cta__banner__wrapper {
+        display: flex;
+        flex-direction: row;
+        align-items: left;
+        justify-content: space-between;
+        background-color: var(--pj_brand_blue);
+        color: white;
+        border-radius: 8px;
+        gap: 2rem;
+    }
+
+    .cta__banner__content {
+        flex: 1;
+        padding: 2rem;
+    }
+
+    .cta__banner__image img {
+        max-width: 1106px;
+        width: 100%;
+        height: 100%;
+    }
+
+    @media screen and (max-width: 768px) {
+        .cta__banner__wrapper {
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .cta__banner__image img {
+            max-width: 100%;
+        }
+    }
+</style>
