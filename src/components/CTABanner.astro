@@ -37,8 +37,11 @@ import Button from "./Button.astro";
     }
 
     .cta__banner__content {
+        display: flex;
         flex: 1;
         padding: 2rem;
+        flex-direction: column;
+        justify-content: space-between;  /* Pushes text to top, button to bottom */
     }
 
     .cta__banner__image img {
