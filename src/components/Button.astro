@@ -1,32 +1,58 @@
 ---
-const { link, buttonText } = Astro.props;
-const { button__style } = Astro.props;
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes <"a"> {
+    variant: "primary" | "secondary";
+}
+const { variant, ...props } = Astro.props;
 ---
 
-<div class="button__container">
-    <a href={link}>{buttonText}</a>
+<div class="button">
+    <a
+        class:list={[
+            "button",
+            { primary: variant === "primary" },
+            { secondary: variant === "secondary" },
+            Astro.props.class,
+        ]}
+    >
+        <slot />
+    </a>
 </div>
 
 <style>
-    .button__container {
+    .button {
         display: inline-block;
         border-radius: 100px;
-        background-color: var(--pj_brand_blue);
-        border: 1px solid var(--pj_blue_10);
         padding: 0.5rem 1.5rem;
         text-align: left;
+        border:1px solid transparent;
     }
-    
-    .button__container a {
- 
+
+    .primary {
+        background-color: var(--pj_brand_blue);
+        border: 1px solid var(--pj_brand_blue);
+    }
+
+    .secondary {
+        background-color: var(--pj_brand_blue);
+        border: 1px solid var(--pj_blue_10);
+    }
+
+    .secondary:hover {
+        background-color: var(--pj_brand_dark_blue);
+        border: 1px solid var(--pj_brand_dark_blue);
+    }
+
+    .button a {
         text-size: 0.875rem;
         font-weight: 400;
         color: white;
-        text-decoration: none; 
+        text-decoration: none;
         transition: background-color 0.3s ease;
     }
 
-    .button__container a:hover {
+    .button a:hover {
         background-color: var(--pj_brand_dark_blue);
     }
 </style>
