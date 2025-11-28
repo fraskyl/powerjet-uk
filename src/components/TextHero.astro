@@ -1,0 +1,57 @@
+---
+interface Props {
+    PageTitle: string;
+}
+
+const { PageTitle } = Astro.props;
+---
+
+<div class="hero__text">
+    <div class="hero__content">
+        <div class="hero__headline">
+            <h1>
+                {PageTitle}
+            </h1>
+        </div>
+        <div class="hero__subheadline">
+            <p>
+                We can provide experienced operators — fully qualified with WJA
+                — for offshore, onshore and overseas workscope. This is
+                particularly beneficial for ensuring product optimisation.
+            </p>
+        </div>
+    </div>
+
+    <style>
+        h1 {
+            color: var(--core-pj-blue-05, #f3f6f6);
+            font-family: "Instrument Sans";
+            font-size: 88px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 72px; /* 81.818% */
+            letter-spacing: -1.496px;
+        }
+        .hero__text {
+            display: flex;
+            width: 50%%;
+            height: 642px;
+            overflow: hidden;
+            background: var(--pj_brand_blue);
+            color: white;
+        }
+
+        .hero__content {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            justify-content: space-between; /* Pushes text to top, button to bottom */
+        }
+
+        @media screen and (min-width: 768px) {
+            .hero__headline {
+                width: 50%;
+            }
+        }
+    </style>
+</div>
