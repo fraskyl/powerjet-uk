@@ -1,6 +1,6 @@
 ---
 interface Props {
-    Headline: string,
+    Headline: string;
     SubHeadline: string;
 }
 
@@ -17,7 +17,7 @@ const { SubHeadline } = Astro.props;
         </div>
         <div class="hero__subheadline">
             <p>
-               {SubHeadline}
+                {SubHeadline}
             </p>
         </div>
     </div>
@@ -33,10 +33,9 @@ const { SubHeadline } = Astro.props;
             letter-spacing: -1.496px;
         }
         .hero__text {
+            grid-column: 1 / 15; /* Spans all 12 columns as a grid item */
             display: flex;
-            width: 50%%;
-            height: 642px;
-            overflow: hidden;
+            height: 519px;
             background: var(--pj_brand_blue);
             color: white;
         }
@@ -46,11 +45,15 @@ const { SubHeadline } = Astro.props;
             flex: 1;
             flex-direction: column;
             justify-content: space-between; /* Pushes text to top, button to bottom */
+            padding: 2rem; /* Inset from edges */
+        }
+
+        .hero__subheadline {
+            width: 464px;
         }
 
         @media screen and (min-width: 768px) {
             .hero__headline {
-                width: 50%;
             }
         }
     </style>
