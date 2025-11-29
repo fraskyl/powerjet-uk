@@ -19,8 +19,7 @@ body {
   box-sizing: border-box;
 }
 
-/* grid utility styles */
-/* Span utilities */
+/* Grid/Span utility styles */
 .span-full {
   grid-column: 2 / 14;
   /* All 12 columns */
