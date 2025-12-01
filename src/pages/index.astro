@@ -36,6 +36,18 @@ import Card from "../components/Card.astro";
 		grid-column: 3 / 13; /* Skip first and last content column (inset by 1) */
 		display: flex;
 		flex-direction: row;
+		align-items: top;
 		gap: 1.5rem;
+		margin-top: 7.75rem;
 	}
+
+	  @media screen and (max-width: 768px) {
+        .section__product {
+		grid-column: 3 / 13; /* Skip first and last content column (inset by 1) */
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+		margin-top: 0r;
+	}
+    }
 </style>
