@@ -1,0 +1,95 @@
+---
+interface Props {
+    imgSrc: string;
+    imgAlt: string;
+    hrefLink: string;
+    buttonLabel: string;
+}
+
+const { imgSrc } = Astro.props;
+const { imgAlt } = Astro.props;
+
+const { hrefLink } = Astro.props;
+const { buttonLabel } = Astro.props;
+---
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+    rel="stylesheet"
+/>
+
+<div class="card__wrapper">
+    <div class="image__container">
+        <img src={imgSrc} alt={imgAlt} />
+    </div>
+    <div class="card__panel">
+        <a href={hrefLink}>
+            {buttonLabel}
+        </a>
+        <span class="material-symbols-outlined">arrow_forward</span>
+    </div>
+</div>
+
+<style>
+    .card__wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: left;
+        width: 346px;
+        height: 456px;
+        border_radius: 0.25rem;
+        margion-top: 7.75rem;
+    }
+
+    .image__container {
+        width: 346px;
+        height: 300px;
+        overflow: hidden;
+        border-radius: 0.25rem 0.25rem 0 0;
+    }
+
+    .img__container img {
+        object-fit: fit;
+        width: 100%;
+        height: 100%;
+        border-radius: 0.25rem;
+    }
+
+    .card__panel {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        background-color: var(--pj_brand_blue);
+        padding: 0.5rem 1.5rem;
+        height: 64px;
+        width: 100%;
+        border-radius: 0 0 0.25rem 0.25rem;
+    }
+
+    .card__panel:hover{
+        background-color: var(--pj_blue_90);
+        transition: background-color 0.3s ease;
+    }
+
+    .card__panel a {
+        font-family: "Instrument Sans";
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 28px; /* 155.556% */
+        letter-spacing: -0.306px;
+        color: white;
+        margin: 0;
+        text-decoration: none;
+    }
+
+    .material-symbols-outlined {
+        font-variation-settings:
+            "FILL" 0,
+            "wght" 400,
+            "GRAD" 0,
+            "opsz" 24;
+        color: white;
+    }
+</style>
