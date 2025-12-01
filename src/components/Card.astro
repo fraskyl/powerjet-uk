@@ -23,12 +23,12 @@ const { buttonLabel } = Astro.props;
         <div class="image__container">
             <img src={imgSrc} alt={imgAlt} />
         </div>
-        <div class="card__panel">
-            <a href={hrefLink}>
+        <a href={hrefLink}>
+            <div class="card__panel">
                 {buttonLabel}
-            </a>
-            <span class="material-symbols-outlined">arrow_forward</span>
-        </div>
+                <span class="material-symbols-outlined">arrow_forward</span>
+            </div>
+        </a>
     </a>
 </div>
 
@@ -54,7 +54,7 @@ const { buttonLabel } = Astro.props;
         object-fit: cover;
         width: 100%;
         height: 100%;
-         transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out;
     }
 
     .card__panel {
@@ -69,16 +69,7 @@ const { buttonLabel } = Astro.props;
         border-radius: 0 0 0.25rem 0.25rem;
     }
 
-    .card__wrapper:hover .card__panel {
-        background-color: var(--pj_blue_90);
-        transition: background-color 0.3s ease;
-    }
-
-     .card__wrapper:hover .image__container img {
-        transform: scale(1.125); /* Zoom in effect */
-    }
-
-    .card__panel a {
+    .card__wrapper a {
         font-family: "Instrument Sans";
         font-size: 18px;
         font-style: normal;
@@ -88,6 +79,15 @@ const { buttonLabel } = Astro.props;
         color: white;
         margin: 0;
         text-decoration: none;
+    }
+
+    .card__wrapper:hover .card__panel {
+        background-color: var(--pj_blue_90);
+        transition: background-color 0.3s ease;
+    }
+
+    .card__wrapper:hover .image__container img {
+        transform: scale(1.125); /* Zoom in effect */
     }
 
     .material-symbols-outlined {
