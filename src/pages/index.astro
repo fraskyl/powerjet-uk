@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import CTABanner from "../components/CTABanner.astro";
 import ContentBlock from "../components/ContentBlock.astro";
 import Card from "../components/Card.astro";
+import Divider from "../components/Divider.astro";
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
@@ -14,6 +15,7 @@ import Card from "../components/Card.astro";
 			SectionTitle="Discover our products"
 			BodyCopy="We offer a  comprehensive fleet of High-Pressure (HP) and Ultra-High Pressure (UHP) jetting units, complemented by specialised accessories."
 		/>
+		<div class="section__cards">
 		<Card
 			imgSrc="/src/assets/New_Image_Magtrack-lrg.jpeg"
 			imgAlt="MagTrack unit removing paint from the side of a ship's hull"
@@ -26,14 +28,16 @@ import Card from "../components/Card.astro";
 			hrefLink="/sales"
 			buttonLabel="Sales"
 		/>
+		</div>
 	</div>
 
 	<CTABanner />
+	<Divider />
 </Layout>
 
 <style>
 	.section__product {
-		grid-column: 3 / 13; /* Skip first and last content column (inset by 1) */
+		grid-column: 2 / 14; /* Skip first and last content column (inset by 1) */
 		display: flex;
 		flex-direction: row;
 		align-items: top;
@@ -41,9 +45,15 @@ import Card from "../components/Card.astro";
 		margin-top: 7.75rem;
 	}
 
+	.section__cards {
+		display: flex;
+		flex-direction: row;
+		gap: 1.5rem;
+	}
+
 	  @media screen and (max-width: 768px) {
         .section__product {
-		grid-column: 3 / 13; /* Skip first and last content column (inset by 1) */
+		grid-column: 2 / 14; /* Skip first and last content column (inset by 1) */
 		display: flex;
 		flex-direction: column;
 		gap: 1.5rem;
