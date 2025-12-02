@@ -1,0 +1,31 @@
+---
+import Divider from "./Divider.astro";
+import ContentBlock from "./ContentBlock.astro";
+---
+
+    <Divider />
+    <ContentBlock
+    SectionTitle="About us"
+    BodyCopy="For over 20 years, Powerjet has been a trusted supplier of High-Pressure and Ultra High-Pressure Water Jetting Units, delivering complete solutions for the toughest industrial challenges."
+    width="regular"
+    HeadingSize="small"
+    />
+
+
+<style>
+.block__wrapper {
+    grid-column: 3 / 13;
+    display: flex;
+    gap: 1.5rem;
+    flex-direction: column; 
+    margin-top: 7.75rem;
+}
+
+.block__content {
+   
+    display: flex;
+    flex-direction: row;
+}   
+
+
+</style>

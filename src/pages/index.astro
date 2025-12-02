@@ -3,7 +3,8 @@ import Layout from "../layouts/Layout.astro";
 import CTABanner from "../components/CTABanner.astro";
 import ContentBlock from "../components/ContentBlock.astro";
 import Card from "../components/Card.astro";
-import Divider from "../components/Divider.astro";
+import InfoBlock from "../components/InfoBlock.astro";
+import InformationPage from "../layouts/InformationPage.astro";
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
@@ -32,15 +33,14 @@ import Divider from "../components/Divider.astro";
 	</div>
 
 	<CTABanner />
-	<Divider />
+		<InfoBlock />
 </Layout>
 
 <style>
 	.section__product {
-		grid-column: 2 / 14; /* Skip first and last content column (inset by 1) */
+		grid-column: 3 / 13; /* Skip first and last content column (inset by 1) */
 		display: flex;
 		flex-direction: row;
-		align-items: top;
 		gap: 1.5rem;
 		margin-top: 7.75rem;
 	}
@@ -53,11 +53,10 @@ import Divider from "../components/Divider.astro";
 
 	  @media screen and (max-width: 768px) {
         .section__product {
-		grid-column: 2 / 14; /* Skip first and last content column (inset by 1) */
+		grid-column: 3 / 13; /* Skip first and last content column (inset by 1) */
 		display: flex;
 		flex-direction: column;
 		gap: 1.5rem;
-		margin-top: 0r;
 	}
     }
 </style>

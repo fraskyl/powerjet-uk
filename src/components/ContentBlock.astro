@@ -2,13 +2,17 @@
 interface Props {
     SectionTitle: string;
     BodyCopy: string;
+    width?: "compact" | "regular";
+    HeadingSize?: "small" | "regular";
 }
 
 const { SectionTitle } = Astro.props;
 const { BodyCopy } = Astro.props;
+const { width = "regular" } = Astro.props;
+const { HeadingSize = "regular" } = Astro.props;
 --- 
-<div class="content__block">
-    <div class="section__title">
+<div class="content__block" data-variant={width}>
+    <div class="section__title" data-variant={HeadingSize}>
         <h2>{SectionTitle}</h2>
     </div>
     <div class="body__copy">
@@ -18,7 +22,6 @@ const { BodyCopy } = Astro.props;
 
 <style>
     .content__block {
-        grid-column: 3 / 7; /* Skip first and last content column (inset by 1) */
         display: flex;
         flex-direction: column;
         align-items: left;
@@ -26,15 +29,30 @@ const { BodyCopy } = Astro.props;
         height: auto;
     }
 
+    .content__block[data-variant="regular"] {
+        grid-column: 3 / 8;
+    }
+
+    .content__block[data-variant="wide"] {
+        grid-column: 3 / 8;
+    }
+
     .section__title h2 {
         font-family: "Instrument Sans";
-        font-size: 32px;
         font-style: normal;
         font-weight: 500;
         line-height: 40px; /* 125% */
         letter-spacing: -1.5%;
         color: var(--core-pj-blue-90, #0b1212);
         margin: 0;
+    }
+
+    .section__title[data-variant="small"] h2 {
+        font-size: 1.125rem;
+    }
+
+     .section__title[data-variant="regular"] h2 {
+        font-size: 2rem;
     }
 
     .body__copy p {
