@@ -1,6 +1,41 @@
+---
+import Navigation from "./Navigation.astro";
+---
+
 <footer>
     <div class="footer__wrapper">
-        <p>footer text</p>
+        <div class="footer__row"> 
+        <div class="footer__left">
+            <div class="footer__logo">
+                <a href="/">
+                    <img src="/src/assets/POWERJET HPWJS_Logo-white.svg" /></a
+                >
+            </div>
+            <div class="footer__contact">
+                <p>Tel: + 44 (0) 141 440 5757</p>
+                <p>Email: mail@powerjet-uk.com</p>
+            </div>
+        </div>
+        <div class="footer__right">
+             <div class="footer__logo__right">
+                <a href="/">
+                    <img src="/src/assets/Dark Logo.svg" /></a
+                >
+            </div>
+            <div class="footer__logo__right">
+                <a href="/">
+                    <img src="/src/assets/Water Jetting Association.svg" /></a
+                >
+            </div>
+        </div>
+        </div>
+        <div class="footer__row" id="footer__nav">
+            <Navigation />
+        </div>
+        <div class="footer__copyright" <p>
+            © Powerjet Rentals Ltd | Powerjet Solutions Ltd 2025. All Rights
+            Reserved.
+        </div>
     </div>
 </footer>
 
@@ -8,16 +43,64 @@
     /* footer styles */
 
     .footer__wrapper {
-        position: relative;
-        width: 100%;
-        display: grid;
-        grid-auto-rows: 2.5rem 12fr;
-        align-items: center;
-        padding: 1.6rem 1rem;
-        min-height: 100vh;
+        height: 432px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;  
+        justify-content: space-between;
+        padding: 2rem 2rem;
         background-color: var(--pj_brand_blue);
-        box-shadow: inset 0 -1px 0 var(--pj_grey_10);
         color: white;
-        text-align: center;
+        margin-top: 7.75rem;
     }
+
+    .footer__row {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .footer__left {
+        display: flex;
+        flex-direction: column;
+        align-items: left;
+    }
+
+    .footer__right {
+        display: flex;
+        flex-direction: row;
+        align-items: left;
+        gap: 1.5rem;
+    }
+
+    .footer__logo {
+        grid-column: 1 / span 2;
+        height: auto;
+    }
+
+    
+    .footer__logo img {
+        height: 64px;
+    }
+
+     .footer__logo__right {
+        grid-column: 1 / span 2;
+        height: auto;
+    }
+
+     .footer__logo__right img {
+        height: 110px;
+    }
+
+    .footer__copyright p {
+        align-items: center;
+        font-family: "Instrument Sans";
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 300;
+        line-height: 20px; /* 142.5% */
+    }
+
+
 </style>
