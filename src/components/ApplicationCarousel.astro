@@ -6,6 +6,7 @@ import CarouselCard from "./CarouselCard.astro";
 
 <div class="section-applications__wrapper">
     <SectionTitle Headline="Industrial applications" HeadingSize="regular" />
+    <Divider />
 
     <div class="section-application__carousel-wrapper">
         <CarouselCard
@@ -13,6 +14,12 @@ import CarouselCard from "./CarouselCard.astro";
             imgAlt="Application 1"
             hrefLink="/applications/abrasive-water-jet-cutting"
             applicationTitle="Abrasive Water Jet Cutting"
+        />
+         <CarouselCard
+            imgSrc="/src/assets/New_Image_Magtrack-lrg.jpeg"
+            imgAlt="Application 2"
+            hrefLink="/applications/pipe-cleaning"
+            applicationTitle="Pipe Cleaning"
         />
     </div>
 </div>
@@ -22,7 +29,7 @@ import CarouselCard from "./CarouselCard.astro";
         grid-column: 3 / 13;
         display: flex;
         flex-direction: column;
-        margin-top: 7.75rem;
+        margin-bottom: 7.75rem;
     }
 
     .section-application__carousel-wrapper {
