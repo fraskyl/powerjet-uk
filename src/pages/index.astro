@@ -1,10 +1,11 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import CTABanner from "../components/CTABanner.astro";
-import ContentBlock from "../components/ContentBlock.astro";
+import TextBlock from "../components/TextBlock.astro";
 import Card from "../components/Card.astro";
-import InfoBlock from "../components/InfoBlock.astro";
-import Footer from "../components/Footer.astro";	
+import Footer from "../components/Footer.astro";
+import SectionTitle from "../components/SectionTitle.astro";
+import Divider from "../components/Divider.astro";
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
@@ -12,31 +13,45 @@ import Footer from "../components/Footer.astro";
 
 <Layout title="Powerjet Rentals UK">
 	<div class="section__product">
-		<ContentBlock
-			SectionTitle="Discover our products"
-			BodyCopy="We offer a  comprehensive fleet of High-Pressure (HP) and Ultra-High Pressure (UHP) jetting units, complemented by specialised accessories."
-		/>
-		<div class="section__cards">
-		<Card
-			imgSrc="/src/assets/New_Image_Magtrack-lrg.jpeg"
-			imgAlt="MagTrack unit removing paint from the side of a ship's hull"
-			hrefLink="/rentals"
-			buttonLabel="Rentals"
-		/>
-		<Card
-			imgSrc="/src/assets/New_Image_Magtrack-lrg.jpeg"
-			imgAlt="MagTrack unit removing paint from the side of a ship's hull"
-			hrefLink="/sales"
-			buttonLabel="Sales"
-		/>
+		<div class="section__product__text">
+			<SectionTitle
+				Headline="Discover our products"
+				HeadingSize="regular"
+			/>
+			<TextBlock
+				BodyCopy="We offer a  comprehensive fleet of High-Pressure (HP) and Ultra-High Pressure (UHP) jetting units, complemented by specialised accessories."
+			/>
+		</div>
+
+		<div class="section__product__cards">
+			<Card
+				imgSrc="/src/assets/New_Image_Magtrack-lrg.jpeg"
+				imgAlt="MagTrack unit removing paint from the side of a ship's hull"
+				hrefLink="/rentals"
+				buttonLabel="Rentals"
+			/>
+			<Card
+				imgSrc="/src/assets/New_Image_Magtrack-lrg.jpeg"
+				imgAlt="MagTrack unit removing paint from the side of a ship's hull"
+				hrefLink="/sales"
+				buttonLabel="Sales"
+			/>
 		</div>
 	</div>
 
 	<CTABanner />
-		<InfoBlock />
-	
+	<Divider />
+	<div class="section__about-us">
+			<SectionTitle
+				Headline="About us"
+				HeadingSize="regular"
+			/>
+			<TextBlock
+				BodyCopy="For over 20 years, Powerjet has been a trusted supplier of High-Pressure and Ultra High-Pressure Water Jetting Units, delivering complete solutions for the toughest industrial challenges."
+			/>
+		</div>
 </Layout>
-	<Footer />
+<Footer />
 
 <style>
 	.section__product {
@@ -47,18 +62,34 @@ import Footer from "../components/Footer.astro";
 		margin-top: 7.75rem;
 	}
 
-	.section__cards {
+	.section__product__text {
+		grid-column: 3 / 8;
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+	}
+
+	.section__product__cards {
+		grid-column: 8 / 13;
 		display: flex;
 		flex-direction: row;
 		gap: 1.5rem;
 	}
 
-	  @media screen and (max-width: 768px) {
-        .section__product {
-		grid-column: 3 / 13; /* Skip first and last content column (inset by 1) */
+	.section__about-us{
+		grid-column: 3 / 8;
 		display: flex;
+		gap: 2rem;
 		flex-direction: column;
-		gap: 1.5rem;
+		margin-top: 2rem;
 	}
-    }
+
+	@media screen and (max-width: 768px) {
+		.section__product {
+			grid-column: 3 / 13; /* Skip first and last content column (inset by 1) */
+			display: flex;
+			flex-direction: column;
+			gap: 1.5rem;
+		}
+	}
 </style>

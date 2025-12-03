@@ -1,0 +1,33 @@
+---
+interface Props {
+    Headline: string;
+    HeadingSize?: "small" | "regular";
+}
+
+const { Headline } = Astro.props;
+const { HeadingSize = "regular" } = Astro.props;
+---
+
+<div class="section__title" data-variant={HeadingSize}>
+    <h2>{Headline}</h2>
+</div>
+
+<style>
+    .section__title h2 {
+        font-family: "Instrument Sans";
+        font-style: normal;
+        font-weight: 500;
+        line-height: 40px; /* 125% */
+        letter-spacing: -1.5%;
+        color: var(--core-pj-blue-90, #0b1212);
+        margin: 0;
+    }
+
+    .section__title[data-variant="small"] h2 {
+        font-size: 1.125rem;
+    }
+
+    .section__title[data-variant="regular"] h2 {
+        font-size: 2rem;
+    }
+</style>

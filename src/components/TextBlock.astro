@@ -1,0 +1,47 @@
+---
+
+interface Props {
+    BodyCopy: string;
+    width?: "compact" | "regular";
+}
+
+
+const { BodyCopy } = Astro.props;
+const { width = "regular" } = Astro.props;
+--- 
+<div class="text__block" data-variant={width}>
+    <div class="body__copy">
+       <p>{BodyCopy}</p>
+    </div>
+</div>
+
+<style>
+    .text__block {
+        display: flex;
+        flex-direction: column;
+        align-items: left;
+        gap: 1.5rem;
+        height: auto;
+    }
+
+    .text__block[data-variant="regular"] {
+        grid-column: 3 / 8;
+    }
+
+    .text__block[data-variant="wide"] {
+        grid-column: 3 / 8;
+    }
+
+    .body__copy p {
+        font-family: "Instrument Sans";
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 28px; /* 155.556% */
+        letter-spacing: -0.306px;
+        color: var(--core-pj-blue-80, #1f2a2a);
+        margin: 0;
+        text-wrap: ;
+    }
+    
+</style>
