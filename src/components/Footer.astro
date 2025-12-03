@@ -1,6 +1,5 @@
 ---
-import Divider from "./Divider.astro";
-import Navigation from "./Navigation.astro";
+import Navigation from "./Navigation.astro"
 ---
 
 <footer>
@@ -32,11 +31,15 @@ import Navigation from "./Navigation.astro";
                 </div>
             </div>
         </div>
-        <div class="footer__row" id="footer__nav">
+        <div class="footer__row">
+           <!-- <Navigation  -->
         </div>
 
         <div class="footer__copyright">
-            <p> © Powerjet Rentals Ltd | Powerjet Solutions Ltd 2025. All Rights Reserved.</p>
+            <p>
+                © Powerjet Rentals Ltd | Powerjet Solutions Ltd 2025. All
+                Rights Reserved.
+            </p>
         </div>
     </div>
 </footer>
@@ -44,7 +47,7 @@ import Navigation from "./Navigation.astro";
 <style>
     /* footer styles */
     .footer {
-        grid-column: 1 / 13;
+        grid-column: 1 / 15;
     }
 
     .footer__wrapper {
@@ -56,7 +59,6 @@ import Navigation from "./Navigation.astro";
         padding: 2rem;
         background-color: var(--pj_brand_blue);
         color: white;
-        margin-top: 7.75rem;
     }
 
     .footer__row {
@@ -76,7 +78,6 @@ import Navigation from "./Navigation.astro";
         font-family: "Instrument Sans";
         font-size: 1rem;
         line-height: 1.5rem;
-
     }
 
     .footer__right {
@@ -104,6 +105,15 @@ import Navigation from "./Navigation.astro";
         height: 110px;
     }
 
+    li{
+        list-style: none;
+    }
+
+    a {
+        color: white;
+        text-decoration: none;
+    }
+
     .footer__copyright {
         width: 100%;
         display: flex;
@@ -117,6 +127,6 @@ import Navigation from "./Navigation.astro";
         font-size: 12px;
         font-style: normal;
         font-weight: 300;
-        line-height: 16px; 
+        line-height: 16px;
     }
 </style>

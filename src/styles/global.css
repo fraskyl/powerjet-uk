@@ -114,6 +114,9 @@ a:focus {
 }
 
 
+
+
+/* Mobile styles */
 @media screen and (min-width: 636px) {
   .nav__links {
     display: block;
@@ -124,8 +127,9 @@ a:focus {
     display: inline-block;
     padding: 8px 16px;
   }
+}
 
-  /* Mobile styles */
+
   @media screen and (max-width: 768px) {
     .nav__links {
       position: absolute;
@@ -151,6 +155,3 @@ a:focus {
       border-top: 1px solid #444;
     }
   }
-
-
-}
