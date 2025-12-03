@@ -18,8 +18,38 @@ import CarouselCard from "./CarouselCard.astro";
          <CarouselCard
             imgSrc="/src/assets/New_Image_Magtrack-lrg.jpeg"
             imgAlt="Application 2"
+            hrefLink="/applications/drain-sewer-cleaning"
+            applicationTitle="Drain and Sewer Cleaning"
+        />
+         <CarouselCard
+            imgSrc="/src/assets/New_Image_Magtrack-lrg.jpeg"
+            imgAlt="Application 3"
+            hrefLink="/applications/hyrdro-demolition"
+            applicationTitle="Hyrdro Demolition"
+        />
+           <CarouselCard
+            imgSrc="/src/assets/New_Image_Magtrack-lrg.jpeg"
+            imgAlt="Application 6"
             hrefLink="/applications/pipe-cleaning"
             applicationTitle="Pipe Cleaning"
+        />
+         <CarouselCard
+            imgSrc="/src/assets/New_Image_Magtrack-lrg.jpeg"
+            imgAlt="Application 4"
+            hrefLink="/applications/surface-preparation-cleaning"
+            applicationTitle="Surface Preparation and Cleaning"
+        />
+         <CarouselCard
+            imgSrc="/src/assets/New_Image_Magtrack-lrg.jpeg"
+            imgAlt="Application 5"
+            hrefLink="/applications/tank-vessel-cleaning"
+            applicationTitle="Tank and Vessel Cleaning"
+        />
+         <CarouselCard
+            imgSrc="/src/assets/New_Image_Magtrack-lrg.jpeg"
+            imgAlt="Application 7"
+            hrefLink="/applications/pipe-cleaning"
+            applicationTitle="Tube Cleaning"
         />
     </div>
 </div>
@@ -33,9 +63,8 @@ import CarouselCard from "./CarouselCard.astro";
     }
 
     .section-application__carousel-wrapper {
-        grid-column: 2 / 14; /* Spans main page grid */
-        display: grid;
-        grid-template-columns: repeat(12, 1fr); /* 12 columns */
+        display: flex;
         gap: 1.5rem;
+        overflow-x: scroll;
     }
 </style>

@@ -18,38 +18,37 @@ const { applicationTitle } = Astro.props;
     rel="stylesheet"
 />
 
-<div class="application-carousel__slide-wrapper">
-    <a href={hrefLink}>
-        <div class="application-carousel__slide-image-wrapper">
-            <img src={imgSrc} alt={imgAlt} />
-        </div>
-        <div class="application-carousel__slide-content-wrapper">
-            {applicationTitle}
-        </div>
-    </a>
+<a href={hrefLink} class="application-carousel__slide-wrapper">
+    <div class="application-carousel__slide-image-wrapper">
+        <img src={imgSrc} alt={imgAlt} />
+    </div>
+    <div class="application-carousel__slide-content-wrapper">
+        {applicationTitle}
+    </div>
 
     <style>
-        .application-carousel__slide-wrapper {
-            grid-column: span 3; /* Spans 3 out of 12 columns */
-            display: flex;
-            flex-direction: column;
-            margin-top: 1.5rem;
-        }
-
-        .application-carousel__slide-wrapper a {
+        a {
             text-decoration: none;
         }
 
+        .application-carousel__slide-wrapper {
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            margin-top: 1.5rem;
+            width: 280px;
+        }
+
         .application-carousel__slide-image-wrapper {
-            aspect-ratio: 280 / 480;
             overflow: hidden;
             border-radius: 0.25rem;
+            aspect-ratio: 280 / 360;
         }
 
         .application-carousel__slide-image-wrapper img {
-            object-fit: cover;
             width: 100%;
             height: 100%;
+            object-fit: cover;
             transition: all 0.3s ease-in-out;
         }
 
@@ -66,14 +65,12 @@ const { applicationTitle } = Astro.props;
 
         .application-carousel__slide-content-wrapper {
             display: flex;
-
             margin-top: 1rem;
             color: black;
             font-family: "Instrument Sans";
             font-size: 1.25rem;
             font-weight: 400;
-
             letter-spacing: -0.306px;
         }
     </style>
-</div>
+</a>
