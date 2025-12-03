@@ -1,0 +1,34 @@
+---
+import Divider from "./Divider.astro";
+import SectionTitle from "./SectionTitle.astro";
+import CarouselCard from "./CarouselCard.astro";
+---
+
+<div class="section-applications__wrapper">
+    <SectionTitle Headline="Industrial applications" HeadingSize="regular" />
+
+    <div class="section-application__carousel-wrapper">
+        <CarouselCard
+            imgSrc="/src/assets/New_Image_Magtrack-lrg.jpeg"
+            imgAlt="Application 1"
+            hrefLink="/applications/abrasive-water-jet-cutting"
+            applicationTitle="Abrasive Water Jet Cutting"
+        />
+    </div>
+</div>
+
+<style>
+     .section-applications__wrapper {
+        grid-column: 3 / 13;
+        display: flex;
+        flex-direction: column;
+        margin-top: 7.75rem;
+    }
+
+    .section-application__carousel-wrapper {
+        grid-column: 2 / 14; /* Spans main page grid */
+        display: grid;
+        grid-template-columns: repeat(12, 1fr); /* 12 columns */
+        gap: 1.5rem;
+    }
+</style>
