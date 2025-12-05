@@ -7,7 +7,6 @@ import Footer from "../components/Footer.astro";
 import SectionTitle from "../components/SectionTitle.astro";
 import Divider from "../components/Divider.astro";
 import ApplicationCarousel from "../components/ApplicationCarousel.astro";
-
 ---
 
 <Layout title="Powerjet Rentals UK">
@@ -41,14 +40,16 @@ import ApplicationCarousel from "../components/ApplicationCarousel.astro";
 	<CTABanner />
 	<Divider />
 	<div class="section__about-us">
-			<SectionTitle
-				Headline="About us"
-				HeadingSize="regular"
-			/>
-			<TextBlock
-				BodyCopy="For over 20 years, Powerjet has been a trusted supplier of High-Pressure and Ultra High-Pressure Water Jetting Units, delivering complete solutions for the toughest industrial challenges."
-			/>
-		</div>
+		<SectionTitle Headline="About us" HeadingSize="regular" />
+		<TextBlock
+			BodyCopy="For over 20 years, Powerjet has been a trusted supplier of High-Pressure and Ultra High-Pressure Water Jetting Units, delivering complete solutions for the toughest industrial challenges."
+		/>
+	</div>
+
+	<div class="section__partner-logo">
+		<SectionTitle Headline="Proud to partner with" HeadingSize="small" />
+		<div class="grid__partner-logos"></div>
+	</div>
 </Layout>
 <Footer />
 
@@ -74,10 +75,19 @@ import ApplicationCarousel from "../components/ApplicationCarousel.astro";
 		gap: 1.5rem;
 	}
 
-	.section__about-us{
+	.section__about-us {
 		grid-column: 3 / 8;
 		display: flex;
 		flex-direction: column;
+		margin-top: 2rem;
+		margin-bottom: 7.75rem;
+	}
+
+	.section__partner-logo {
+		grid-column: 3 / 13;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 		margin-top: 2rem;
 		margin-bottom: 7.75rem;
 	}
