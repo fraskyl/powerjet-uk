@@ -48,10 +48,16 @@ import ApplicationCarousel from "../components/ApplicationCarousel.astro";
 
 	<div class="section__partner-logo">
 		<SectionTitle Headline="Proud to partner with" HeadingSize="small" />
-		<div class="grid__partner-logos"></div>
+		<div class="grid__partner-logos">
+			<img src="/src/assets/logos/partners/jetstream-logo-color.png" />
+			<img src="/src/assets/logos/partners/stoneage-logo-color.svg" />
+			<img src="/src/assets/logos/partners/DERC Salotech.png" />
+			<img src="/src/assets/logos/partners/tetraCORE LOGO.png" />
+			<img src="/src/assets/logos/partners/tst_logotype_001_vertical_RGB.png" />
+		</div>
 	</div>
 </Layout>
-<Footer />
+<!-- <Footer /> -->
 
 <style>
 	.section__product {
@@ -63,13 +69,11 @@ import ApplicationCarousel from "../components/ApplicationCarousel.astro";
 	}
 
 	.section__product__text {
-		grid-column: 3 / 8;
 		display: flex;
 		flex-direction: column;
 	}
 
 	.section__product__cards {
-		grid-column: 8 / 13;
 		display: flex;
 		flex-direction: row;
 		gap: 1.5rem;
@@ -78,8 +82,7 @@ import ApplicationCarousel from "../components/ApplicationCarousel.astro";
 	.section__about-us {
 		grid-column: 3 / 8;
 		display: flex;
-		flex-direction: column;
-		margin-top: 2rem;
+		flex-direction: column;s
 		margin-bottom: 7.75rem;
 	}
 
@@ -90,6 +93,20 @@ import ApplicationCarousel from "../components/ApplicationCarousel.astro";
 		align-items: center;
 		margin-top: 2rem;
 		margin-bottom: 7.75rem;
+		gap: 2rem;
+	}
+
+	.grid__partner-logos {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(120px, 1fr)); /* 5 columns */
+        gap: 2rem;
+		justify-items: center;
+	}
+
+	.grid__partner-logos img{
+		object-fit: contain;
+		height: 80px;
+		width: 100%;
 	}
 
 	@media screen and (max-width: 768px) {
