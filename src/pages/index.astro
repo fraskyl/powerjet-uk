@@ -40,9 +40,10 @@ import ApplicationCarousel from "../components/ApplicationCarousel.astro";
 	<CTABanner />
 	<Divider />
 	<section class="section__about-us span-full">
-		<SectionTitle Headline="About us" HeadingSize="regular" />
+		<SectionTitle Headline="About us" HeadingSize="small" />
 		<TextBlock
 			BodyCopy="For over 20 years, Powerjet has been a trusted supplier of High-Pressure and Ultra High-Pressure Water Jetting Units, delivering complete solutions for the toughest industrial challenges."
+			fontSize="large"
 		/>
 	</section>
 	<section class="section__partner-logo span-full">
@@ -104,7 +105,7 @@ import ApplicationCarousel from "../components/ApplicationCarousel.astro";
 	}
 
 	.section__about-us {
-		grid-column: 2 / 8;
+		grid-column: 2 / 9;
 		display: flex;
 		flex-direction: column;
 		margin-bottom: 7.75rem;
