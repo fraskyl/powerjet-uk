@@ -39,35 +39,52 @@ import ApplicationCarousel from "../components/ApplicationCarousel.astro";
 	<ApplicationCarousel />
 	<CTABanner />
 	<Divider />
-	<div class="section__about-us span-full">
+	<section class="section__about-us span-full">
 		<SectionTitle Headline="About us" HeadingSize="regular" />
 		<TextBlock
 			BodyCopy="For over 20 years, Powerjet has been a trusted supplier of High-Pressure and Ultra High-Pressure Water Jetting Units, delivering complete solutions for the toughest industrial challenges."
 		/>
-	</div>
-	<div class="section__partner-logo span-full">
+	</section>
+	<section class="section__partner-logo span-full">
 		<SectionTitle Headline="Proud to partner with" HeadingSize="small" />
-		<div class="grid__partner-logo">
-			<img src="/src/assets/logos/partners/jetstream-logo-color.png" style="transform: scale(0.35);"/> 
+		<div class="grid__partner-logo-wrapper">
+			<div class="grid__partner-logo">
+				<img
+					src="/src/assets/logos/partners/jetstream-logo-color.png"
+					style="transform: scale(0.8);"
+				/>
+			</div>
+			<div class="grid__partner-logo">
+				<img src="/src/assets/logos/partners/stoneage-logo-color.svg" 
+				style="transform: scale(0.7);"
+				/>
+			</div>
+			<div class="grid__partner-logo">
+				<img
+					src="/src/assets/logos/partners/DERC Salotech.png"
+					style="transform: scale(0.7);"
+				/>
+			</div>
+			<div class="grid__partner-logo">
+				<img
+					src="/src/assets/logos/partners/tetraCORE LOGO.png"
+					
+				/>
+			</div>
+			<div class="grid__partner-logo">
+				<img
+					src="/src/assets/logos/partners/tst_logotype_001_vertical_RGB.png"
+					
+				/>
+			</div>
 		</div>
-		<div class="grid__partner-logo">
-			<img src="/src/assets/logos/partners/stoneage-logo-color.svg" />
-		</div>
-		<div class="grid__partner-logo">
-			<img src="/src/assets/logos/partners/DERC Salotech.png" style="transform: scale(0.15);" />
-		</div>
-		<div class="grid__partner-logo">
-			<img src="/src/assets/logos/partners/tetraCORE LOGO.png" style="transform: scale(0.15);" />
-		</div>
-		<div class="grid__partner-logo">
-			<img src="/src/assets/logos/partners/tst_logotype_001_vertical_RGB.png" style="transform: scale(0.28);" />
-		</div>
-	</div>
+	</section>
 </Layout>
 <!-- <Footer /> -->
 
 <style>
 	.section__product {
+		flex: 1;
 		display: flex;
 		flex-direction: row;
 		gap: 1.5rem;
@@ -80,6 +97,7 @@ import ApplicationCarousel from "../components/ApplicationCarousel.astro";
 	}
 
 	.section__product__cards {
+		flex: 1;
 		display: flex;
 		flex-direction: row;
 		gap: 1.5rem;
@@ -98,21 +116,38 @@ import ApplicationCarousel from "../components/ApplicationCarousel.astro";
 		align-items: center;
 		margin-top: 2rem;
 		margin-bottom: 7.75rem;
+		gap: 3rem;
+	}
+
+	.grid__partner-logo-wrapper {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+        gap: 3rem;
+        width: 100%;
 	}
 
 	.grid__partner-logo {
-		grid-column: span 2 / span 2;
-        gap: 2rem;
-		justify-self: center;
-		aspect-ratio: 3 / 1;
-		overflow: hidden;
+		display: flex;
+		align-items: center;
+        justify-content: center;
+		width: fit-content;
+		height: fit-content;
+		overflow: hidden; /* Hides SVG padding */
 	}
 
-	.grid__partner-logo img{
+	.grid__partner-logo img {
+		display: block;
 		object-fit: contain;
-		height: 100%;
-		width: 100%;
+		width: auto;
+		height: 5rem;
 	}
+
+	 /* SVG-specific sizing */
+    .grid__partner-logo svg {
+        max-width: 100%;
+        height: auto;
+    }
 
 	@media screen and (max-width: 768px) {
 		.section__product {
