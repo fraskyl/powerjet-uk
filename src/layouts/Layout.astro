@@ -37,26 +37,6 @@ const { title } = Astro.props;
 	<!-- <Footer /> -->
 
 	<style>
-		.page-grid {
-			display: grid;
-			grid-template-columns:
-				3rem /* Left margin */
-				repeat(12, 1fr) /* 12 columns */
-				3rem; /* Right margin */
-			grid-auto-rows: var(--grid-header-height) var(--grid-content-ratio);
-			column-gap: 1.5rem; /* Gutter between columns */
-			min-height: 100vh;
-		}
-
-		/* Default: span all 12 content columns */
-		.page-grid > * {
-			grid-column: 2 / 14; /* Start at column 2, end at column 14 (spans all 12) */
-		}
-
-		/* Full width (including margins) */
-		.page-grid > .full-width {
-			grid-column: 1 / -1;
-		}
 
 		html,
 		body {
