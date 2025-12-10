@@ -1,13 +1,25 @@
 ---
----
-<div class="divider">
 
-</div>
+---
+
+<div class="divider"></div>
 
 <style>
     .divider {
-        grid-column: 2 / 14; /* Skip first and last content column (inset by 1) */
+        grid-column: 2 / -2; /* Spans all content columns regardless of count */
         height: 1px;
         background-color: var(--pj_blue_20);
+    }
+
+    @media screen and (min-width: 768px) {
+        .divider {
+            grid-column: 2 / 9;
+        }
+    }
+
+    @media screen and (min-width: 1024px) {
+        .divider {
+            grid-column: 2 / 14;
+        }
     }
 </style>
