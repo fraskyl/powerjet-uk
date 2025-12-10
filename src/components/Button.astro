@@ -51,4 +51,12 @@ const { variant, ...props } = Astro.props;
         transition: background-color 0.3s ease;
     }
 
+    @media screen and (max-width: 768px) {
+        .button {
+            display: block;
+            text-align: center;
+            width: 100%;
+        }
+    }
+
 </style>

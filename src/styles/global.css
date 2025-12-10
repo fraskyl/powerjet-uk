@@ -110,7 +110,6 @@ body {
 /* typography styles */
 
 h1 {
-  margin: 1rem 0;
   font-size: 2.5rem;
   font-family: "Instrument Sans", sans-serif;
   font-optical-sizing: auto;
@@ -132,12 +131,14 @@ h1 {
   }
 }
 
-/* Prevent narrow text columns */
+/* Prevent narrow text columns and remove browser default margins */
 p, 
 .body__copy p,
 h1, h2, h3, h4, h5, h6 {
   min-width: 240px; /* Never narrower than small mobile */
   max-width: 65ch; /* Never wider than readable */
+  margin: 0; /* Remove all default margins */
+  padding: 0; /* Remove any padding */
 }
 
 /* For larger heading text */
