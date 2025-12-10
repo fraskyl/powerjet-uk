@@ -57,27 +57,31 @@ import Button from "./Button.astro";
         line-height: 1.5rem;
     }
 
-    .cta__banner__image img {
+    .cta__banner__image {
         display: none;
     }
 
-    @media screen and (min-width: 768px) {
-        .cta__banner__wrapper {
-            flex-direction: row;
-            text-align: left;
-        }
-    }
+   /* Show on tablet and desktop */
+    @media (min-width: 768px) {
 
-    @media screen and (min-width: 1024px) {
-        display: flex;
-        height: 335px;
-        flex-direction: row;
-    }
+         .cta__banner__wrapper {
+            display: flex;
+            flex-direction: row;
+            height: 335px;
+            width: 100%;
+         }
+
+        .cta__banner__image {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }        }
 
     .cta__banner__image img {
-        width: 100%;
         height: 100%;
+        width: 100%;
         object-fit: cover;
         border-radius: 0 0.25rem 0.25rem 0;
-    }
+        }
+}
 </style>
