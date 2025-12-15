@@ -25,6 +25,7 @@ const { fontSize = "regular" } = Astro.props;
         align-items: flex-start;
         gap: 1.5rem;
         height: auto;
+        width: 100%;
     }
 
     .text__block[data-variant="regular"] {
@@ -51,9 +52,22 @@ const { fontSize = "regular" } = Astro.props;
     }
 
     .body__copy[data-variant="large"] p {
+        font-size: 1.5rem;
+        line-height: 1.95rem;
+        font-weight: 400;
+    }
+
+    @media screen and (min-width: 768px) {
+        .text__block {
+        width: 90%;
+    }
+
+    .body__copy[data-variant="large"] p {
         font-size: 2rem;
         line-height: 2.6rem;
         font-weight: 400;
+    }
+        
     }
     
 </style>
