@@ -5,16 +5,12 @@ import Navigation from "./Navigation.astro";
 <footer>
     <div class="footer__wrapper">
         <div class="footer__row">
-            <div class="footer__left">
-                <div class="footer__logo">
-                    <a href="/">
-                        <img
-                            src="/src/assets/POWERJET HPWJS_Logo-white.svg"
-                        /></a
-                    >
-                </div>
+            <div class="footer__logo">
+                <a href="/">
+                    <img src="/src/assets/POWERJET HPWJS_Logo-white.svg" /></a
+                >
             </div>
-            <div class="footer__right">
+            <div class="footer__associate-logos">
                 <div class="footer__logo__right">
                     <a href="/"> <img src="/src/assets/Dark Logo.svg" /></a>
                 </div>
@@ -56,20 +52,21 @@ import Navigation from "./Navigation.astro";
         padding: 2rem;
         background-color: var(--pj_brand_blue);
         color: white;
-        gap: 3rem;
+        gap: 2rem;
     }
 
     .footer__row {
         width: 100%;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: space-between;
+        align-items: center;
+        gap: 2rem;
     }
 
     .footer__left {
         display: flex;
         flex-direction: column;
-        align-items: left;
     }
 
     .footer__left p {
@@ -78,7 +75,7 @@ import Navigation from "./Navigation.astro";
         line-height: 1.5rem;
     }
 
-    .footer__right {
+    .footer__associate-logos {
         display: flex;
         flex-direction: row;
         align-items: left;
@@ -137,5 +134,34 @@ import Navigation from "./Navigation.astro";
         display: flex;
         justify-content: center; /* Center the flex items */
         gap: 2rem; /* Add spacing between links */
+    }
+
+    @media screen and (min-width: 768px) {
+        .footer__wrapper {
+        gap: 3rem;
+    }
+
+    .footer__row {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .footer__left {
+        display: flex;
+        flex-direction: column;
+        align-items: left;
+    }
+
+
+        .footer__associate-logos {
+            display: flex;
+            flex-direction: row;
+            align-items: left;
+            gap: 1.5rem;
+        }
     }
 </style>
