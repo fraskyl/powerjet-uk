@@ -8,7 +8,7 @@ const { Headline } = Astro.props;
 const { SubHeadline } = Astro.props;
 ---
 
-<div class="hero__text__wrapper">
+<div class="hero__text-wrapper">
     <div class="hero__content">
         <div class="hero__headline">
             <h1>
@@ -32,7 +32,8 @@ const { SubHeadline } = Astro.props;
             line-height: 72px; /* 81.818% */
             letter-spacing: -1.496px;
         }
-        .hero__text__wrapper {
+
+        .hero__text-wrapper {
             /* Create inner grid matching parent */
             display: grid;
             position: relative;
@@ -56,34 +57,32 @@ const { SubHeadline } = Astro.props;
             padding: 2rem; /* Inset from edges */
         }
 
-        .hero__subheadline {
-            width: 100%;
-            grid-column: 1 / -1;
+       
+
+        /* Tablet */
+        @media screen and (min-width: 768px) {
+            .hero__text-wrapper {
+                grid-template-columns: 2rem repeat(8, 1fr) 2rem;
+                column-gap: 1.5rem;
+            }
+
+            .hero__content {
+                grid-column: 1 / 7; /* Use more columns on tablet */
+            }
         }
 
-        @media screen and (min-width: 768px) {
+        /* Desktop */
+        @media screen and (min-width: 1024px) {
             .hero__text__wrapper {
-            grid-column: 1 / -1;
+                grid-template-columns: 3rem repeat(12, 1fr) 3rem;
+            }
 
-                /* Create inner grid matching parent */
-                grid-template-columns:
-                    3rem
-                    repeat(12, 1fr)
-                    3rem;
-                column-gap: 1.5rem;
-
-                height: 519px;
-                background: var(--pj_brand_blue);
-                width: 100vw;
-                margin-left: calc(50% - 50vw);
-                margin-right: calc(50% - 50vw);
-                color: white;
+            .hero__content {
+                grid-column: 1 / 6; /* Spans 6 columns on desktop */
             }
 
             .hero__subheadline {
-                display: grid;
-                width: 100%;
-                grid-column: 2 / -9;
+                max-width: 100%; /* Allow full width of container */
             }
         }
     </style>
