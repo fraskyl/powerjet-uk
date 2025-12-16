@@ -35,14 +35,17 @@ const { SubHeadline } = Astro.props;
         .hero__text__wrapper {
             /* Create inner grid matching parent */
             display: grid;
+            position: relative;
             grid-template-columns: 1rem repeat(4, 1fr) 1rem;
             column-gap: 1rem;
+
             height: 519px;
             background: var(--pj_brand_blue);
-             width: 100vw;
-        margin-left: calc(50% - 50vw);
-        margin-right: calc(50% - 50vw);
+            width: 100vw;
+
             color: white;
+
+            grid-column: 1 / -1;
         }
 
         .hero__content {
@@ -54,11 +57,33 @@ const { SubHeadline } = Astro.props;
         }
 
         .hero__subheadline {
-            width: 464px;
+            width: 100%;
+            grid-column: 1 / -1;
         }
 
         @media screen and (min-width: 768px) {
-            .hero__headline {
+            .hero__text__wrapper {
+            grid-column: 1 / -1;
+
+                /* Create inner grid matching parent */
+                grid-template-columns:
+                    3rem
+                    repeat(12, 1fr)
+                    3rem;
+                column-gap: 1.5rem;
+
+                height: 519px;
+                background: var(--pj_brand_blue);
+                width: 100vw;
+                margin-left: calc(50% - 50vw);
+                margin-right: calc(50% - 50vw);
+                color: white;
+            }
+
+            .hero__subheadline {
+                display: grid;
+                width: 100%;
+                grid-column: 2 / -9;
             }
         }
     </style>
