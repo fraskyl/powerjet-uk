@@ -1,5 +1,5 @@
 ---
-import Navigation from "./Navigation.astro"
+import Navigation from "./Navigation.astro";
 ---
 
 <footer>
@@ -27,9 +27,11 @@ import Navigation from "./Navigation.astro"
                 </div>
             </div>
         </div>
-        <div class="footer__row" id="footer__navigation" >
-            <Navigation/>
+        <div class="footer__navigation">
+            <Navigation />
         </div>
+
+        <div class="divider__border"></div>
 
         <div class="footer__copyright">
             <p>
@@ -47,14 +49,14 @@ import Navigation from "./Navigation.astro"
     }
 
     .footer__wrapper {
-        height: 432px;
+        height: auto;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: space-between;
         padding: 2rem;
         background-color: var(--pj_brand_blue);
         color: white;
+        gap: 3rem;
     }
 
     .footer__row {
@@ -101,7 +103,7 @@ import Navigation from "./Navigation.astro"
         height: 110px;
     }
 
-    li{
+    li {
         list-style: none;
     }
 
@@ -115,7 +117,6 @@ import Navigation from "./Navigation.astro"
         display: flex;
         flex-direction: column;
         align-items: center;
-        border-top: white 1px solid;
     }
 
     .footer__copyright p {
@@ -126,4 +127,15 @@ import Navigation from "./Navigation.astro"
         line-height: 16px;
     }
 
+    .footer__row .nav__links {
+        display: flex; /* Override the display: none from global.css */
+        width: 100%;
+        justify-content: center;
+    }
+
+    .footer__row .nav__links ul {
+        display: flex;
+        justify-content: center; /* Center the flex items */
+        gap: 2rem; /* Add spacing between links */
+    }
 </style>

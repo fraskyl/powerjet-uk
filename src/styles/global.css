@@ -74,6 +74,12 @@ body {
   min-width: 320px; /* Standard mobile minimum */
 }
 
+.divider__border {
+  border-top: 1px solid  var(--pj_blue_20);
+  grid-column: 2 / -2;
+  width: 100%
+}
+
 
 /* Span utility styles */
 .span-full {
