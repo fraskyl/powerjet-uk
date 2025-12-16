@@ -14,7 +14,6 @@ body {
   margin: 0 auto;
   width: 100%;
   min-width: 320px; /* Absolute minimum */
-  max-width: 1440px; /* Prevents ultra-wide layouts */
 }
 
 * {

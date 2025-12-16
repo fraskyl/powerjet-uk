@@ -8,7 +8,7 @@ const { Headline } = Astro.props;
 const { SubHeadline } = Astro.props;
 ---
 
-<div class="hero__text">
+<div class="hero__text__wrapper">
     <div class="hero__content">
         <div class="hero__headline">
             <h1>
@@ -32,11 +32,16 @@ const { SubHeadline } = Astro.props;
             line-height: 72px; /* 81.818% */
             letter-spacing: -1.496px;
         }
-        .hero__text {
-            grid-column: 1 / 15; /* Spans all 12 columns as a grid item */
-            display: flex;
+        .hero__text__wrapper {
+            /* Create inner grid matching parent */
+            display: grid;
+            grid-template-columns: 1rem repeat(4, 1fr) 1rem;
+            column-gap: 1rem;
             height: 519px;
             background: var(--pj_brand_blue);
+             width: 100vw;
+        margin-left: calc(50% - 50vw);
+        margin-right: calc(50% - 50vw);
             color: white;
         }
 
