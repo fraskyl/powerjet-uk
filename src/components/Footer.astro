@@ -27,8 +27,8 @@ import Navigation from "./Navigation.astro"
                 </div>
             </div>
         </div>
-        <div class="footer__row">
-           <!-- <Navigation  -->
+        <div class="footer__row" id="footer__navigation" >
+            <Navigation/>
         </div>
 
         <div class="footer__copyright">
@@ -43,7 +43,7 @@ import Navigation from "./Navigation.astro"
 <style>
     /* footer styles */
     .footer {
-        grid-column: 1 / 15;
+        grid-column: 1 / -1;
     }
 
     .footer__wrapper {
@@ -125,4 +125,5 @@ import Navigation from "./Navigation.astro"
         font-weight: 300;
         line-height: 16px;
     }
+
 </style>
