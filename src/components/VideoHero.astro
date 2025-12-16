@@ -22,25 +22,18 @@
         overflow: hidden;
         position: relative;
         margin-bottom: 7.75rem;
-        width: 100vw;
-        margin-left: calc(50% - 50vw);
-        margin-right: calc(50% - 50vw);
+         width: 100vw;
 
         /* Create inner grid matching parent */
         display: grid;
         grid-template-columns: 1rem repeat(4, 1fr) 1rem;
-        column-gap: 1rem;
-    }
-
-    .hero h1 {
-        font-size: 2rem;
     }
 
     .hero__headline {
         grid-column: 2 / -2; /* Now this works with grid! */
         grid-row: 1;
         align-self: end;
-        margin-bottom: 3rem;
+        margin-bottom: 2rem;
         color: white;
         text-align: left;
         z-index: 1;
@@ -68,13 +61,7 @@
                 3rem
                 repeat(12, 1fr)
                 3rem;
-        column-gap: 1.5rem;
-            
         }
-
-        .hero h1 {
-        font-size: 2.5rem;
-    }
 
         .hero__headline {
             grid-column: 2 / 9;

@@ -1,0 +1,117 @@
+---
+import Button from "./Button.astro";
+
+interface Props {
+    imageFirst?: "true" | "false";
+    CTA?: "true" | "false";
+}
+
+const { imageFirst = "false" } = Astro.props;
+const { CTA = "false" } = Astro.props;
+---
+
+<div class="content__block__wrapper " data-variant= {imageFirst}>
+    <div class="content__block__text" >
+        <h2>Repairs and Servicing</h2>
+        <p>
+            Our team of highly trained technicians can undertake work either
+            on-site or at our fully equipped facility, ensuring equipment is
+            maintained to the highest standards with minimal disruption to your
+            operations.
+        </p>
+        <Button href="/services" variant="secondary">Find out more</Button>
+    </div>
+    <div class="content__block__image">
+        <img
+            src="/src/assets/PJ-Screen-cap-tst-wash.png"
+            alt="Power jetting operative wearing TST safety gear whilst operating power jet washer"
+        />
+    </div>
+</div>
+
+<style>
+    .content__block__wrapper {
+        grid-column: 2 / -2; /* Skip first and last content column (inset by 1) */
+        display: flex;
+        height: auto;
+        flex-direction: column-reverse;
+        border-radius: 0.25rem;
+        margin-bottom: 7.75rem;
+        justify-content: space-between;
+    }
+
+    .content__block__text {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4); /* THIS controls spacing between h2 and p */
+        width: 90%;
+        flex: 1;
+        padding: 2rem;
+    }
+
+    .content__block__text h2 {
+        font-weight: 500;
+        color: var(--pj_blue_80);
+    }
+
+    .content__block__text p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+     .content__block__image {
+        grid-column: 2 / -2; /* Skip first and last content column (inset by 1) */
+    }
+
+    .content__block__image img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 0.25rem;
+    }
+
+
+    .content__block__text .button [data-variant="false"]  {
+        display: flex;
+
+    }
+
+    .content__block__text .button [data-variant="false"] {
+        display: none;
+
+    }
+
+    
+
+    /* Show on tablet and desktop */
+    @media (min-width: 768px) {
+        .content__block__wrapper {
+            display: flex;
+            flex-direction: row;
+            height: 335px;
+            width: 100%;
+        }
+
+        .content__block__wrapper[data-variant="true"] {
+        flex-direction: row-reverse;
+
+    }
+
+        .content__block__image {
+            grid-column: 2 / -2; /* Skip first and last content column (inset by 1) */
+            display: flex;
+            overflow: hidden;
+        }
+
+        .content__block__image img {
+
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 0.25rem;
+        }
+
+        .content__block__text[data-variant="false"] {
+        display: none;
+    }
+    }
+</style>
