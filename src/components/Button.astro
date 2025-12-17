@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "astro/types";
 
 interface Props extends HTMLAttributes<"a"> {
-    variant: "primary" | "secondary";
+    variant: "primary" | "secondary" | "tertiary";
 }
 const { variant, ...props } = Astro.props;
 ---
@@ -14,6 +14,8 @@ const { variant, ...props } = Astro.props;
             "button",
             { primary: variant === "primary" },
             { secondary: variant === "secondary" },
+            { tertiary: variant === "tertiary" },
+
             Astro.props.class,
         ]}
     >
@@ -46,8 +48,20 @@ const { variant, ...props } = Astro.props;
         border: 1px solid var(--pj_blue_10);
     }
 
+    .tertiary {
+        background-color: transparent;
+        padding: 0.5rem 1.5rem;
+        border: 1px solid var(--pj_brand_blue);
+        color: var(--pj_brand_blue);
+    }
+
     .secondary:hover {
         background-color: var(--pj_blue_90);
+        transition: background-color 0.3s ease;
+    }
+
+    .tertiary:hover {
+        background-color: var(--pj_blue_20);
         transition: background-color 0.3s ease;
     }
 
