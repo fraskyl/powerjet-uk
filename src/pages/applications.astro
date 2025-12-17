@@ -1,6 +1,110 @@
 ---
-import InformationPage from '../layouts/InformationPage.astro';
+import "../styles/global.css";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import TextHero from "../components/TextHero.astro";
+import Card from "../components/Card.astro";
 ---
 
-<InformationPage title="Applications">
-</InformationPage>
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="generator" content={Astro.generator} />
+        <title>Powerjet Rentals UK</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap"
+            rel="stylesheet"
+        />
+    </head>
+    <Header />
+    <body>
+        <div class="page-grid">
+            <TextHero
+                Headline="Applications"
+                SubHeadline="We can provide experienced operators — fully qualified with WJA — for offshore, onshore and overseas workscope. This is particularly beneficial for ensuring product optimisation."
+            />
+
+            <div class="section__applications">
+                <div class="section__applications-cards">
+                    <Card
+                        imgSrc="/src/assets/New_Image_Magtrack-lrg.jpeg"
+                        imgAlt="MagTrack unit removing paint from the side of a ship's hull"
+                        hrefLink="/rentals"
+                        buttonLabel="Rentals"
+                        icon="false"
+                    />
+                    <Card
+                        imgSrc="/src/assets/New_Image_Magtrack-lrg.jpeg"
+                        imgAlt="MagTrack unit removing paint from the side of a ship's hull"
+                        hrefLink="/sales"
+                        buttonLabel="Sales"
+                        icon="false"
+                    />
+                    <Card
+                        imgSrc="/src/assets/New_Image_Magtrack-lrg.jpeg"
+                        imgAlt="MagTrack unit removing paint from the side of a ship's hull"
+                        hrefLink="/sales"
+                        buttonLabel="Sales"
+                        icon="false"
+                    />
+                    <Card
+                        imgSrc="/src/assets/New_Image_Magtrack-lrg.jpeg"
+                        imgAlt="MagTrack unit removing paint from the side of a ship's hull"
+                        hrefLink="/sales"
+                        buttonLabel="Sales"
+                        icon="false"
+                    />
+                    <Card
+                        imgSrc="/src/assets/New_Image_Magtrack-lrg.jpeg"
+                        imgAlt="MagTrack unit removing paint from the side of a ship's hull"
+                        hrefLink="/sales"
+                        buttonLabel="Sales"
+                        icon="false"
+                    />
+                    <Card
+                        imgSrc="/src/assets/New_Image_Magtrack-lrg.jpeg"
+                        imgAlt="MagTrack unit removing paint from the side of a ship's hull"
+                        hrefLink="/sales"
+                        buttonLabel="Sales"
+                        icon="false"
+                    />
+                    <Card
+                        imgSrc="/src/assets/New_Image_Magtrack-lrg.jpeg"
+                        imgAlt="MagTrack unit removing paint from the side of a ship's hull"
+                        hrefLink="/sales"
+                        buttonLabel="Sales"
+                        icon="false"
+                    />        
+                </div>
+            </div>
+        </div>
+    </body>
+    <Footer />
+
+
+
+    <style>
+        .section__applications {
+            display: grid;
+            grid-template-columns:1fr;
+            grid-column: 2 / -2;
+            margin-bottom: 7.75rem;
+
+
+        }
+
+        .section__applications-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 2rem;
+        }
+
+       
+
+    </style>
+</html>

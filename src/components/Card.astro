@@ -4,6 +4,7 @@ interface Props {
     imgAlt: string;
     hrefLink: string;
     buttonLabel: string;
+    icon?: "true" | "false";
 }
 
 const { imgSrc } = Astro.props;
@@ -11,6 +12,8 @@ const { imgAlt } = Astro.props;
 
 const { hrefLink } = Astro.props;
 const { buttonLabel } = Astro.props;
+
+const { icon = "true" } = Astro.props;
 ---
 
 <link
@@ -24,7 +27,7 @@ const { buttonLabel } = Astro.props;
             <img src={imgSrc} alt={imgAlt} />
         </div>
         <a href={hrefLink}>
-            <div class="card__panel">
+            <div class="card__panel" data-variant={icon}>
                 {buttonLabel}
                 <span class="material-symbols-outlined">arrow_forward</span>
             </div>
@@ -66,6 +69,15 @@ const { buttonLabel } = Astro.props;
         height: 64px;
         width: 100%;
         border-radius: 0 0 0.25rem 0.25rem;
+    }
+
+
+     .card__panel span [data-variant="true"] {
+        display: flex;
+    }
+
+    .card__panel span [data-variant="false"] {
+        display: none;
     }
 
     .card__wrapper a {
