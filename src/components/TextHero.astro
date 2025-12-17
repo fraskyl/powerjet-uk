@@ -38,16 +38,12 @@ const { SubHeadline } = Astro.props;
             display: grid;
             position: relative;
             grid-template-columns: subgrid;
-
-            height: 519px;
             background: var(--pj_brand_blue);
             width: 100vw;
-
+            height: 75vh;
             color: white;
-
             grid-column: 1 / -1;
-
-            margin-bottom: 7.75rem;
+            margin-bottom: 3rem;
         }
 
         .hero__content {
@@ -56,6 +52,8 @@ const { SubHeadline } = Astro.props;
             flex-direction: column;
             justify-content: space-between; /* Pushes text to top, button to bottom */
             padding: 2rem; /* Inset from edges */
+            grid-column: 1 / 6; /* Use more columns on tablet */
+
         }
 
        
