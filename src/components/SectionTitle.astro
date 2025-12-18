@@ -1,7 +1,7 @@
 ---
 interface Props {
     Headline: string;
-    HeadingSize?: "small" | "regular";
+    HeadingSize?: "small" | "regular" | "large";
 }
 
 const { Headline } = Astro.props;
@@ -28,7 +28,25 @@ const { HeadingSize = "regular" } = Astro.props;
     }
 
     .section__title[data-variant="regular"] h2 {
+        font-size: 1.5rem;
+    }
+
+     .section__title[data-variant="large"] h2 {
+        font-size: 1.75rem;
+    }
+
+      @media screen and (min-width: 768px) {
+             .section__title[data-variant="small"] h2 {
+        font-size: 1.125rem;
+    }
+
+    .section__title[data-variant="regular"] h2 {
         font-size: 2rem;
     }
+
+     .section__title[data-variant="large"] h2 {
+        font-size: 2.5rem;
+    }
+        }
     
 </style>

@@ -3,7 +3,7 @@
 interface Props {
     BodyCopy: string;
     width?: "compact" | "regular";
-    fontSize? : "regular" | "large";
+    fontSize? : "regular" | "lede" | "large";
 }
 
 
@@ -40,7 +40,7 @@ const { fontSize = "regular" } = Astro.props;
         font-family: "Instrument Sans";
         font-style: normal;
         font-weight: 400;
-        line-height: 28px; /* 155.556% */
+        line-height: 1.4rem;
         letter-spacing: -0.306px;
         color: var(--core-pj-blue-80, #1f2a2a);
         margin: 0;
@@ -60,6 +60,12 @@ const { fontSize = "regular" } = Astro.props;
     @media screen and (min-width: 768px) {
         .text__block {
         width: 90%;
+    }
+
+    .body__copy[data-variant="lede"] p {
+        font-size: 1.2rem;
+        line-height: 1.6rem;
+        font-weight: 400;
     }
 
     .body__copy[data-variant="large"] p {
