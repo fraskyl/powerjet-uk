@@ -91,6 +91,22 @@ import Card from "../components/Card.astro";
     <style>
         .section__applications {
             display: grid;
+            grid-template-columns: 1fr;
+            grid-column: 2 / -2;
+            margin-bottom: 7.75rem;
+        }
+
+        .section__applications-cards {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-column: 2 / -2;
+
+            gap: 2rem;
+        }
+
+	@media screen and (min-width: 768px) {
+         .section__applications {
+            display: grid;
             grid-template-columns:1fr;
             grid-column: 2 / -2;
             margin-bottom: 7.75rem;
@@ -101,6 +117,7 @@ import Card from "../components/Card.astro";
             grid-template-columns: 1fr 1fr 1fr;
             gap: 2rem;
         }
+    }
 
        
 
