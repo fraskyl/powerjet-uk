@@ -5,6 +5,8 @@ interface Props {
     hrefLink: string;
     buttonLabel: string;
     icon?: "true" | "false";
+    style?: "light" | "dark";
+
 }
 
 const { imgSrc } = Astro.props;
@@ -14,6 +16,9 @@ const { hrefLink } = Astro.props;
 const { buttonLabel } = Astro.props;
 
 const { icon = "true" } = Astro.props;
+
+const { style = "dark" } = Astro.props;
+
 ---
 
 <link
@@ -22,17 +27,17 @@ const { icon = "true" } = Astro.props;
 />
 
 <div class="card__wrapper">
-    <a href={hrefLink}>
+    <a href={hrefLink} class="card__link">
+    <div class="card__wrapper">
         <div class="image__container">
             <img src={imgSrc} alt={imgAlt} />
         </div>
-        <a href={hrefLink}>
-            <div class="card__panel" data-variant={icon}>
-                {buttonLabel}
-                <span class="material-symbols-outlined">arrow_forward</span>
-            </div>
-        </a>
-    </a>
+        <div class="card__panel" data-variant={style}>
+            {buttonLabel}
+            <span data-variant={icon} class="material-symbols-outlined">arrow_forward</span>
+        </div>
+    </div>
+</a>
 </div>
 
 <style>
@@ -72,11 +77,26 @@ const { icon = "true" } = Astro.props;
     }
 
 
-     .card__panel span [data-variant="true"] {
+    .card__panel[data-variant="light"]{
+        background-color: var(--pj_blue_10);
+        color: var(--pj_brand_blue);
+    }
+
+     .material-symbols-outlined[data-variant="light"]{
+        font-variation-settings:
+            "FILL" 0,
+            "wght" 400,
+            "GRAD" 0,
+            "opsz" 24;
+        color: var(--pj_brand_blue);
+    }
+
+
+     .card__panel span[data-variant="true"] {
         display: flex;
     }
 
-    .card__panel span [data-variant="false"] {
+    .card__panel span[data-variant="false"] {
         display: none;
     }
 
