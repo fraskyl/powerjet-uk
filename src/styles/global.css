@@ -140,7 +140,7 @@ h1 {
 p, 
 .body__copy p,
 h1, h2, h3, h4, h5, h6 {
-  min-width: 240px; /* Never narrower than small mobile */
+  min-width: 220px; /* Never narrower than small mobile */
   max-width: 65ch; /* Never wider than readable */
   margin: 0; /* Remove all default margins */
   padding: 0; /* Remove any padding */
