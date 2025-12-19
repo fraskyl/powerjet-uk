@@ -29,7 +29,7 @@ import Button from './Button.astro';
         gap: 1.5rem;
         border: solid 1px var(--pj_brand_blue);
         border-radius: 0.5rem;
-        justify-content: space-between
+        justify-content: space-between;
     }
 
    
@@ -37,12 +37,10 @@ import Button from './Button.astro';
         font-size: 1.125rem;
         font-weight: 400;
         color: var(--pj_brand_blue);
-
+        margin: 0;
     }
 
-    .block__contact-action{
-        margin-top: auto;
-    }
+ 
 
     @media screen and (min-width: 768px) {
         .block__contact-wrapper {
@@ -57,7 +55,14 @@ import Button from './Button.astro';
         flex-direction: row;
         grid-column: 1 / -1;
         gap: 1.5rem;    
+        align-items: center;
+
     }
+
+    .block__contact-action {
+        margin-top: 0; /* Reset mobile spacing */
+    }
+
     }
 
     @media screen and (min-width: 1024px) {

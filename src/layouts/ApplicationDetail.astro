@@ -121,17 +121,23 @@ import Card from "../components/Card.astro";
                 grid-column: 2 / -2;
             }
 
+            .divider__border {
+                margin-bottom: 1rem;
+                height: 100%;
+            }
+
         @media screen and (min-width: 768px) {
             .section__applications-details-wrapper {
                 display: grid;
                 grid-template-columns: subgrid;
                 grid-column: 2 / -2;
-                margin-bottom: 7.75rem;
+                margin-bottom: 5rem;
             }
 
             .section__applications-details {
                 display: flex;
                 grid-column: 1 / 8;
+                gap: 2rem;
             }
 
             .section__applications-recommended-products {
@@ -155,13 +161,9 @@ import Card from "../components/Card.astro";
             .section__applications-details {
                 display: flex;
                 grid-column: 1 / 9;
-                gap: 2rem;
             }
 
-            .divider__border {
-                margin-bottom: 2rem;
-                height: 100%;
-            }
+            
         }
     </style>
 
