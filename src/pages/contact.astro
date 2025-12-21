@@ -49,17 +49,31 @@ import Card from "../components/Card.astro";
 								<p>G51 3HZ</p>
 								<p>United Kingdom</p>
 							</div>
-							<div class="contact__details-opening-hours">
+							<div class="contact__details-opening-hours-wrapper">
 								<h5>Opening hours</h5>
-								<p>Monday - Thursday: 08:00 - 16:30</p>
-								<p>Friday: 08:00 - 16:00</p>
-								<p>Saturday: 08:00 - 12:00</p>
-								<p>Sunday: Closed</p>
+								<div class="contact__details-opening-hours">
+									<div
+										class="contact__details-opening-hours-days"
+									>
+										<p>Monday - Thursday:</p>
+										<p>Friday:</p>
+										<p>Saturday:</p>
+										<p>Sunday:</p>
+									</div>
+									<div
+										class="contact__details-opening-hours-time"
+									>
+										<p>08:00 - 16:30</p>
+										<p>08:00 - 16:00</p>
+										<p>08:00 - 12:00</p>
+										<p>Closed</p>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
+					<div class="contact__details-map"></div>
 				</div>
-				<div class="divider__border"></div>
 			</section>
 
 			<div class="section__contact-form"></div>
@@ -74,23 +88,45 @@ import Card from "../components/Card.astro";
 			grid-column: 2 / -2;
 			gap: 1rem;
 			margin-top: 4rem;
-
 		}
+
+		.contact__details {
+			display: flex;
+			flex-direction: column;
+			gap: 2rem;
+		}
+
+		
+
+		.contact__details-opening-hours {
+			display: flex;
+			flex-direction: row;
+			gap: 1rem;
+			margin-bottom: 3rem;
+		}
+
+
 
 		.section__contact-details h1 {
 			font-weight: 500;
-			color:var(--pj_blue_90);
+			color: var(--pj_blue_90);
 		}
 
 		.section__contact-details h5 {
 			font-weight: 400;
-			color:var(--pj_blue_90);
+			color: var(--pj_blue_90);
 		}
 
+		.contact__details-map {
+			width: 100%;
+			height: 500px;
+			background-color: var(--pj_blue_10);
+			border-radius: 4px;
+		}
 
 		.contact__details-block p {
 			font-weight: 500;
-			color:var(--pj_blue_90);
+			color: var(--pj_blue_90);
 		}
 
 		.contact__details-block-wrapper {
@@ -111,7 +147,19 @@ import Card from "../components/Card.astro";
 			background: var(--pj_blue_10);
 		}
 
+		.contact__details-opening-hours {
+			display: flex;
+			flex-direction: row;
+			gap: 1rem;
+		}
+
 		@media screen and (min-width: 768px) {
+			.contact__details-wrapper {
+				display: flex;
+				flex-direction: row;
+				gap: 2rem;
+			}
+
 			.contact__details-block-wrapper {
 				display: flex;
 				flex-direction: row;
@@ -128,14 +176,12 @@ import Card from "../components/Card.astro";
 				margin-top: 4rem;
 			}
 
-	
-
 			.contact__details-block {
 				display: flex;
 				padding: 16px;
 				flex-direction: column;
 				align-items: flex-start;
-			width: max-content;
+				width: max-content;
 
 				gap: 4px;
 				flex: 1 0 0;
