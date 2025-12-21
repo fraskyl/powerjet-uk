@@ -1,0 +1,80 @@
+---
+import Button from './Button.astro';
+---
+
+<div class="block__contact-wrapper">
+    <div class="block__contact-container">
+        <div class="block__contact-body">
+            <h3>Get in touch with our team today</h3>
+        </div>
+        <div class="block__contact-action">
+            <Button variant="tertiary" href="/contact">Contact us</Button>
+        </div>  
+    </div>
+</div>
+
+<style>
+    .block__contact-wrapper {
+        display: grid;
+        grid-template-columns: subgrid;
+        grid-column: 2 / -2;
+        margin-bottom: 4rem;
+    }
+
+    .block__contact-container{
+        display: flex;
+        flex-direction: column;
+        grid-column: 1 / -1;
+        padding: 1.5rem;
+        gap: 1.5rem;
+        border: solid 1px var(--pj_brand_blue);
+        border-radius: 0.5rem;
+        justify-content: space-between;
+    }
+
+   
+    .block__contact-body h3{
+        font-size: 1.125rem;
+        font-weight: 400;
+        color: var(--pj_brand_blue);
+        margin: 0;
+    }
+
+ 
+
+    @media screen and (min-width: 768px) {
+        .block__contact-wrapper {
+            display: grid;
+            grid-template-columns: subgrid;
+            grid-column: 2 / -2;
+        }
+
+
+        .block__contact-container{
+        display: flex;
+        flex-direction: row;
+        grid-column: 1 / -1;
+        gap: 1.5rem;    
+        align-items: center;
+
+    }
+
+    .block__contact-action {
+        margin-top: 0; /* Reset mobile spacing */
+    }
+
+    }
+
+    @media screen and (min-width: 1024px) {
+        .block__contact-wrapper {
+            display: grid;
+            grid-template-columns: subgrid;
+            grid-column: 4 / -4;
+        }
+
+        .block__contact-body{
+            width: 70%;
+
+    }
+    }
+</style>
