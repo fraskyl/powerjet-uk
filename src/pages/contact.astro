@@ -8,68 +8,142 @@ import Card from "../components/Card.astro";
 
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <meta name="generator" content={Astro.generator} />
-        <title>Powerjet Rentals UK</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap"
-            rel="stylesheet"
-        />
-    </head>
-    <Header />
-    <body>
-        <div class="page-grid">
-            <TextHero
-                Headline="Applications"
-                SubHeadline="We can provide experienced operators — fully qualified with WJA — for offshore, onshore and overseas workscope. This is particularly beneficial for ensuring product optimisation."
-            />
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Powerjet Rentals UK</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap"
+			rel="stylesheet"
+		/>
+	</head>
+	<Header />
+	<body>
+		<div class="page-grid">
+			<section class="section__contact-details">
+				<div class="contact__title">
+					<h1>Contact</h1>
+				</div>
+				<div class="divider__border"></div>
+				<div class="contact__details-wrapper">
+					<div class="contact__details">
+						<div class="contact__details-block-wrapper">
+							<div class="contact__details-block">
+								<h5>Call</h5>
+								<p>+44 (0) 141 440 5757</p>
+							</div>
+							<div class="contact__details-block">
+								<h5>Email</h5>
+								<p>mail@powerjet-uk.com</p>
+							</div>
+						</div>
+						<div class="contact__details-block-wrapper">
+							<div class="contact__details-address">
+								<h5>Head office</h5>
+								<p>97 Loanbank Crescent</p>
+								<p>Glasgow</p>
+								<p>G51 3HZ</p>
+								<p>United Kingdom</p>
+							</div>
+							<div class="contact__details-opening-hours">
+								<h5>Opening hours</h5>
+								<p>Monday - Thursday: 08:00 - 16:30</p>
+								<p>Friday: 08:00 - 16:00</p>
+								<p>Saturday: 08:00 - 12:00</p>
+								<p>Sunday: Closed</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="divider__border"></div>
+			</section>
 
-            <div class="section__applications">
-            
-            </div>
-        </div>
-    </body>
-    <Footer />
+			<div class="section__contact-form"></div>
+		</div>
+	</body>
+	<Footer />
+
+	<style>
+		.section__contact-details {
+			display: grid;
+			grid-template-columns: 1fr;
+			grid-column: 2 / -2;
+			gap: 1rem;
+			margin-top: 4rem;
+
+		}
+
+		.section__contact-details h1 {
+			font-weight: 500;
+			color:var(--pj_blue_90);
+		}
+
+		.section__contact-details h5 {
+			font-weight: 400;
+			color:var(--pj_blue_90);
+		}
 
 
+		.contact__details-block p {
+			font-weight: 500;
+			color:var(--pj_blue_90);
+		}
 
-    <style>
-        .section__applications {
-            display: grid;
-            grid-template-columns: 1fr;
-            grid-column: 2 / -2;
-            margin-bottom: 7.75rem;
-        }
+		.contact__details-block-wrapper {
+			display: flex;
+			flex-direction: column;
+			gap: 1rem;
+		}
 
-        .section__applications-cards {
-            display: grid;
-            grid-template-columns: 1fr;
-            grid-column: 2 / -2;
+		.contact__details-block {
+			display: flex;
+			padding: 16px;
+			flex-direction: column;
+			align-items: flex-start;
+			width: max-content;
+			gap: 4px;
+			flex: 1 0 0;
+			border-radius: 4px;
+			background: var(--pj_blue_10);
+		}
 
-            gap: 2rem;
-        }
+		@media screen and (min-width: 768px) {
+			.contact__details-block-wrapper {
+				display: flex;
+				flex-direction: row;
+				gap: 1rem;
+			}
+		}
 
-	@media screen and (min-width: 768px) {
-         .section__applications {
-            display: grid;
-            grid-template-columns:1fr;
-            grid-column: 2 / -2;
-            margin-bottom: 7.75rem;
-        }
+		@media screen and (min-width: 1024px) {
+			.section__contact-details {
+				display: grid;
+				grid-template-columns: 1fr;
+				grid-column: 2 / -2;
+				gap: 1rem;
+				margin-top: 4rem;
+			}
 
-        .section__applications-cards {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 2rem;
-        }
-    }
+	
 
-       
+			.contact__details-block {
+				display: flex;
+				padding: 16px;
+				flex-direction: column;
+				align-items: flex-start;
+			width: max-content;
 
-    </style>
+				gap: 4px;
+				flex: 1 0 0;
+				border-radius: 4px;
+				background: var(--pj_blue_10);
+			}
+		}
+	</style>
+
+
 </html>
