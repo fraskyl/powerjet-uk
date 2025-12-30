@@ -76,7 +76,6 @@ import Card from "../components/Card.astro";
                     hrefLink="/application-detail"
                     buttonLabel="Surface Preparation"
                     icon={true}
-                    ;
                     style="light"
                 />
                 <Card
@@ -85,7 +84,6 @@ import Card from "../components/Card.astro";
                     hrefLink="/sales"
                     buttonLabel="Sales"
                     icon={true}
-                    ;
                     style="light"
                 />
                 <Card
@@ -94,7 +92,6 @@ import Card from "../components/Card.astro";
                     hrefLink="/sales"
                     buttonLabel="Sales"
                     icon={true}
-                    ;
                     style="light"
                 />
             </div>
@@ -140,13 +137,11 @@ import Card from "../components/Card.astro";
         .section__applications-details {
             display: flex;
             flex-direction: column;
-            grid-column: 1 / 2;
             gap: 1rem;
         }
 
         .section__applications-image {
             display: flex;
-            grid-column: 2 / 1;
             margin-bottom: 1rem;
         }
 
@@ -157,6 +152,7 @@ import Card from "../components/Card.astro";
             grid-column: 2 / 1;
             border-radius: 0.25rem;
             max-height: 400px;
+            object-fit: cover;
         }
 
         .section__applications-recommended-products {
@@ -200,15 +196,12 @@ import Card from "../components/Card.astro";
 
             .section__applications-details {
                 display: flex;
-                grid-column: 1 / 4;
-                gap: 1rem;
+                flex: 1;
             }
 
             .section__applications-image {
                 display: flex;
-                flex-shrink: 1;
-                grid-column: 4 / 8;
-                gap: 1rem;
+                flex: 1;
             }
 
             .section__applications-recommended-products {
