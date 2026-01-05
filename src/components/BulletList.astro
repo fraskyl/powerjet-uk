@@ -1,7 +1,17 @@
+---
+interface Props {
+    title?: string;
+}
+
+const { title } = Astro.props;
+---
+
 <div class="bulleted-list">
+    {title && (
     <div class="bulleted-list__title">
-       <h5><slot name="title" /> </h4> 
+       <h4>{ title} </h4> 
     </div>
+    )}
     <div class="bulleted-list__item">
         <span class="bulleted-list__bullet">•</span>
         <span class="bulleted-list__text"><slot name="item1" /></span>
