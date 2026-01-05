@@ -2,8 +2,8 @@
     <div class="spec-list__title">
         <slot name="title" />
     </div>
-    <div class="spec-list__item">
-        <span class="spec-data__text"><slot name="item1" /></span>
+    <div class="spec-list__data">
+        <span><slot name="data" /></span>
     </div>
 </div>
 
@@ -26,8 +26,8 @@
         margin-bottom: 0.25rem;
     }
 
-    .spec-data__text {
+    .spec-list__data {
         font-weight: normal;
     }
-    
+
 </style>

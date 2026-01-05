@@ -7,6 +7,8 @@ import SectionTitle from "../components/SectionTitle.astro";
 import ContactBlock from "../components/ContactBlock.astro";
 import Card from "../components/Card.astro";
 import Button from "../components/Button.astro";
+import BulletList from "../components/BulletList.astro";
+import SpecList from "../components/SpecList.astro";
 ---
 
 <!doctype html>
@@ -80,7 +82,7 @@ import Button from "../components/Button.astro";
                 <div
                     class="section__product-detail-performance-specifications-content"
                 >
-                    <table>
+                    <!--<table>
                         <tr>
                             <th>Specification</th>
                             <th>Details</th>
@@ -101,7 +103,7 @@ import Button from "../components/Button.astro";
                             <td>Weight</td>
                             <td>1500 kg</td>
                         </tr>
-                    </table>
+                    </table> -->
                 </div>
             </section>
 
@@ -116,28 +118,18 @@ import Button from "../components/Button.astro";
                     </div>
 
                     <div class="section__product-detail-physical-specs-content">
-                        <table>
-                            <tr>
-                                <th>Specification</th>
-                                <th>Details</th>
-                            </tr>
-                            <tr>
-                                <td>Pressure Range</td>
-                                <td>10,000 - 40,000 PSI</td>
-                            </tr>
-                            <tr>
-                                <td>Flow Rate</td>
-                                <td>2 - 20 GPM</td>
-                            </tr>
-                            <tr>
-                                <td>Power Source</td>
-                                <td>Electric / Diesel</td>
-                            </tr>
-                            <tr>
-                                <td>Weight</td>
-                                <td>1500 kg</td>
-                            </tr>
-                        </table>
+                      <SpecList>
+                            <span slot="title">Dimensions (mm)</span>
+                            <span slot="data"
+                                >W 2067 x L 4789 x H 2200</span
+                            >
+                        </SpecList>
+                        <SpecList>
+                            <span slot="title">Weight (Dry)</span>
+                            <span slot="data"
+                                >3080kg</span
+                            >
+                        </SpecList>
                     </div>
                 </div>
 
@@ -151,67 +143,35 @@ import Button from "../components/Button.astro";
                     </div>
 
                     <div class="section__product-detail-engine-specs-content">
-                        <table>
-                            <tr>
-                                <th>Specification</th>
-                                <th>Details</th>
-                            </tr>
-                            <tr>
-                                <td>Pressure Range</td>
-                                <td>10,000 - 40,000 PSI</td>
-                            </tr>
-                            <tr>
-                                <td>Flow Rate</td>
-                                <td>2 - 20 GPM</td>
-                            </tr>
-                            <tr>
-                                <td>Power Source</td>
-                                <td>Electric / Diesel</td>
-                            </tr>
-                            <tr>
-                                <td>Weight</td>
-                                <td>1500 kg</td>
-                            </tr>
-                        </table>
+                        <SpecList>
+                            <span slot="title">Dimensions (mm)</span>
+                            <span slot="data"
+                                >W 2067 x L 4789 x H 2200</span
+                            >
+                        </SpecList>
+                        <SpecList>
+                            <span slot="title">Weight (Dry)</span>
+                            <span slot="data"
+                                >3080kg</span
+                            >
+                        </SpecList>
                     </div>
                 </div>
             </section>
 
-
             <section class="section__product-detail-build-options">
-                <div
-                    class="section__product-detail-build-options-title"
-                >
+                <div class="section__product-detail-build-options-title">
                     <SectionTitle
                         Headline="Build Options"
                         HeadingSize="small"
                     />
                 </div>
-                <div
-                    class="section__product-detail-build-options-content"
-                >
-                    <table>
-                        <tr>
-                            <th>Specification</th>
-                            <th>Details</th>
-                        </tr>
-                        <tr>
-                            <td>Pressure Range</td>
-                            <td>10,000 - 40,000 PSI</td>
-                        </tr>
-                        <tr>
-                            <td>Flow Rate</td>
-                            <td>2 - 20 GPM</td>
-                        </tr>
-                        <tr>
-                            <td>Power Source</td>
-                            <td>Electric / Diesel</td>
-                        </tr>
-                        <tr>
-                            <td>Weight</td>
-                            <td>1500 kg</td>
-                        </tr>
-                    </table>
+                <div class="section__product-detail-build-options-content">
+                     <BulletList>
+                            <span slot="title">D3200-SM</span>
+                            <span slot="item1"
+                            >Bolt-On Skid-Frame with Sound Attenuated Enclosure</span>
+                        </BulletList>
                 </div>
             </section>
 
