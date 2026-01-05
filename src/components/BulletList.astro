@@ -1,0 +1,38 @@
+<div class="bulleted-list">
+    <div class="bulleted-list__title">
+        <slot name="title" />
+    </div>
+    <div class="bulleted-list__item">
+        <span class="bulleted-list__bullet">•</span>
+        <span class="bulleted-list__text"><slot name="item1" /></span>
+    </div>
+</div>
+
+<style>
+    .bulleted-list {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: auto;
+    }
+
+    .bulleted-list__title {
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .bulleted-list__item {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 0.25rem;
+    }
+
+    .bulleted-list__bullet {
+        margin-right: 0.5rem;
+        font-weight: bold;
+    }
+
+    .bulleted-list__text {
+        font-weight: normal;
+    }
+</style>

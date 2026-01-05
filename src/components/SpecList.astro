@@ -1,0 +1,33 @@
+<div class="spec-list">
+    <div class="spec-list__title">
+        <slot name="title" />
+    </div>
+    <div class="spec-list__item">
+        <span class="spec-data__text"><slot name="item1" /></span>
+    </div>
+</div>
+
+<style>
+    .spec-list {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        height: auto;
+    }
+
+    .spec-list__title {
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .spec-list__item {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 0.25rem;
+    }
+
+    .spec-data__text {
+        font-weight: normal;
+    }
+    
+</style>
