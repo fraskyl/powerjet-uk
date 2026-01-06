@@ -79,12 +79,14 @@ const testPerformanceTable = {
                         BodyCopy="This method thoroughly cleans without causing damage or compromising the surface’s structural integrity. Powerjet offer automated solutions for increased productivity and safety. "
                         fontSize="regular"
                     />
-                    <Button variant="tertiary" href="/contact"
+                    <div class="section__product-cta-buttons">
+                         <Button variant="tertiary" href="/contact"
                         >Download Datasheet</Button
                     >
                     <Button variant="primary" href="/contact"
                         >Request a Quote</Button
                     >
+                    </div>   
                 </div>
                 <div class="section__product-detail-image">
                     <img
@@ -255,6 +257,13 @@ const testPerformanceTable = {
             flex-direction: column;
             gap: 1rem;
         }
+
+        .section__product-cta-buttons{  
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1.5rem;
+         }
 
         .section__product-detail-image {
             display: flex;
