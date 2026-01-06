@@ -79,9 +79,7 @@ import SpecList from "../components/SpecList.astro";
                         HeadingSize="small"
                     />
                 </div>
-                <div
-                    class="section__product-detail-performance-specifications-content"
-                >
+                <div class="section__product-detail-performance-specifications-content">
                     <!--<table>
                         <tr>
                             <th>Specification</th>
@@ -264,6 +262,13 @@ import SpecList from "../components/SpecList.astro";
             object-fit: cover;
         }
 
+        .section__product-build-performance-specifications {
+            display: flex;
+            flex-direction: column;
+            grid-column: 2 / -2;
+            margin-bottom: 5rem;
+        }
+
         .section__product-detail-additional-specs-wrapper {
             display: grid;
             grid-template-columns: 1fr; /* Single column on mobile */
@@ -340,10 +345,22 @@ import SpecList from "../components/SpecList.astro";
                 flex: 1;
             }
 
+            .section__product-build-performance-specifications{
+                display: grid;
+                grid-column: 2 / -2;
+                margin-bottom: 5rem;
+            }
+
             .section__product-detail-additional-specs-wrapper {
+                grid-column: 2 / -2;
                 grid-template-columns: 1fr 1fr; /* Two equal columns */
                 gap: 6rem;
             }
+
+            .section__product-detail-build-options {
+            display: grid;
+            grid-column: 2 / -2;
+        }
 
             .section__applications-recommended-products {
                 display: grid;
@@ -383,6 +400,12 @@ import SpecList from "../components/SpecList.astro";
                 grid-column: 3 /-3;
             }
 
+            .section__product-build-performance-specifications{
+                display: grid;
+                grid-column: 3 / -3;
+                margin-bottom: 5rem;
+            }
+
             .section__product-detail-related-products {
                 display: grid;
                 grid-column: 3 / -3;
@@ -395,6 +418,11 @@ import SpecList from "../components/SpecList.astro";
                 gap: 8rem;
                 margin-bottom: 5rem;
             }
+
+            .section__product-detail-build-options {
+            display: grid;
+            grid-column: 3 / -3;
+        }
         }
     </style>
 
