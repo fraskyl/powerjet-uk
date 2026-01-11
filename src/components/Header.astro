@@ -17,7 +17,6 @@ import Navigation from "../components/Navigation.astro";
 
          <!-- Mobile menu overlay -->
         <div class="header__mobile-menu">
-             <p style="color: white;">Menu is here!</p>  <!-- Debug text -->
             <Navigation />
         </div>
 
@@ -47,6 +46,8 @@ import Navigation from "../components/Navigation.astro";
 
     .header__logo {
         height: auto;
+        z-index: 1001; /* Above menu */
+
     }
 
     .header__logo img {
@@ -107,9 +108,8 @@ import Navigation from "../components/Navigation.astro";
         display: flex;
         flex-direction: column;
         cursor: pointer;
-        gap: 4px;
         padding: 2rem;
-        z-index: 100;
+        z-index: 1000;
 
     }
 
@@ -122,15 +122,15 @@ import Navigation from "../components/Navigation.astro";
         display: flex;
         flex-direction: column;
         gap: 2rem;
-        margin-top: 4rem;
-        z-index: 1000;
-        
+        margin-top: 8rem;
+        z-index: 1003;
     }
 
 
     .header__mobile-menu :global(.nav__links ul) {
         flex-direction: column;
         gap: 2.4rem;
+        
     }
 
     .header__mobile-menu :global(.nav__links a) {
@@ -138,7 +138,10 @@ import Navigation from "../components/Navigation.astro";
         font-weight: 500;
 
         color: var(--pj_blue_10);
-        gap: 3rem;
+        gap: 2rem;
+
+        border-bottom: solid 1px var(--pj_blue_10);
+        padding-bottom: 0.75rem;
         
     }
 
