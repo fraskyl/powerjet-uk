@@ -34,16 +34,15 @@ const { SubHeadline } = Astro.props;
         }
 
         .hero__text-wrapper {
-            /* Create inner grid matching parent */
-            display: grid;
             position: relative;
-            grid-template-columns: subgrid;
-            background: var(--pj_brand_blue);
-            width: 100vw;
-            height: 75vh;
-            color: white;
+            display: grid;
             grid-column: 1 / -1;
+            height: 60vh;
             margin-bottom: 3rem;
+            width: 100vw;
+            background: var(--pj_brand_blue);
+            color: white;
+
         }
 
         .hero__content {
@@ -52,8 +51,6 @@ const { SubHeadline } = Astro.props;
             flex-direction: column;
             justify-content: space-between; /* Pushes text to top, button to bottom */
             padding: 2rem; /* Inset from edges */
-            grid-column: 1 / 6; /* Use more columns on tablet */
-
         }
 
        
@@ -68,16 +65,19 @@ const { SubHeadline } = Astro.props;
 
             .hero__text-wrapper {
                 grid-template-columns: subgrid;
+                height: 70vh;
+
             }
 
             .hero__content {
-                grid-column: 1 / 7; /* Use more columns on tablet */
+                grid-column: 1 / 8; /* Use more columns on tablet */
             }
         }
 
         /* Desktop */
         @media screen and (min-width: 1024px) {
             .hero__text-wrapper {
+                display: grid;
                 grid-template-columns: subgrid;
             }
 
