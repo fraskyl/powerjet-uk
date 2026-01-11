@@ -1,5 +1,7 @@
 ---
+
 ---
+
 <div class="nav__links">
     <ul>
         <li>
@@ -20,4 +22,58 @@
     </ul>
 </div>
 
+<style>
+    /* nav styles */
 
+    .nav__links {
+        width: 100%;
+        margin: 0;
+    }
+
+    .nav__links ul {
+        display: flex;
+
+        list-style-type: none;
+        flex-direction: column;
+
+        padding: 0;
+        margin: 0;
+        gap: 0.5rem;
+    }
+
+    .nav__links li {
+        padding: 0;
+    }
+
+    .nav__links a {
+        display: block;
+        text-decoration: none;
+        font-size: 1rem;
+        font-weight: 400;
+        color: white;
+        margin-bottom: 0;
+    }
+
+    .nav__links a:hover,
+    a:focus {
+        border-bottom: 1px solid #fff;
+    }
+
+    @media screen and (min-width: 768px) {
+        .nav__links {
+            display: block;
+            width: 100%;
+            transition: max-height 0.3s ease-in-out;
+        }
+
+        .nav__links.active {
+            max-height: 400px;
+        }
+
+        .nav__links ul {
+            display: flex;
+            flex-direction: row;
+            gap: 2rem;
+        }
+    }
+</style>
