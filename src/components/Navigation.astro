@@ -16,10 +16,7 @@
         <li>
             <a href="/applications">Applications</a>
         </li>
-        <li>
-            <a href="/contact">Contact</a>
-        </li>
-    </ul>
+    </ul>   
 </div>
 
 <style>
@@ -56,14 +53,16 @@
 
     .nav__links a:hover,
     a:focus {
-        border-bottom: 1px solid #fff;
+        color: var(--pj_blue_20);
     }
 
     @media screen and (min-width: 768px) {
         .nav__links {
-            display: block;
+            display: flex;
+            flex-direction: row;
             width: 100%;
             transition: max-height 0.3s ease-in-out;
+            gap: 1rem;
         }
 
         .nav__links.active {

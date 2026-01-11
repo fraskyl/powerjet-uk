@@ -124,6 +124,10 @@ import Navigation from "./Navigation.astro";
         line-height: 16px;
     }
 
+    .footer__navigation {
+        display: none;
+    }
+
     .footer__row .nav__links {
         display: flex; /* Override the display: none from global.css */
         width: 100%;
@@ -139,6 +143,10 @@ import Navigation from "./Navigation.astro";
     @media screen and (min-width: 768px) {
         .footer__wrapper {
         gap: 3rem;
+    }
+
+    .footer__navigation {
+        display: block;
     }
 
     .footer__row {
