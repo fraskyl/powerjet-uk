@@ -5,10 +5,37 @@ import TextBlock from "../components/TextBlock.astro";
 import Card from "../components/Card.astro";
 import SectionTitle from "../components/SectionTitle.astro";
 import Divider from "../components/Divider.astro";
-import ApplicationCarousel from "../components/ApplicationCarousel.astro";
+import { sanityClient } from "../lib/sanity";
+import { homepageQuery } from "../lib/queries";
+
+import HomepageHero from "../components/HomepageHero.astro";
+
+//Fetch homepage data from Sanity
+let homepage; 
+try {
+	homepage = await sanityClient.fetch(homepageQuery);
+	console.log("Fetched from Sanity:", homepage);
+}
+catch (error) {
+	console.error("Sanity fetch error", error);
+}
+
+
+// Fallback if Sanity data no available -- change video to image backup?
+const heroHeadline = homepage?.heroHeadline || "fallback";
+const heroVideoUrl = homepage?.heroVideoUrl || "/src/assets/PJ-Quick-Edit-for-web-mockup.mp4";
 ---
 
 <Homepage title="Powerjet Rentals UK">
+
+	<HomepageHero 
+		slot ="hero"
+		headline = {heroHeadline}
+		videoUrl= {heroVideoUrl}
+		/>
+
+
+
 	<div class="section__product">
 		<div class="section__product__text">
 			<SectionTitle

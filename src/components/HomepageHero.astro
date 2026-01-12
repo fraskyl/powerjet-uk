@@ -1,17 +1,28 @@
 ---
+interface Props {
+    videoUrl? : string;
+    headline? : String;
+}
+
+const { 
+    videoUrl = "/src/assets/PJ-Quick-Edit-for-web-mockup.mp4",
+    headline = "High-Pressure and Ultra High-Pressure Water Jetting Equipment"
+} = Astro.props;
+
+
 
 ---
 
 <div class="hero" id="hero__video">
     <video autoplay muted loop playsinline>
         <source
-            src="/src/assets/PJ-Quick-Edit-for-web-mockup.mp4"
+            src={videoUrl}
             type="video/mp4"
         />
     </video>
 
     <div class="hero__headline span-full">
-        <h1>High-Pressure and Ultra High-Pressure Water Jetting Equipment</h1>
+        <h1>{headline}</h1>
     </div>
 </div>
 

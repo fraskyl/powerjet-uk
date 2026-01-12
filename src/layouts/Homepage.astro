@@ -2,10 +2,12 @@
 import "../styles/global.css";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
-import VideoHero from "../components/VideoHero.astro";
+import HomepageHero from "../components/HomepageHero.astro";
 
 interface Props {
 	title: string;
+	heroVideoUrl?: string;
+    heroHeadline?: string;
 }
 
 const { title } = Astro.props;
@@ -27,7 +29,7 @@ const { title } = Astro.props;
 		/>
 	</head>
 	<Header />
-	<VideoHero /> 
+	<slot name="hero" /> 
 	
 
 	<body>
