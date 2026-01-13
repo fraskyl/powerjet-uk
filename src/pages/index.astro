@@ -22,8 +22,10 @@ catch (error) {
 
 
 // Fallback if Sanity data no available -- change video to image backup?
-const heroHeadline = homepage?.heroHeadline || "fallback";
+const heroHeadline = homepage?.heroHeadline || "High-Pressure and Ultra High-Pressure Water Jetting Equipment";
 const heroVideoUrl = homepage?.heroVideoUrl || "/src/assets/PJ-Quick-Edit-for-web-mockup.mp4";
+const aboutText = homepage?.aboutText || "For over 20 years, Powerjet has been a trusted supplier...";
+const partnerLogos = homepage?.partnerLogos || [];
 ---
 
 <Homepage title="Powerjet Rentals UK">
@@ -66,45 +68,35 @@ const heroVideoUrl = homepage?.heroVideoUrl || "/src/assets/PJ-Quick-Edit-for-we
 	<CTABanner />
 	<Divider />
 	<section class="section__about-us ">
-		<SectionTitle Headline="About us" HeadingSize="small" />
+		<SectionTitle Headline={homepage?.aboutHeadline || "About us"} HeadingSize="small" />
 		<TextBlock
-			BodyCopy="For over 20 years, Powerjet has been a trusted supplier of High-Pressure and Ultra High-Pressure Water Jetting Units, delivering complete solutions for the toughest industrial challenges."
+			BodyCopy={aboutText}
 			fontSize="large"
 		/>
 	</section>
 	<section class="section__partner-logo span-full">
 		<SectionTitle Headline="Proud to partner with" HeadingSize="small" />
-		<div class="grid__partner-logo-wrapper">
-			<div class="grid__partner-logo">
-				<img
-					src="/src/assets/logos/partners/jetstream-logo-color.png"
-					style="transform: scale(0.8);"
-				/>
-			</div>
-			<div class="grid__partner-logo">
-				<img src="/src/assets/logos/partners/stoneage-logo-color.svg" 
-				style="transform: scale(0.7);"
-				/>
-			</div>
-			<div class="grid__partner-logo">
-				<img
-					src="/src/assets/logos/partners/DERC Salotech.png"
-					style="transform: scale(0.7);"
-				/>
-			</div>
-			<div class="grid__partner-logo">
-				<img
-					src="/src/assets/logos/partners/tetraCORE LOGO.png"
-					
-				/>
-			</div>
-			<div class="grid__partner-logo">
-				<img
-					src="/src/assets/logos/partners/tst_logotype_001_vertical_RGB.png"
-					
-				/>
-			</div>
-		</div>
+		 <div class="grid__partner-logo-wrapper">
+      {partnerLogos.length > 0 ? (
+        partnerLogos.map((logo: any) => (
+          <div class="grid__partner-logo">
+            {logo.partnerUrl ? (
+              <a href={logo.partnerUrl} target="_blank" rel="noopener">
+                <img src={logo.url} alt={logo.alt} />
+              </a>
+            ) : (
+              <img src={logo.url} alt={logo.alt} />
+            )}
+          </div>
+        ))
+      ) : (
+        <!-- Fallback to existing hardcoded logos -->
+        <div class="grid__partner-logo">
+          <img src="/src/assets/logos/partners/jetstream-logo-color.png" />
+        </div>
+        <!-- ... rest of hardcoded logos ... -->
+      )}
+    </div>
 	</section>
 </Homepage>
 
