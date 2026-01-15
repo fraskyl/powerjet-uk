@@ -1,25 +1,43 @@
 ---
 import Button from "./Button.astro";
+
+
+interface Props {
+    headline? : string;
+    bodyCopy? : string;
+    buttonLabel? : string;
+    buttonLink? : string;
+    imageUrl? : string;
+    imageAlt? : string;
+}
+
+const { 
+    headline = "WJA Training",
+    bodyCopy = "We offer fully registered training with The Water Jetting Association, the benchmark for safety in the water jetting industry throughout the U.K.",
+    buttonLabel ="Find out more",
+    buttonLink = "/services",
+    imageUrl = "/src/assets/PJ-Screen-cap-tst-wash.png",
+    imageAlt = "Power jetting operative wearing TST safety gear whilst operating power jet washer",
+} = Astro.props;
+
+
+
 ---
 
 <div class="cta__banner__wrapper span-full">
     <div class="cta__banner__content">
         <div class="cta__banner__text">
-            <h2>WJA Training</h2>
+            <h2>{headline}</h2>
             <p>
-                We offer fully registered training with The Water Jetting
-                Association, the benchmark for safety in the water jetting
-                industry throughout the U.K.
+                {bodyCopy}
             </p>
         </div>
-        <Button href="/services" variant="secondary">Find out more</Button>
+        <Button href={buttonLink} variant="secondary">{buttonLabel}</Button>
     </div>
     <div class="cta__banner__image">
         <img
-            src="/src/assets/PJ-Screen-cap-tst-wash.png"
-            alt="Power jetting operative wearing TST safety gear whilst operating power jet washer"
-        />
-    </div>
+            src={imageUrl}
+            alt={imageAlt} />
 </div>
 
 <style>

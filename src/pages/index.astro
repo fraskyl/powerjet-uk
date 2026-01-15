@@ -24,6 +24,13 @@ catch (error) {
 // Fallback if Sanity data no available -- change video to image backup?
 const heroHeadline = homepage?.heroHeadline || "High-Pressure and Ultra High-Pressure Water Jetting Equipment";
 const heroVideoUrl = homepage?.heroVideoUrl || "/src/assets/PJ-Quick-Edit-for-web-mockup.mp4";
+
+const productSectionTitle = homepage?.productSectionHeadline || "Discover our products";
+const productSectionDescription = homepage?.productSectionDescription || "We offer a  comprehensive fleet of High-Pressure (HP) and Ultra-High Pressure (UHP) jetting units, complemented by specialised accessories.";
+const productCards = homepage?.productCards || [];
+
+const ctaBanner = homepage?.ctaBanner;
+
 const aboutText = homepage?.aboutText || "For over 20 years, Powerjet has been a trusted supplier...";
 const partnerLogos = homepage?.partnerLogos || [];
 ---
@@ -41,31 +48,57 @@ const partnerLogos = homepage?.partnerLogos || [];
 	<div class="section__product">
 		<div class="section__product__text">
 			<SectionTitle
-				Headline="Discover our products"
+				Headline={productSectionTitle}
 				HeadingSize="regular"
 			/>
 			<TextBlock
-				BodyCopy="We offer a  comprehensive fleet of High-Pressure (HP) and Ultra-High Pressure (UHP) jetting units, complemented by specialised accessories."
+				BodyCopy={productSectionDescription}
 			/>
 		</div>
 
 		<div class="section__product__cards">
-			<Card
-				imgSrc="/src/assets/New_Image_Magtrack-lrg.jpeg"
-				imgAlt="MagTrack unit removing paint from the side of a ship's hull"
-				hrefLink="/rentals"
-				buttonLabel="Rentals"
-			/>
-			<Card
-				imgSrc="/src/assets/New_Image_Magtrack-lrg.jpeg"
-				imgAlt="MagTrack unit removing paint from the side of a ship's hull"
-				hrefLink="/sales"
-				buttonLabel="Sales"
-			/>
-		</div>
+			 {productCards.length > 0 ? (
+                productCards.map((card: any) => (
+                    <Card
+                        imgSrc={card.imageUrl}
+                        imgAlt={card.imageAlt}
+                        hrefLink={card.link}
+                        buttonLabel={card.title}
+                    />
+                ))
+            ) : (
+                <!-- Fallback: Show default cards if CMS not set up yet -->
+                <Card
+                    imgSrc="/src/assets/New_Image_Magtrack-lrg.jpeg"
+                    imgAlt="Equipment"
+                    hrefLink="/rentals"
+                    buttonLabel="Rentals"
+                />
+                <Card
+                    imgSrc="/src/assets/New_Image_Magtrack-lrg.jpeg"
+                    imgAlt="Equipment"
+                    hrefLink="/sales"
+                    buttonLabel="Sales"
+                />
+            )}
+        </div>
 	</div>
 	<!-- <ApplicationCarousel />  -->
-	<CTABanner />
+	<!-- CTA Banner - Now from CMS -->
+    {ctaBanner ? (
+        <CTABanner
+            headline={ctaBanner.headline}
+            bodyCopy={ctaBanner.bodyCopy}
+            buttonLabel={ctaBanner.buttonText}
+            buttonLink={ctaBanner.buttonLink}
+            imageUrl={ctaBanner.imageUrl}
+            imageAlt={ctaBanner.imageAlt}
+        />
+    ) : (
+        <!-- Fallback: Default CTA if not set in CMS -->
+        <CTABanner />
+    )}
+
 	<Divider />
 	<section class="section__about-us ">
 		<SectionTitle Headline={homepage?.aboutHeadline || "About us"} HeadingSize="small" />
