@@ -25,7 +25,7 @@ catch (error) {
 const heroHeadline = homepage?.heroHeadline || "High-Pressure and Ultra High-Pressure Water Jetting Equipment";
 const heroVideoUrl = homepage?.heroVideoUrl || "/src/assets/PJ-Quick-Edit-for-web-mockup.mp4";
 
-const productSectionTitle = homepage?.productSectionHeadline || "Discover our products";
+const productSectionHeadline = homepage?.productSectionHeadline || "Discover our products";
 const productSectionDescription = homepage?.productSectionDescription || "We offer a  comprehensive fleet of High-Pressure (HP) and Ultra-High Pressure (UHP) jetting units, complemented by specialised accessories.";
 const productCards = homepage?.productCards || [];
 
@@ -48,7 +48,7 @@ const partnerLogos = homepage?.partnerLogos || [];
 	<div class="section__product">
 		<div class="section__product__text">
 			<SectionTitle
-				Headline={productSectionTitle}
+				Headline={productSectionHeadline}
 				HeadingSize="regular"
 			/>
 			<TextBlock
