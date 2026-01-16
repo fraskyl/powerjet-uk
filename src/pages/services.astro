@@ -1,9 +1,33 @@
 ---
 import "../styles/global.css";
+import {sanityClient} from '../lib/sanity';
+import { servicesPageQuery } from "../lib/queries";
+
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import TextHero from "../components/TextHero.astro";
 import ContentBlock from "../components/ContentBlock.astro"
+import ContactBlock from "../components/ContactBlock.astro";
+
+
+// Fetch services page content
+let servicesPage;
+try {
+    servicesPage = await sanityClient.fetch(servicesPageQuery);
+    console.log("✅ Services page data:", servicesPage);
+} catch (error) {
+    console.error("❌ Sanity fetch error:", error);
+}
+
+// Extract data with fallbacks
+const title = servicesPage?.title || 'Services';
+const heroHeadline = servicesPage?.heroHeadline || 'Services';
+const heroSubheadline = servicesPage?.heroSubheadline || 'Professional water jetting services';
+const contentBlocks = servicesPage?.contactBlocks || [];
+const showContactBanner = servicesPage?.showContactBanner ?? true;
+
+
+
 ---
 
 <!doctype html>
@@ -13,7 +37,7 @@ import ContentBlock from "../components/ContentBlock.astro"
         <meta name="viewport" content="width=device-width" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta name="generator" content={Astro.generator} />
-        <title>Powerjet Rentals UK</title>
+        <title>Powerjet Rentals UK - {title}</title>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
@@ -25,18 +49,42 @@ import ContentBlock from "../components/ContentBlock.astro"
     <body>
         <div class ="page-grid">
         <TextHero
-            Headline="Services"
-            SubHeadline="We can provide experienced operators — fully qualified with WJA — for offshore, onshore and overseas workscope. This is particularly beneficial for ensuring product optimisation."
+            Headline={heroHeadline}
+            SubHeadline={heroSubheadline}
         />
 
-        <div class="section__information">
+        <div class="section__content">
+        {contentBlocks.length > 0 ? (
+            contentBlocks.map((block: any) => (
+                <ContentBlock
+                    title={block.title}
+                    description={block.description}
+                    imageURL={block.imageUrl}
+                    imageAlt={block.imageAlt}
+                    imagePosition={block.imagePosition}
+                    showCTA={block.showCTA}
+                    ctaLabel={block.ctaLabel}
+                    ctaLink={block.ctaLink}
+                />
+            ))
+        ) : (
+            <!-- Fallback content if CMS not set up -->
+            <ContentBlock
+                title="Repairs and Servicing"
+                description=" Our team of highly trained technicians can undertake work either on-site or at our fully equipped facility, ensuring equipment is maintained to the highest standards with minimal disruption to your operations."
+                imageURL="/src/assets/PJ-Screen-cap-tst-wash.png"
+                imageAlt="Service technician"
+                imagePosition="right"
+                showCTA={true}
+                ctaLabel="Find out more"
+                ctaLink="/contact"
+            />
+        )}
+    </div>
 
-            <ContentBlock/>
-            <ContentBlock imageFirst="true"/>
-            <ContentBlock CTA="true"/>
+    <!-- Contact block -->
+     {showContactBanner && <ContactBlock />}
 
-
-        </div>
  </div>
     </body>
     <Footer />
