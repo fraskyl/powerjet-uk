@@ -40,6 +40,11 @@
   margin-bottom: 0.8em;
 }
 
+.prose h4 {
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
 .prose ul, .prose ol {
   margin-top: 1.25em;
   margin-bottom: 1.25em;
@@ -201,13 +206,24 @@ h1 {
 }
 
 /* Prevent narrow text columns and remove browser default margins */
-p, 
-.body__copy p,
-h1, h2, h3, h4, h5, h6 {
-  min-width: 220px; /* Never narrower than small mobile */
-  max-width: 65ch; /* Never wider than readable */
-  margin: 0; /* Remove all default margins */
-  padding: 0; /* Remove any padding */
+body > p, 
+body > h1, 
+body > h2, 
+body > h3, 
+body > h4, 
+body > h5, 
+body > h6,
+.text__block p,
+.text__block h1,
+.text__block h2,
+.text__block h3,
+.text__block h4,
+.text__block h5,
+.text__block h6 {
+  min-width: 220px;
+  max-width: 65ch;
+  margin: 0;
+  padding: 0;
 }
 
 /* For larger heading text */
