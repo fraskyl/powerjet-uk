@@ -1,5 +1,5 @@
 ---
-import Homepage from "../layouts/Homepage.astro";
+import HomeLayout from "../layouts/HomeLayout.astro";
 import CTABanner from "../components/Sections/CTABanner.astro";
 import TextBlock from "../components/Content/TextBlock.astro";
 import Card from "../components/UI/Card.astro";
@@ -8,7 +8,7 @@ import Divider from "../components/UI/Divider.astro";
 import { sanityClient } from "../lib/sanity";
 import { homepageQuery } from "../lib/queries";
 
-import HomepageHero from "../components/Sections/HomeHero.astro";
+import HomeHero from "../components/Sections/HomeHero.astro";
 
 //Fetch homepage data from Sanity
 let homepage; 
@@ -35,9 +35,9 @@ const aboutText = homepage?.aboutText || "For over 20 years, Powerjet has been a
 const partnerLogos = homepage?.partnerLogos || [];
 ---
 
-<Homepage title="Powerjet Rentals UK">
+<HomeLayout title="Powerjet Rentals UK">
 
-	<HomepageHero 
+	<HomeHero 
 		slot ="hero"
 		headline = {heroHeadline}
 		videoUrl= {heroVideoUrl}
@@ -131,7 +131,7 @@ const partnerLogos = homepage?.partnerLogos || [];
       )}
     </div>
 	</section>
-</Homepage>
+</HomeLayout>
 
 <style>
 	.section__product {

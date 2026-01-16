@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import BaseLayout from "./BaseLayout.astro";
 import Footer from "../components/Layout/Footer.astro";
 import Header from "../components/Layout/Header.astro";
 import HomeHero from "../components/Sections/HomeHero.astro";
@@ -7,38 +8,17 @@ import HomeHero from "../components/Sections/HomeHero.astro";
 interface Props {
 	title: string;
 	heroVideoUrl?: string;
-    heroHeadline?: string;
+	heroHeadline?: string;
 }
 
 const { title } = Astro.props;
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Powerjet Rentals UK</title>
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap"
-			rel="stylesheet"
-		/>
-	</head>
+<BaseLayout title={title}>
 	<Header />
-	<slot name="hero" /> 
-	
-
-	<body>
-		<div class="page-grid">
+	<slot name="hero" />
+	<div class="page-grid">
 		<slot />
-		</div>	
-	</body>
-	 <Footer />
-
-
-
-</html>
+	</div>
+	<Footer />
+</BaseLayout>
