@@ -1,6 +1,59 @@
 ---
-import InformationPage from '../layouts/InformationPage.astro';
+import "../styles/global.css";
+import {sanityClient} from '../lib/sanity';
+import { servicesPageQuery } from "../lib/queries";
+
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import TextHero from "../components/TextHero.astro";
+import ContactBlock from "../components/ContactBlock.astro";
+
+
+// Fetch services page content
+let servicesPage;
+try {
+    servicesPage = await sanityClient.fetch(servicesPageQuery);
+    console.log("✅ Services page data:", servicesPage);
+} catch (error) {
+    console.error("❌ Sanity fetch error:", error);
+}
+
+// Extract data with fallbacks
+const heroHeadline = servicesPage?.heroHeadline || 'Rentals';
+const heroSubheadline = servicesPage?.heroSubheadline || 'Professional water jetting services';
+const showContactBanner = servicesPage?.showContactBanner ?? true;
+
 ---
 
-<InformationPage title="Sales">
-</InformationPage>
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="generator" content={Astro.generator} />
+        <title>Powerjet Rentals UK - {heroHeadline}</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap"
+            rel="stylesheet"
+        />
+    </head>
+    <Header />
+    <body>
+        <div class ="page-grid">
+        <TextHero
+            Headline={heroHeadline}
+            SubHeadline={heroSubheadline}
+        />
+    <!-- Contact block -->
+     {showContactBanner && <ContactBlock />}
+
+ </div>
+    </body>
+    <Footer />
+
+</html>
+
+

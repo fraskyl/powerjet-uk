@@ -1,9 +1,10 @@
 ---
 import Button from "./Button.astro";
+import RichText from "./RichText.astro"
 
 interface Props {
     title: string,
-    description: string,
+    description: any,
     imageURL: string;
     imageAlt: string;
     imagePosition: "left" | "right";
@@ -23,13 +24,17 @@ interface Props {
         ctaLink = '/contact'
     } = Astro.props
 
+
+// Temporarily log to see structure
+console.log('Description data:', JSON.stringify(description, null, 2));
+
 ---
 
 <div class="content__block__wrapper" data-image-position={imagePosition}>
     <div class="content__block-body">
         <div class="content__block-body-text">
             <h2>{title}</h2>
-            <p>{description}</p>
+             <RichText value={description} className="prose-slate" />
         </div>
         {showCTA && (
         <div class="content__block-body-cta">
@@ -67,7 +72,8 @@ interface Props {
     }
 
     .content__block-body-text h2 {
-        font-weight: 500;
+        font-weight: 450;
+        font-size: 1.6rem;
         color: var(--pj_blue_80);
         margin: 0;
     }
@@ -135,6 +141,11 @@ interface Props {
         padding-top: 2rem;
 
         }
+
+        .content__block-body-text h2 {
+        font-size: 2rem;
+        
+    }
 
         .content__block-media {
             order: 2;

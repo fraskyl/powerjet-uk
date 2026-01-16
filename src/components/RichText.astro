@@ -1,0 +1,36 @@
+---
+// src/components/RichText.astro
+import { PortableText } from 'astro-portabletext';
+
+interface Props {
+  value: any;
+  className?: string;
+}
+
+const { value, className = '' } = Astro.props;
+---
+
+<!-- Add explicit paragraph spacing with CSS -->
+<div class={`prose prose-lg max-w-none ${className}`}>
+  <PortableText value={value} />
+</div>
+
+<style>
+  /* Force paragraph spacing */
+  div :global(p) {
+    margin-bottom: 1.5rem;
+  }
+  
+  div :global(p:last-child) {
+    margin-bottom: 0;
+  }
+</style>
+```
+
+## How It Should Look in Sanity
+
+In Sanity Studio, when you type:
+```
+First paragraph here.[PRESS ENTER]
+[PRESS ENTER AGAIN - this creates a new paragraph block]
+Second paragraph here.

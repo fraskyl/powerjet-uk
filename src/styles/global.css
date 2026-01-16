@@ -1,4 +1,6 @@
 @import './variables.css';
+@import "tailwindcss";
+
 
 html {
   background-color: #fff;
