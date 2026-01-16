@@ -1,11 +1,11 @@
 ---
 import "../styles/global.css";
-import Footer from "../components/Footer.astro";
-import Header from "../components/Header.astro";
-import TextBlock from "../components/TextBlock.astro";
-import SectionTitle from "../components/SectionTitle.astro";
-import ContactBlock from "../components/ContactBlock.astro";
-import Card from "../components/Card.astro";
+import Footer from "../components/Layout/Footer.astro";
+import Header from "../components/Layout/Header.astro";
+import TextBlock from "../components/Content/TextBlock.astro";
+import SectionTitle from "../components/Content/SectionTitle.astro";
+import ContactBlock from "../components/Sections/ContactBlock.astro";
+import Card from "../components/UI/Card.astro";
 ---
 
 <!doctype html>
@@ -36,8 +36,8 @@ import Card from "../components/Card.astro";
                 </a>
             </div>
 
-            <div class="section__applications-details-wrapper">
-                <div class="section__applications-details">
+            <div class="section__applications-wrapper">
+                <div class="section__applications">
                     <SectionTitle
                         Headline="Surface Preparation"
                         HeadingSize="large"
@@ -125,7 +125,7 @@ import Card from "../components/Card.astro";
             gap: 0.5rem;
         }
 
-        .section__applications-details-wrapper {
+        .section__applications-wrapper {
             grid-column: 2 / -2; /* Span the content columns of page grid */
             display: flex;
             flex-direction: column;
@@ -134,7 +134,7 @@ import Card from "../components/Card.astro";
             gap: 1rem;
         }
 
-        .section__applications-details {
+        .section__applications {
             display: flex;
             flex-direction: column;
             gap: 1rem;
@@ -186,7 +186,7 @@ import Card from "../components/Card.astro";
                 grid-column: 2 /-2;
             }
 
-            .section__applications-details-wrapper {
+            .section__applications-wrapper {
                 display: flex;
                 flex-direction: column;
                 flex-flow: column-reverse;
@@ -194,7 +194,7 @@ import Card from "../components/Card.astro";
                 margin-bottom: 5rem;
             }
 
-            .section__applications-details {
+            .section__applications {
                 display: flex;
                 flex: 1;
             }
@@ -229,7 +229,7 @@ import Card from "../components/Card.astro";
                 margin-bottom: 5rem;
             }
 
-              .section__applications-details-wrapper {
+              .section__applications-wrapper {
                 display: flex;
                 flex-direction: row;
                 grid-column: 3 / -3;

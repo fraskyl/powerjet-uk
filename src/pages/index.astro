@@ -1,14 +1,14 @@
 ---
 import Homepage from "../layouts/Homepage.astro";
-import CTABanner from "../components/CTABanner.astro";
-import TextBlock from "../components/TextBlock.astro";
-import Card from "../components/Card.astro";
-import SectionTitle from "../components/SectionTitle.astro";
-import Divider from "../components/Divider.astro";
+import CTABanner from "../components/Sections/CTABanner.astro";
+import TextBlock from "../components/Content/TextBlock.astro";
+import Card from "../components/UI/Card.astro";
+import SectionTitle from "../components/Content/SectionTitle.astro";
+import Divider from "../components/UI/Divider.astro";
 import { sanityClient } from "../lib/sanity";
 import { homepageQuery } from "../lib/queries";
 
-import HomepageHero from "../components/HomepageHero.astro";
+import HomepageHero from "../components/Sections/HomeHero.astro";
 
 //Fetch homepage data from Sanity
 let homepage; 

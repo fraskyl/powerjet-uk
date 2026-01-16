@@ -6,7 +6,7 @@ interface Props {
     fontSize? : "regular" | "lede" | "large";
 }
 
-
+const { ledeCopy } = Astro.props;
 const { BodyCopy } = Astro.props;
 const { width = "regular" } = Astro.props;
 const { fontSize = "regular" } = Astro.props;
@@ -62,7 +62,7 @@ const { fontSize = "regular" } = Astro.props;
         width: 90%;
     }
 
-    .body__copy[data-variant="lede"] p {
+    .lede__copy[data-variant="lede"] p {
         font-size: 1.2rem;
         line-height: 1.6rem;
         font-weight: 400;
