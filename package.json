@@ -13,8 +13,5 @@
     "astro": "^5.16.6",
     "astro-portabletext": "^0.13.0",
     "tailwindcss": "^4.1.18"
-  },
-  "devDependencies": {
-    "@tailwindcss/typography": "^0.5.19"
   }
 }

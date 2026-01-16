@@ -2,6 +2,68 @@
 @import "tailwindcss";
 
 
+/* add Tailwind v4 prose configuration */
+@theme {
+  --font-family-sans: "Instrument Sans", sans-serif;
+  
+  /* Customize prose spacing */
+  --spacing-prose: 1.5rem;
+}
+
+/* Custom prose styles for Tailwind v4 */
+.prose {
+  max-width: none;
+}
+
+.prose p {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+.prose p:first-child {
+  margin-top: 0;
+}
+
+.prose p:last-child {
+  margin-bottom: 0;
+}
+
+.prose h2 {
+  font-weight: 700;
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+
+.prose h3 {
+  font-weight: 600;
+  margin-top: 1.6em;
+  margin-bottom: 0.8em;
+}
+
+.prose ul, .prose ol {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+  padding-left: 1.5em;
+}
+
+.prose li {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.prose strong {
+  font-weight: 600;
+}
+
+.prose a {
+  color: var(--pj_brand_blue);
+  text-decoration: underline;
+}
+
+.prose a:hover {
+  color: var(--pj_blue_70);
+}
+
 html {
   background-color: #fff;
   font-family: "Instrument Sans", sans-serif;
