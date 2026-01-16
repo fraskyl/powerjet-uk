@@ -1,36 +1,47 @@
 ---
+import type { SlotString } from "astro/runtime/server/render/slot.js";
 import Button from "./Button.astro";
 
 interface Props {
-    imageFirst?: "true" | "false";
-    CTA?: "true" | "false";
+    title: string,
+    description: string,
+    imageURL: string;
+    imageAlt: string;
+    imagePosition: "left" | "right";
+    showCTA?: boolean;
+    ctaLabel?: string;
+    ctaLink?: string;
 }
+    
+    const {
+        title,
+        description,
+        imageURL,
+        imageAlt,
+        imagePosition = 'right',
+        showCTA = false,
+        ctaLabel = 'Find out more',
+        ctaLink = '/contact'
+    } = Astro.props
 
-const { imageFirst = "false" } = Astro.props;
-const { CTA = "false" } = Astro.props;
 ---
 
-<div class="content__block__wrapper" data-variant={imageFirst}>
+<div class="content__block__wrapper" data-image-position={imagePosition}>
     <div class="content__block-body">
         <div class="content__block-body-text">
-            <h2>Repairs and Servicing</h2>
-            <p>
-                Our team of highly trained technicians can undertake work either
-                on-site or at our fully equipped facility, ensuring equipment is
-                maintained to the highest standards with minimal disruption to
-                your operations.
-            </p>
+            <h2>{title}</h2>
+            <p>{description}</p>
         </div>
+        {showCTA && (
         <div class="content__block-body-cta">
-            <Button href="/services" variant="tertiary" data-variant={CTA}
-                >Find out more</Button
-            >
+            <Button href={ctaLink} variant="tertiary">{ctaLabel}</Button>
         </div>
+        )}
     </div>
     <div class="content__block-media">
         <img
-            src="/src/assets/PJ-Screen-cap-tst-wash.png"
-            alt="Power jetting operative wearing TST safety gear whilst operating power jet washer"
+            src={imageURL}
+            alt={imageAlt}
         />
     </div>
 </div>
@@ -98,12 +109,21 @@ const { CTA = "false" } = Astro.props;
             min-height: 22rem;
         }
 
-        /* Reverse order variant */
-        .content__block__wrapper[data-variant="true"] .content__block-body {
+        /* Default: Image on right (text left) */
+        .content__block__wrapper[data-image-position="right"] .content__block-body {
+            order: 1;
+        }
+
+        .content__block__wrapper[data-image-position="right"] .content__block-media {
             order: 2;
         }
 
-        .content__block__wrapper[data-variant="true"] .content__block-media {
+        /* Image on left (text right) */
+        .content__block__wrapper[data-image-position="left"] .content__block-body {
+            order: 2;
+        }
+
+        .content__block__wrapper[data-image-position="left"] .content__block-media {
             order: 1;
         }
 
