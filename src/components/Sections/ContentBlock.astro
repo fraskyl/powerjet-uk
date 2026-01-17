@@ -4,6 +4,7 @@ import RichText from "../Content/RichText.astro"
 
 interface Props {
     title: string,
+    lede?: string,
     description: any,
     imageURL: string;
     imageAlt: string;
@@ -15,6 +16,7 @@ interface Props {
     
     const {
         title,
+        lede,
         description,
         imageURL,
         imageAlt,
@@ -24,16 +26,15 @@ interface Props {
         ctaLink = '/contact'
     } = Astro.props
 
-
-// Temporarily log to see structure
-console.log('Description data:', JSON.stringify(description, null, 2));
-
 ---
 
 <div class="content__block__wrapper" data-image-position={imagePosition}>
     <div class="content__block-body">
         <div class="content__block-body-text">
             <h2>{title}</h2>
+             {lede && (
+                <p class="lede-text">{lede}</p>
+            )}
              <RichText value={description} className="prose-slate" />
         </div>
         {showCTA && (
@@ -75,6 +76,12 @@ console.log('Description data:', JSON.stringify(description, null, 2));
         font-weight: 450;
         font-size: 1.6rem;
         color: var(--pj_blue_80);
+        margin: 0;
+    }
+
+    .content__block-body-text .lede-text {
+        font-size: 1.25rem;
+        line-height: 1.4rem;
         margin: 0;
     }
 

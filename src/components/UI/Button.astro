@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "astro/types";
 import type { ButtonProps } from "../../types";
 
-interface Props extends ButtonProps, HTMLAttributes<"a"> {
+interface Props extends HTMLAttributes<"a"> {
     variant: "primary" | "secondary" | "tertiary";
 }
 const { variant, ...props } = Astro.props;
