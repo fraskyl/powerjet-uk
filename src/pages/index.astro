@@ -48,11 +48,11 @@ const partnerLogos = homepage?.partnerLogos || [];
 	<div class="section__product">
 		<div class="section__product__text">
 			<SectionTitle
-				Headline={productSectionHeadline}
-				HeadingSize="regular"
+				headline={productSectionHeadline}
+				headingSize="regular"
 			/>
 			<TextBlock
-				BodyCopy={productSectionDescription}
+				bodyCopy={productSectionDescription}
 			/>
 		</div>
 
@@ -60,24 +60,24 @@ const partnerLogos = homepage?.partnerLogos || [];
 			 {productCards.length > 0 ? (
                 productCards.map((card: any) => (
                     <Card
-                        imgSrc={card.imageUrl}
-                        imgAlt={card.imageAlt}
-                        hrefLink={card.link}
+                        imageURL={card.imageUrl}
+                        imageAlt={card.imageAlt}
+                        href={card.link}
                         buttonLabel={card.title}
                     />
                 ))
             ) : (
                 <!-- Fallback: Show default cards if CMS not set up yet -->
                 <Card
-                    imgSrc="/src/assets/New_Image_Magtrack-lrg.jpeg"
-                    imgAlt="Equipment"
-                    hrefLink="/rentals"
+                    imageURL="/src/assets/New_Image_Magtrack-lrg.jpeg"
+                    imageAlt="Equipment"
+                    href="/rentals"
                     buttonLabel="Rentals"
                 />
                 <Card
-                    imgSrc="/src/assets/New_Image_Magtrack-lrg.jpeg"
-                    imgAlt="Equipment"
-                    hrefLink="/sales"
+                    imageURL="/src/assets/New_Image_Magtrack-lrg.jpeg"
+                    imageAlt="Equipment"
+                    href="/sales"
                     buttonLabel="Sales"
                 />
             )}
@@ -89,9 +89,9 @@ const partnerLogos = homepage?.partnerLogos || [];
         <CTABanner
             headline={ctaBanner.headline}
             bodyCopy={ctaBanner.bodyCopy}
-            buttonLabel={ctaBanner.buttonText}
+            buttonLabel={ctaBanner.buttonLabel}
             buttonLink={ctaBanner.buttonLink}
-            imageUrl={ctaBanner.imageUrl}
+            imageURL={ctaBanner.imageUrl}
             imageAlt={ctaBanner.imageAlt}
         />
     ) : (
@@ -101,14 +101,14 @@ const partnerLogos = homepage?.partnerLogos || [];
 
 	<Divider />
 	<section class="section__about-us ">
-		<SectionTitle Headline={homepage?.aboutHeadline || "About us"} HeadingSize="small" />
+		<SectionTitle headline={homepage?.aboutHeadline || "About us"} headingSize="small" />
 		<TextBlock
-			BodyCopy={aboutText}
+			bodyCopy={aboutText}
 			fontSize="large"
 		/>
 	</section>
 	<section class="section__partner-logo span-full">
-		<SectionTitle Headline="Proud to partner with" HeadingSize="small" />
+		<SectionTitle headline="Proud to partner with" headingSize="small" />
 		 <div class="grid__partner-logo-wrapper">
       {partnerLogos.length > 0 ? (
         partnerLogos.map((logo: any) => (

@@ -7,7 +7,7 @@ interface Props {
     bodyCopy? : string;
     buttonLabel? : string;
     buttonLink? : string;
-    imageUrl? : string;
+    imageURL? : string;
     imageAlt? : string;
 }
 
@@ -16,7 +16,7 @@ const {
     bodyCopy = "We offer fully registered training with The Water Jetting Association, the benchmark for safety in the water jetting industry throughout the U.K.",
     buttonLabel ="Find out more",
     buttonLink = "/services",
-    imageUrl = "/src/assets/PJ-Screen-cap-tst-wash.png",
+    imageURL = "/src/assets/PJ-Screen-cap-tst-wash.png",
     imageAlt = "Power jetting operative wearing TST safety gear whilst operating power jet washer",
 } = Astro.props;
 
@@ -36,7 +36,7 @@ const {
     </div>
     <div class="cta__banner__image">
         <img
-            src={imageUrl}
+            src={imageURL}
             alt={imageAlt} />
 </div>
 

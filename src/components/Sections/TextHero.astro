@@ -1,23 +1,23 @@
 ---
 interface Props {
-    Headline: string;
-    SubHeadline: string;
+    headline: string;
+    subheadline: string;
 }
 
-const { Headline } = Astro.props;
-const { SubHeadline } = Astro.props;
+const { headline } = Astro.props;
+const { subheadline } = Astro.props;
 ---
 
 <div class="hero__text-wrapper">
     <div class="hero__content">
         <div class="hero__headline">
             <h1>
-                {Headline}
+                {headline}
             </h1>
         </div>
         <div class="hero__subheadline">
             <p>
-                {SubHeadline}
+                {subheadline}
             </p>
         </div>
     </div>

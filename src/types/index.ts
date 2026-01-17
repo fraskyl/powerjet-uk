@@ -166,3 +166,125 @@ export interface BulletListProps {
   title?: string;
   items: string[];
 }
+
+
+/**
+ * ===== SANITY/CMS DATA TYPES =======
+ * These represent the data structure from your CMS
+ */
+
+
+/**
+ * Application data from Sanity
+ */
+export interface Application {
+  title: string;
+  slug: string;
+  description: string;
+  imageUrl: string;
+  imageAlt: string;
+  recommendedProducts?: Product[];
+}
+
+/**
+ * Product data from Sanity
+ */
+export interface Product {
+  title: string;
+  slug: string;
+  description: string;
+  additionalDescription?: string;
+  mainImageUrl: string;
+  mainImageAlt: string;
+  dataSheetUrl?: string;
+  performanceSpecs?: PerformanceSpec[];
+  physicalSpecs?: PhysicalSpecs;
+  engineSpecs?: EngineSpecs;
+  buildOptions?: BuildOption[];
+  relatedProducts?: Product[];
+}
+
+/**
+ * Performance specification for products
+ */
+export interface PerformanceSpec {
+  model: string;
+  plungerSize: string;
+  psi: string;
+  bar: string;
+  lpm: string;
+  gpm: string;
+  kw: string;
+  hp: string;
+}
+
+/**
+ * Physical specifications for products
+ */
+export interface PhysicalSpecs {
+  dimensions: string;
+  weight: string;
+  weightUnit: "kg" | "lbs";
+}
+
+/**
+ * Engine specifications for products
+ */
+export interface EngineSpecs {
+  manufacturer: string;
+  model: string;
+  fuelType: string;
+  fuelCapacity: string;
+  power: string;
+}
+
+/**
+ * Build option for products
+ */
+export interface BuildOption {
+  code: string;
+  description: string;
+}
+
+/**
+ * Homepage data from Sanity
+ */
+export interface Homepage {
+  heroHeadline: string;
+  heroVideoUrl: string;
+  productSectionHeadline: string;
+  productSectionDescription: string;
+  productCards: Array<{
+    title: string;
+    imageUrl: string;
+    imageAlt: string;
+    link: string;
+  }>;
+  ctaBanner?: CtaBannerProps;
+  aboutHeadline: string;
+  aboutText: string;
+  partnerLogos: Array<{
+    url: string;
+    alt: string;
+    partnerUrl?: string;
+  }>;
+}
+
+/**
+ * Services page data from Sanity
+ */
+export interface ServicesPage {
+  heroHeadline: string;
+  heroSubheadline: string;
+  contentBlocks: Array<{
+    title: string;
+    description: any; // PortableText type
+    imageUrl: string;
+    imageAlt: string;
+    imagePosition: "left" | "right";
+    showCTA: boolean;
+    ctaLabel?: string;
+    ctaLink?: string;
+  }>;
+  showContactBanner: boolean;
+}

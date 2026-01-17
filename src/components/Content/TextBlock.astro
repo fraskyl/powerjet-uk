@@ -1,20 +1,20 @@
 ---
 
 interface Props {
-    BodyCopy: string;
+    bodyCopy: string;
     width?: "compact" | "regular";
     fontSize? : "regular" | "lede" | "large";
 }
 
 const { ledeCopy } = Astro.props;
-const { BodyCopy } = Astro.props;
+const { bodyCopy } = Astro.props;
 const { width = "regular" } = Astro.props;
 const { fontSize = "regular" } = Astro.props;
 
 --- 
 <div class="text__block" data-variant={width} >
     <div class="body__copy" data-variant={fontSize} >
-       <p>{BodyCopy}</p>
+       <p>{bodyCopy}</p>
     </div>
 </div>
 

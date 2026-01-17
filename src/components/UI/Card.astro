@@ -1,18 +1,18 @@
 ---
 interface Props {
-    imgSrc: string;
-    imgAlt: string;
-    hrefLink: string;
+    imageURL: string;
+    imageAlt: string;
+    href: string;
     buttonLabel: string;
     icon?: boolean;
     style?: "light" | "dark";
 
 }
 
-const { imgSrc } = Astro.props;
-const { imgAlt } = Astro.props;
+const { imageURL } = Astro.props;
+const { imageAlt } = Astro.props;
 
-const { hrefLink } = Astro.props;
+const { href } = Astro.props;
 const { buttonLabel } = Astro.props;
 
 const { icon = true } = Astro.props;
@@ -22,10 +22,10 @@ const { style = "dark" } = Astro.props;
 ---
 
 <div class="card__wrapper">
-    <a href={hrefLink} class="card__link">
+    <a href={href} class="card__link">
     <div class="card__wrapper">
         <div class="image__container">
-            <img src={imgSrc} alt={imgAlt} />
+            <img src={imageURL} alt={imageAlt} />
         </div>
         <div class="card__panel" data-variant={style} data-variant={icon}>
             {buttonLabel}
