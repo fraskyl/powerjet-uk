@@ -3,18 +3,38 @@ import "../styles/global.css";
 import BaseLayout from "./BaseLayout.astro";
 import Footer from "../components/Layout/Footer.astro";
 import Header from "../components/Layout/Header.astro";
-import TextBlock from "../components/Content/TextBlock.astro";
 import SectionTitle from "../components/Content/SectionTitle.astro";
 import ContactBlock from "../components/Sections/ContactBlock.astro";
-import Card from "../components/UI/Card.astro";
-
+import ContentBlock from "../components/Sections/ContentBlock.astro";
 
 interface Props {
-	title: string;
+    title: string;
+    application: {
+        title: string;
+        slug: string;
+        lede?: string;
+        description?: any; // PortableText content
+        imageUrl: string;
+        imageAlt: string;
+        recommendedProducts?: Array<{
+            title: string;
+            slug: string;
+            imageUrl: string;
+            imageAlt: string;
+        }>;
+    };
 }
 
-const { title } = Astro.props;
+const { title, application } = Astro.props;
 
+// Provide fallback values for development
+const appTitle = application?.title || "Application";
+const appLede = application?.lede || "";
+const appDescription = application?.description || null;
+const appimageUrl =
+    application?.imageUrl || "/src/assets/New_Image_Magtrack-lrg.jpeg";
+const appimageAlt = application?.imageAlt || "Application image";
+const appRecommendedProducts = application?.recommendedProducts || [];
 ---
 
 <BaseLayout title={title}>
@@ -33,72 +53,51 @@ const { title } = Astro.props;
 
             <div class="section__applications-wrapper">
                 <div class="section__applications">
-                    <SectionTitle
-                        headline="Surface Preparation"
-                        headingSize="large"
-                    />
-                    <TextBlock
-                        bodyCopy="High-pressure and ultra high-pressure water jetting effectively prepares and clean surfaces, removing coatings, rust, and other stubborn residues."
-                        fontSize="lede"
-                    />
-                    <TextBlock
-                        bodyCopy="This method thoroughly cleans without causing damage or compromising the surface’s structural integrity. Powerjet offer automated solutions for increased productivity and safety. "
-                        fontSize="regular"
-                    />
-                </div>
-                <div class="section__applications-image">
-                    <img
-                        src="/src/assets/New_Image_Magtrack-lrg.jpeg"
-                        alt="MagTrack unit removing paint from the side of a ship's hull"
+                    <ContentBlock
+                        title={appTitle}
+                        lede={appLede}
+                        description={appDescription}
+                        imageURL={appimageUrl}
+                        imageAlt={appimageAlt}
+                        imagePosition="right"
+                        showCTA={false}
                     />
                 </div>
             </div>
-      
 
-        <div class="divider__border"></div>
+            <div class="divider__border"></div>
 
-        <section class="section__applications-recommended-products">
-            <div class="section__applications-recommended-products-title">
-                <SectionTitle
-                    headline="Recommended Products"
-                    headingSize="small"
-                />
-            </div>
-            <div class="section__applications-recommended-products-cards">
-                <Card
-                    imageURL="/src/assets/New_Image_Magtrack-lrg.jpeg"
-                    imageAlt="MagTrack unit removing paint from the side of a ship's hull"
-                    href="/application-detail"
-                    buttonLabel="Surface Preparation"
-                    icon={true}
-                    style="light"
-                />
-                <Card
-                    imageURL="/src/assets/New_Image_Magtrack-lrg.jpeg"
-                    imageAlt="MagTrack unit removing paint from the side of a ship's hull"
-                    href="/sales"
-                    buttonLabel="Sales"
-                    icon={true}
-                    style="light"
-                />
-                <Card
-                    imageURL="/src/assets/New_Image_Magtrack-lrg.jpeg"
-                    imageAlt="MagTrack unit removing paint from the side of a ship's hull"
-                    href="/sales"
-                    buttonLabel="Sales"
-                    icon={true}
-                    style="light"
-                />
-            </div>
-        </section>
+            {
+                appRecommendedProducts.length > 0 && (
+                    <section class="section__applications-recommended-products">
+                        <div class="section__applications-recommended-products-title">
+                            <SectionTitle
+                                headline="Recommended Products"
+                                headingSize="small"
+                            />
+                        </div>
+                        <div class="section__applications-recommended-products-cards">
+                        {appRecommendedProducts.map((product: any) => (
+                            <Card
+                                imageURL={product.imageUrl}
+                                imageAlt={product.imageAlt}
+                                href={`/products/${product.slug}`}
+                                buttonLabel={product.title}
+                                icon={true}
+                                style="light"
+                            />
+                        ))}
+                    </div>
+                 
+                    </section>
+                )
+            }
+            <ContactBlock />
+        </div>
+    </body> 
+ <Footer />
+ </BaseLayout>
 
-        <ContactBlock />
-
-          </div>
-    </body>
-
-    <Footer />
-    </BaseLayout>
 
     <style>
         .link__prev-page-wrapper {
@@ -106,7 +105,6 @@ const { title } = Astro.props;
             display: flex;
             margin-bottom: 3rem;
             margin-top: 3rem;
-
         }
 
         .link__prev-page-wrapper a {
@@ -211,22 +209,19 @@ const { title } = Astro.props;
 
             .section__applications-recommended-products-cards {
                 display: grid;
-                grid-template-columns: repeat(
-                    4,
-                    1fr
-                ); /* 4 columns */
+                grid-template-columns: repeat(4, 1fr); /* 4 columns */
                 gap: 1.5rem;
                 grid-column: 2 / -2;
                 margin-bottom: 4rem;
             }
         }
         @media screen and (min-width: 1024px) {
-             .link__prev-page-wrapper {
+            .link__prev-page-wrapper {
                 grid-column: 3 / -3;
                 margin-bottom: 5rem;
             }
 
-              .section__applications-wrapper {
+            .section__applications-wrapper {
                 display: flex;
                 flex-direction: row;
                 grid-column: 3 / -3;
@@ -234,10 +229,10 @@ const { title } = Astro.props;
             }
 
             .section__product-detail-related-products-cards {
-        gap: 1rem; /* Tighter spacing for desktop */
-    }
+                gap: 1rem; /* Tighter spacing for desktop */
+            }
 
-              .divider__border {
+            .divider__border {
                 grid-column: 3 /-3;
             }
 
@@ -246,10 +241,6 @@ const { title } = Astro.props;
                 grid-column: 3 / -3;
                 margin-bottom: 5rem;
             }
-
-          
         }
     </style>
-
-
-</html>
+</BaseLayout>
