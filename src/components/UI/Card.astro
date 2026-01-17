@@ -50,22 +50,24 @@ const { style = "dark" } = Astro.props;
         flex-direction: column;
         align-items: stretch;
         width: 100%;
-        height: auto;
+        min-height: 100%;
         border_radius: 0.25rem;
     }
 
     .image__container {
         width: 100%;
+        height: 300px;
         aspect-ratio: 2:3;
         overflow: hidden;
         border-radius: 0.25rem 0.25rem 0 0;
+        flex-shrink: 0;
     }
 
     .image__container img {
         object-fit: cover;
         display: block;
         width: 100%;
-        height: auto;
+        height: 100%;
         transition: all 0.3s ease-in-out;
     }
 
@@ -77,6 +79,7 @@ const { style = "dark" } = Astro.props;
         background-color: var(--pj_brand_blue);
         padding: 0.5rem 1.5rem;
         height: 64px;
+        flex-shrink: 0;
         width: 100%;
         border-radius: 0 0 0.25rem 0.25rem;
 
@@ -145,14 +148,12 @@ const { style = "dark" } = Astro.props;
 
     @media screen and (min-width: 768px) {
         .card__wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-            width: 100%;
-            height: 100%;
-            border_radius: 0.25rem;
+            height: 420px;
         }
 
-
+        .image__container {
+            height: 356px; 
+        }
     }
+
 </style>

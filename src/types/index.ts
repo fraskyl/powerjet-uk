@@ -38,7 +38,7 @@ export interface HeadingProps {
  * Used by: SectionTitle, TextHero, ContentBlock
 */
 export interface TextProps {
-    description: string;
+    bodyCopy: string;
 }
 
 
