@@ -1,54 +1,12 @@
 ---
-import "../styles/global.css";
-import {sanityClient} from '../lib/sanity';
-import { servicesPageQuery } from "../lib/queries";
+// src/pages/rentals.astro
+// Rentals page using shared ProductListingsLayout
 
-
-import BaseLayout from "../layouts/BaseLayout.astro";
-import Footer from "../components/Layout/Footer.astro";
-import Header from "../components/Layout/Header.astro";
-import TextHero from "../components/Sections/TextHero.astro";
-import ContactBlock from "../components/Sections/ContactBlock.astro";
-
-
-// Fetch services page content
-let servicesPage;
-try {
-    servicesPage = await sanityClient.fetch(servicesPageQuery);
-    console.log("✅ Services page data:", servicesPage);
-} catch (error) {
-    console.error("❌ Sanity fetch error:", error);
-}
-
-// Extract data with fallbacks
-const heroHeadline = servicesPage?.heroHeadline || 'Rentals';
-const heroSubheadline = servicesPage?.heroSubheadline || 'Professional water jetting services';
-const showContactBanner = servicesPage?.showContactBanner ?? true;
-
-interface Props {
-	title: string;
-	heroVideoUrl?: string;
-	heroHeadline?: string;
-}
-
-const { title } = Astro.props;
-
+import ProductListingsLayout from "../layouts/ProductListingsLayout.astro";
 ---
 
-<BaseLayout>
-    <Header />
-    <body>
-        <div class ="page-grid">
-        <TextHero
-            Headline={heroHeadline}
-            SubHeadline={heroSubheadline}
-        />
-    <!-- Contact block -->
-     {showContactBanner && <ContactBlock />}
-
- </div>
-    </body>
-    <Footer />
-</BaseLayout>
-
-
+<ProductListingsLayout
+  pageType="rental"
+  headline="Rentals"
+  subheadline="Professional high-pressure water jetting equipment available for rental. Browse our comprehensive fleet of HP and UHP units."
+/>

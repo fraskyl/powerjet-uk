@@ -1,0 +1,244 @@
+---
+// src/layouts/ProductsPageLayout.astro
+// Shared layout for both Rentals and Sales pages with tab filtering
+
+import "../styles/global.css";
+import { sanityClient } from "../lib/sanity";
+import { productTypesQuery, allProductsQuery } from "../lib/queries";
+import BaseLayout from "./BaseLayout.astro";
+import Header from "../components/Layout/Header.astro";
+import Footer from "../components/Layout/Footer.astro";
+import TextHero from "../components/Sections/TextHero.astro";
+import Card from "../components/UI/Card.astro";
+import ContactBlock from "../components/Sections/ContactBlock.astro";
+
+interface Props {
+  pageType: "rental" | "sale";
+  headline: string;
+  subheadline: string;
+}
+
+const { pageType, headline, subheadline } = Astro.props;
+
+// Fetch product types for tabs
+let productTypes = [];
+let allProducts = [];
+let fetchError = false;
+
+try {
+  productTypes = await sanityClient.fetch(productTypesQuery);
+  allProducts = await sanityClient.fetch(allProductsQuery);
+  
+  // Filter products by availability (rental or sale)
+  allProducts = allProducts.filter((product: any) => 
+    product.availability?.includes(pageType)
+  );
+  
+  console.log(`✅ ${pageType} page - Product types:`, productTypes.length);
+  console.log(`✅ ${pageType} page - Products:`, allProducts.length);
+} catch (error) {
+  console.error(`❌ Error fetching ${pageType} products:`, error);
+  fetchError = true;
+}
+
+const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
+---
+
+<BaseLayout title={title}>
+  <Header />
+  <body>
+    <div class="page-grid">
+      <TextHero headline={headline} />
+
+      {fetchError ? (
+        <div class="error-message">
+          <p>Unable to load products. Please try again later.</p>
+        </div>
+      ) : (
+        <>
+          <!-- Tab Navigation -->
+          {productTypes.length > 0 && (
+            <div class="products-tabs">
+              <button class="tab-btn active" data-type="all">
+                All Products
+              </button>
+              {productTypes.map((type: any) => (
+                <button class="tab-btn" data-type={type.slug}>
+                  {type.title}
+                </button>
+              ))}
+            </div>
+          )}
+
+          <!-- Products Grid -->
+          <div class="products-grid">
+            {allProducts.length > 0 ? (
+              allProducts.map((product: any) => (
+                <div
+                  class="product-card"
+                  data-product-type={product.productType?.slug || "uncategorized"}
+                  data-featured={product.featured}
+                >
+                  <Card
+                    imageURL={product.imageUrl}
+                    imageAlt={product.imageAlt}
+                    href={`/products/${product.slug}`}
+                    buttonLabel={product.title}
+                    icon={true}
+                    style="light"
+                  />
+                </div>
+              ))
+            ) : (
+              <div class="empty-state">
+                <p>No {pageType} products available yet.</p>
+              </div>
+            )}
+          </div>
+        </>
+      )}
+
+      <ContactBlock />
+    </div>
+  </body>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .products-tabs {
+    grid-column: 2 / -2;
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 3rem;
+    margin-top: 2rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tab-btn {
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    border: 1px solid var(--pj_brand_blue);
+    border-radius: 100px;
+    color: var(--pj_brand_blue);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+    font-family: "Instrument Sans", sans-serif;
+  }
+
+  .tab-btn:hover {
+    background-color: var(--pj_blue_10);
+  }
+
+  .tab-btn.active {
+    background-color: var(--pj_brand_blue);
+    color: white;
+  }
+
+  .products-grid {
+    grid-column: 2 / -2;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-bottom: 5rem;
+  }
+
+  .product-card {
+    transition: opacity 0.3s ease;
+  }
+
+  .product-card.hidden {
+    display: none;
+  }
+
+  /* Featured products could have special styling */
+  .product-card[data-featured="true"] {
+    /* Add special styles for featured products if desired */
+  }
+
+  .empty-state,
+  .error-message {
+    grid-column: 2 / -2;
+    text-align: center;
+    padding: 3rem;
+    color: var(--pj_blue_70);
+  }
+
+  .empty-state p,
+  .error-message p {
+    font-size: 1.125rem;
+    margin: 0;
+  }
+
+  @media screen and (min-width: 768px) {
+    .products-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .products-tabs {
+      gap: 1rem;
+    }
+  }
+
+  @media screen and (min-width: 1024px) {
+    .products-tabs {
+      grid-column: 3 / -3;
+    }
+
+    .products-grid {
+      grid-column: 3 / -3;
+    }
+
+    .empty-state,
+    .error-message {
+      grid-column: 3 / -3;
+    }
+  }
+</style>
+
+<script>
+  // Client-side tab filtering
+  function initProductFilters() {
+    const tabs = document.querySelectorAll('.tab-btn');
+    const products = document.querySelectorAll('.product-card');
+
+    if (tabs.length === 0 || products.length === 0) return;
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const filterType = tab.getAttribute('data-type');
+
+        // Update active tab
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        // Filter products with smooth transition
+        products.forEach(product => {
+          const productType = product.getAttribute('data-product-type');
+          
+          if (filterType === 'all' || productType === filterType) {
+            product.classList.remove('hidden');
+          } else {
+            product.classList.add('hidden');
+          }
+        });
+
+        // Log for debugging
+        const visibleCount = Array.from(products).filter(
+          p => !p.classList.contains('hidden')
+        ).length;
+        console.log(`Showing ${visibleCount} products for type: ${filterType}`);
+      });
+    });
+  }
+
+  // Initialize on page load
+  document.addEventListener('DOMContentLoaded', initProductFilters);
+  
+  // Re-initialize on Astro view transitions (if using)
+  document.addEventListener('astro:page-load', initProductFilters);
+</script>

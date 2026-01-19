@@ -14,6 +14,78 @@ import BaseLayout from "./BaseLayout.astro";
 
 interface Props {
 	title: string;
+    product: {
+        // Basic Information
+        title: string;
+        slug: string;
+        lede?: string;
+        description?: any;
+        mainImageUrl: string;
+        mainImageAlt: string;
+        
+        // Categorization
+        availability?: string[];
+        productType?: {
+            title: string;
+            slug: string;
+        };
+        
+        // Performance Table (Optional)
+        hasPerformanceTable?: boolean;
+        performanceSpecs?: Array<{
+            model?: string;
+            plungerSize?: string;
+            psi?: string;
+            bar?: string;
+            lpm?: string;
+            gpm?: string;
+            kw?: string;
+            hp?: string;
+        }>;
+        
+        // Physical Specs (Optional)
+        hasPhysicalSpecs?: boolean;
+        physicalSpecs?: {
+            dimensions?: string;
+            weight?: string;
+        };
+        
+        // Engine Specs (Optional)
+        hasEngineSpecs?: boolean;
+        engineSpecs?: {
+            manufacturer?: string;
+            model?: string;
+            fuelType?: string;
+            fuelCapacity?: string;
+            power?: string;
+        };
+        
+        // Build Options (Optional)
+        hasBuildOptions?: boolean;
+        buildOptions?: Array<{
+            code?: string;
+            description?: string;
+        }>;
+        
+        // Key Specs (Always Available)
+        keySpecs?: Array<{
+            label: string;
+            value: string;
+        }>;
+        
+        // Additional
+        dataSheetUrl?: string;
+        featured?: boolean;
+        order?: number;
+        
+        // Related Products (Optional)
+        relatedProducts?: Array<{
+            title: string;
+            slug: string;
+            imageUrl: string;
+            imageAlt: string;
+        }>;
+    };
 }
 
 const { title } = Astro.props;
@@ -61,15 +133,15 @@ const testPerformanceTable = {
             <div class="section__product-detail-wrapper">
                 <div class="section__product-detail-info">
                     <SectionTitle
-                        Headline="Surface Preparation"
-                        HeadingSize="large"
+                        headline="Surface Preparation"
+                        headingSize="large"
                     />
                     <TextBlock
-                        BodyCopy="High-pressure and ultra high-pressure water jetting effectively prepares and clean surfaces, removing coatings, rust, and other stubborn residues."
+                        bodyCopy="High-pressure and ultra high-pressure water jetting effectively prepares and clean surfaces, removing coatings, rust, and other stubborn residues."
                         fontSize="lede"
                     />
                     <TextBlock
-                        BodyCopy="This method thoroughly cleans without causing damage or compromising the surface’s structural integrity. Powerjet offer automated solutions for increased productivity and safety. "
+                        bodyCopy="This method thoroughly cleans without causing damage or compromising the surface’s structural integrity. Powerjet offer automated solutions for increased productivity and safety. "
                         fontSize="regular"
                     />
                     <div class="section__product-cta-buttons">
@@ -96,8 +168,8 @@ const testPerformanceTable = {
             <section class="section__product-performance-table">
                 <div class="section__product-performance-table-title">
                     <SectionTitle
-                        Headline="Performance Specifications"
-                        HeadingSize="small"
+                        headline="Performance Specifications"
+                        headingSize="small"
                     />
                 </div>
                 <div class="section__product-performance-table-content">
@@ -114,8 +186,8 @@ const testPerformanceTable = {
                     <div class="divider__border"></div>
                     <div class="section__product-detail-physical-specs-title">
                         <SectionTitle
-                            Headline="Physical Characteristics"
-                            HeadingSize="small"
+                            headline="Physical Characteristics"
+                            headingSize="small"
                         />
                     </div>
 
@@ -135,8 +207,8 @@ const testPerformanceTable = {
                     <div class="divider__border"></div>
                     <div class="section__product-detail-engine-specs-title">
                         <SectionTitle
-                            Headline="Engine Data"
-                            HeadingSize="small"
+                            headline="Engine Data"
+                            headingSize="small"
                         />
                     </div>
 
@@ -159,8 +231,8 @@ const testPerformanceTable = {
             <section class="section__product-detail-build-options">
                 <div class="section__product-detail-build-options-title">
                     <SectionTitle
-                        Headline="Build Options"
-                        HeadingSize="small"
+                        headline="Build Options"
+                        headingSize="small"
                     />
                 </div>
                 <div class="section__product-detail-build-options-content">
@@ -178,31 +250,31 @@ const testPerformanceTable = {
             <section class="section__product-detail-related-products">
                 <div class="section__product-detail-related-products-title">
                     <SectionTitle
-                        Headline="Related Products"
-                        HeadingSize="small"
+                        headline="Related Products"
+                        headingSize="small"
                     />
                 </div>
                 <div class="section__product-detail-related-products-cards">
                     <Card
-                        imgSrc="/src/assets/New_Image_Magtrack-lrg.jpeg"
-                        imgAlt="MagTrack unit removing paint from the side of a ship's hull"
-                        hrefLink="/application-detail"
+                        imageURL="/src/assets/New_Image_Magtrack-lrg.jpeg"
+                        imageAlt="MagTrack unit removing paint from the side of a ship's hull"
+                        href="/application-detail"
                         buttonLabel="Surface Preparation"
                         icon={true}
                         style="light"
                     />
                     <Card
-                        imgSrc="/src/assets/New_Image_Magtrack-lrg.jpeg"
-                        imgAlt="MagTrack unit removing paint from the side of a ship's hull"
-                        hrefLink="/sales"
+                        imageURL="/src/assets/New_Image_Magtrack-lrg.jpeg"
+                        imageAlt="MagTrack unit removing paint from the side of a ship's hull"
+                        href="/sales"
                         buttonLabel="Sales"
                         icon={true}
                         style="light"
                     />
                     <Card
-                        imgSrc="/src/assets/New_Image_Magtrack-lrg.jpeg"
-                        imgAlt="MagTrack unit removing paint from the side of a ship's hull"
-                        hrefLink="/sales"
+                        imageURL="/src/assets/New_Image_Magtrack-lrg.jpeg"
+                        imageAlt="MagTrack unit removing paint from the side of a ship's hull"
+                        href="/sales"
                         buttonLabel="Sales"
                         icon={true}
                         style="light"

@@ -1,0 +1,50 @@
+---
+// This creates individual pages for each products using dynamic routing
+
+import "../../styles/global.css";
+import { sanityClient } from "../../lib/sanity";
+import { productSlugsQuery, productBySlugQuery } from "../../lib/queries";
+import ProductDetailLayout from "../../layouts/ProductDetailLayout.astro";
+
+// Generate static paths for all products at build time
+export async function getStaticPaths() {
+    try {
+        // Fetch all products slugs from Sanity
+        const products = await sanityClient.fetch(productSlugsQuery);
+        console.log("✅ Generating paths for products:", products?.length || 0);
+
+        // Create a path for each application
+        return products.map((product: any) => ({
+            params: { slug: product.slug },
+        }));
+    } catch (error) {
+        console.error("❌ Error generating product paths:", error);
+        return [];
+    }
+}
+
+// Get the slug from the URL
+const { slug } = Astro.params;
+
+// Fetch the specific product data
+let product;
+try {
+    product = await sanityClient.fetch(productBySlugQuery, { slug });
+    console.log("✅ Fetched product:", product?.title);
+} catch (error) {
+    console.error("❌ Error fetching product:", error);
+}
+
+// If no product found, you might want to redirect to 404
+if (!product) {
+    return Astro.redirect("/404");
+}
+
+// Set page title
+const title = `${product.title} | Products | Powerjet`;
+---
+
+<ProductDetailLayout 
+    title={title}
+    product={product}
+/>
