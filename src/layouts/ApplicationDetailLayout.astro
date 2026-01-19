@@ -6,6 +6,7 @@ import Header from "../components/Layout/Header.astro";
 import SectionTitle from "../components/Content/SectionTitle.astro";
 import ContactBlock from "../components/Sections/ContactBlock.astro";
 import ContentBlock from "../components/Sections/ContentBlock.astro";
+import Card from "../components/UI/Card.astro";
 
 interface Props {
     title: string;
@@ -65,10 +66,10 @@ const appRecommendedProducts = application?.recommendedProducts || [];
                 </div>
             </div>
 
-            <div class="divider__border"></div>
 
             {
                 appRecommendedProducts.length > 0 && (
+                <div class="divider__border"></div>
                     <section class="section__applications-recommended-products">
                         <div class="section__applications-recommended-products-title">
                             <SectionTitle

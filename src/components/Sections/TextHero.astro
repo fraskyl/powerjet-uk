@@ -16,9 +16,6 @@ const { subheadline } = Astro.props;
             </h1>
         </div>
         <div class="hero__subheadline">
-            <p>
-                {subheadline}
-            </p>
         </div>
     </div>
 
@@ -37,7 +34,7 @@ const { subheadline } = Astro.props;
             position: relative;
             display: grid;
             grid-column: 1 / -1;
-            height: 60vh;
+            height: 20vh;
             margin-bottom: 3rem;
             width: 100vw;
             background: var(--pj_brand_blue);
@@ -50,7 +47,7 @@ const { subheadline } = Astro.props;
             flex: 1;
             flex-direction: column;
             justify-content: space-between; /* Pushes text to top, button to bottom */
-            padding: 2rem; /* Inset from edges */
+            padding-top: 3rem;
         }
 
        
@@ -65,12 +62,13 @@ const { subheadline } = Astro.props;
 
             .hero__text-wrapper {
                 grid-template-columns: subgrid;
-                height: 70vh;
+                padding-top: 1rem;
+                height: 30vh;
 
             }
 
             .hero__content {
-                grid-column: 1 / 8; /* Use more columns on tablet */
+                grid-column: 2 / 8; /* Use more columns on tablet */
             }
         }
 
@@ -82,7 +80,7 @@ const { subheadline } = Astro.props;
             }
 
             .hero__content {
-                grid-column: 1 / 6; /* Spans 6 columns on desktop */
+                grid-column: 2 / 6; /* Spans 6 columns on desktop */
             }
 
             .hero__subheadline {
