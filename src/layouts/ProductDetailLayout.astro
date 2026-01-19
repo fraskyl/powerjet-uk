@@ -2,7 +2,7 @@
 import "../styles/global.css";
 import Footer from "../components/Layout/Footer.astro";
 import Header from "../components/Layout/Header.astro";
-import TextBlock from "../components/Content/TextBlock.astro";
+import ContentBlock from "../components/Sections/ContentBlock.astro";
 import SectionTitle from "../components/Content/SectionTitle.astro";
 import ContactBlock from "../components/Sections/ContactBlock.astro";
 import Card from "../components/UI/Card.astro";
@@ -88,7 +88,14 @@ interface Props {
     };
 }
 
-const { title } = Astro.props;
+const { title, product } = Astro.props;
+
+// Provide fallback values for development
+const productTitle = product?.title || "Product";
+const productLede = product?.lede || "";
+const productDescription = product?.description || null;
+const productImageUrl = product?.mainImageUrl || "/src/assets/New_Image_Magtrack-lrg.jpeg";
+const productImageAlt = product?.mainImageAlt || "Product image";
 
 // Hard-coded test data
 const testPerformanceTable = {
@@ -132,17 +139,14 @@ const testPerformanceTable = {
 
             <div class="section__product-detail-wrapper">
                 <div class="section__product-detail-info">
-                    <SectionTitle
-                        headline="Surface Preparation"
-                        headingSize="large"
-                    />
-                    <TextBlock
-                        bodyCopy="High-pressure and ultra high-pressure water jetting effectively prepares and clean surfaces, removing coatings, rust, and other stubborn residues."
-                        fontSize="lede"
-                    />
-                    <TextBlock
-                        bodyCopy="This method thoroughly cleans without causing damage or compromising the surface’s structural integrity. Powerjet offer automated solutions for increased productivity and safety. "
-                        fontSize="regular"
+                    <ContentBlock
+                        title={productTitle}
+                        lede={productLede}
+                        description={productDescription}
+                        imageURL={productImageUrl}
+                        imageAlt={productImageAlt  }
+                        imagePosition="right"
+                        showCTA={false}
                     />
                     <div class="section__product-cta-buttons">
                          <Button variant="tertiary" href="/contact"
@@ -152,12 +156,6 @@ const testPerformanceTable = {
                         >Request a Quote</Button
                     >
                     </div>   
-                </div>
-                <div class="section__product-detail-image">
-                    <img
-                        src="/src/assets/New_Image_Magtrack-lrg.jpeg"
-                        alt="MagTrack unit removing paint from the side of a ship's hull"
-                    />
                 </div>
             </div>
 
