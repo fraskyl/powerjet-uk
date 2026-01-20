@@ -1,0 +1,50 @@
+---
+// src/components/Contact/ObfuscatedEmail.astro
+interface Props {
+  email: string;
+  className?: string;
+}
+
+const { email, className = '' } = Astro.props;
+
+// Base64 encode the email server-side
+const encodedEmail = Buffer.from(email).toString('base64');
+---
+
+<a 
+  href="#" 
+  class={`obfuscated-email ${className}`}
+  data-email={encodedEmail}
+>
+  <span class="email-placeholder">Click to reveal email</span>
+</a>
+
+<script>
+  document.querySelectorAll('.obfuscated-email').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      // Decode the email
+      const encoded = this.getAttribute('data-email');
+      const email = atob(encoded);
+      
+      // Update the link
+      this.href = `mailto:${email}`;
+      this.querySelector('.email-placeholder').textContent = email;
+      
+      // Optional: Auto-open mailto
+      // window.location.href = `mailto:${email}`;
+    });
+  });
+</script>
+
+<style>
+  .obfuscated-email {
+    cursor: pointer;
+    color: var(--pj_brand_blue);
+  }
+  
+  .obfuscated-email:hover {
+    color: var(--pj_blue_70);
+  }
+</style>
