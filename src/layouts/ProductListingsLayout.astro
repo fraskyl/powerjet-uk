@@ -15,12 +15,10 @@ import ContactBlock from "../components/Sections/ContactBlock.astro";
 interface Props {
   pageType: "rental" | "sale";
   headline: string;
-  subheadline: string;
 }
 
-const { pageType, headline, subheadline } = Astro.props;
+const { pageType, headline } = Astro.props;
 
-// Fetch product types for tabs
 let productTypes = [];
 let allProducts = [];
 let fetchError = false;
@@ -29,13 +27,29 @@ try {
   productTypes = await sanityClient.fetch(productTypesQuery);
   allProducts = await sanityClient.fetch(allProductsQuery);
   
-  // Filter products by availability (rental or sale)
-  allProducts = allProducts.filter((product: any) => 
+  // Server-side logs (check your terminal)
+  console.log(`\n📦 ${pageType.toUpperCase()} PAGE - Raw products:`, allProducts.length);
+  
+  if (allProducts.length > 0) {
+    console.log('Sample product data:', JSON.stringify(allProducts[0], null, 2));
+  }
+  
+  // Filter products by availability
+  const filteredProducts = allProducts.filter((product: any) => 
     product.availability?.includes(pageType)
   );
   
-  console.log(`✅ ${pageType} page - Product types:`, productTypes.length);
-  console.log(`✅ ${pageType} page - Products:`, allProducts.length);
+  console.log(`✅ Products after filtering:`, filteredProducts.length);
+  
+  // Check for missing images
+  filteredProducts.forEach((product: any) => {
+    if (!product.imageUrl) {
+      console.warn(`⚠️ Missing image URL for product: ${product.title}`);
+    }
+  });
+  
+  allProducts = filteredProducts;
+  
 } catch (error) {
   console.error(`❌ Error fetching ${pageType} products:`, error);
   fetchError = true;
@@ -78,6 +92,7 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
                   class="product-card"
                   data-product-type={product.productType?.slug || "uncategorized"}
                   data-featured={product.featured}
+                  data-image-url={product.imageUrl || 'missing'}
                 >
                   <Card
                     imageURL={product.imageUrl}
