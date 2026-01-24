@@ -1,0 +1,36 @@
+---
+// src/components/Product/ProductActions.astro
+import Button from "../UI/Button.astro";
+
+interface Props {
+  dataSheetUrl?: string;
+}
+
+const { dataSheetUrl } = Astro.props;
+---
+
+<div class="product-actions">
+  {dataSheetUrl && (
+    <Button variant="tertiary" href={dataSheetUrl} download>
+      Download Datasheet
+    </Button>
+  )}
+  <Button variant="primary" href="/contact">
+    Request a Quote
+  </Button>
+</div>
+
+<style>
+  .product-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  @media screen and (min-width: 768px) {
+    .product-actions {
+      flex-direction: row;
+    }
+  }
+</style>

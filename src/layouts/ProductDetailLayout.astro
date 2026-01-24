@@ -2,8 +2,6 @@
 import "../styles/global.css";
 import Footer from "../components/Layout/Footer.astro";
 import Header from "../components/Layout/Header.astro";
-import ContentBlock from "../components/Sections/ContentBlock.astro";
-import SectionTitle from "../components/Content/SectionTitle.astro";
 import ContactBlock from "../components/Sections/ContactBlock.astro";
 import Card from "../components/UI/Card.astro";
 import Button from "../components/UI/Button.astro";
@@ -11,6 +9,8 @@ import BulletList from "../components/Content/BulletList.astro";
 import SpecList from "../components/Content/SpecList.astro";
 import PerformanceTable from "../components/Content/PerformanceTable.astro";
 import BaseLayout from "./BaseLayout.astro";
+import SectionTitle from "../components/Content/SectionTitle.astro";
+import ProductHero from "../components/Product/ProductHero.astro";
 
 interface Props {
 	title: string;
@@ -137,9 +137,19 @@ const testPerformanceTable = {
                 </a>
             </div>
 
-            <div class="section__product-detail-wrapper">
-                <div class="section__product-detail-info">
-                    <ContentBlock
+            <ProductHero
+                title={product.title}
+                lede={product.lede}
+                description={product.description}
+                imageURL={product.mainImageUrl || "/images/products/product-placeholder.jpg"}
+                imageAlt={product.mainImageAlt || product.title}
+                dataSheetUrl={product.dataSheetUrl}
+            />
+
+            <div class="section__product-wrapper">
+               
+
+                    <!--<ContentBlock
                         title={productTitle}
                         lede={productLede}
                         description={productDescription}
@@ -147,15 +157,15 @@ const testPerformanceTable = {
                         imageAlt={productImageAlt  }
                         imagePosition="right"
                         showCTA={false}
-                    />
+                    /> -->
+                    </div>
                     <div class="section__product-cta-buttons">
                          <Button variant="tertiary" href="/contact"
                         >Download Datasheet</Button
                     >
                     <Button variant="primary" href="/contact"
                         >Request a Quote</Button
-                    >
-                    </div>   
+                    >   
                 </div>
             </div>
 
@@ -306,7 +316,7 @@ const testPerformanceTable = {
             gap: 0.5rem;
         }
 
-        .section__product-detail-wrapper {
+        .section__product-wrapper {
             grid-column: 2 / -2; /* Span the content columns of page grid */
             display: flex;
             flex-direction: column;
@@ -315,7 +325,7 @@ const testPerformanceTable = {
             gap: 1rem;
         }
 
-        .section__product-detail-info {
+        .section__product-overview {
             display: flex;
             flex-direction: column;
             gap: 1rem;
@@ -408,7 +418,7 @@ const testPerformanceTable = {
                 grid-column: 2 /-2;
             }
 
-            .section__product-detail-wrapper {
+            .section__product-wrapper {
                 display: flex;
                 flex-direction: column;
                 flex-flow: column-reverse;
@@ -469,11 +479,18 @@ const testPerformanceTable = {
                 margin-bottom: 5rem;
             }
 
-            .section__product-detail-wrapper {
+            .section__product-wrapper {
                 display: flex;
                 flex-direction: row;
                 grid-column: 3 / -3;
                 gap: 4rem;
+            }
+
+             .product-title {
+                display: flex;
+                flex-direction: row;
+                grid-column: 3 / -3;
+
             }
 
             .divider__border {
