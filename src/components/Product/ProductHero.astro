@@ -13,7 +13,8 @@ interface Props {
     dataSheetUrl?: string;
 }
 
-const { title, lede, description, imageURL, imageAlt, dataSheetUrl } = Astro.props;
+const { title, lede, description, imageURL, imageAlt, dataSheetUrl } =
+    Astro.props;
 ---
 
 <div class="product-hero__wrapper">
@@ -23,105 +24,107 @@ const { title, lede, description, imageURL, imageAlt, dataSheetUrl } = Astro.pro
 
     <div class="divider__border"></div>
 
-    <div class="product-hero__overview"
-    <div class="product-hero__content"></div>
-        <div class="product__text">
-            {lede && <p class="lede-text">{lede}</p>}
-            {
-                description && (
-                    <RichText value={description} className="prose-slate" />
-                )
-            }
-        </div>
+    <div class="product-hero__overview">
+        <div class="product-hero__content">
+            <div class="product__text">
+                {lede && <p class="lede-text">{lede}</p>}
+                {
+                    description && (
+                        <RichText value={description} className="prose-slate" />
+                    )
+                }
+            </div>
 
-        <ProductActions dataSheetUrl={dataSheetUrl}/>
+            <ProductActions dataSheetUrl={dataSheetUrl} />
         </div>
-      <div class="product-detail__media">
-            <ProductImage
-                imageURL={imageURL}
-                imageAlt={imageAlt}
-            />
+        <div class="product-detail__media">
+            <ProductImage imageURL={imageURL} imageAlt={imageAlt} />
         </div>
     </div>
 
     <style>
-    .product-hero__wrapper {
-        grid-column: 2 / -2;
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
-        margin-bottom: 3rem;
-    }
+        .product-hero__wrapper {
+            grid-column: 2 / -2;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
 
-    .product__title h1 {
-        font-weight: 450;
-        font-size: 2rem;
-        color: var(--pj_blue_80);
-        margin: 0;
-    }
-
-    .divider__border {
-        width: 100%;
-        border-top: 1px solid var(--pj_blue_20);
-    }
-
-    .product-hero__overview {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-
-    .product-hero__content {
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
-        order: 2; /* Text after image on mobile */
-    }
-
-    .product__text {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-4);
-    }
-
-    .lede-text {
-        font-size: 1.25rem;
-        line-height: 1.6;
-        color: var(--pj_blue_70);
-        margin: 0;
-    }
-
-    .product-detail__media {
-        order: 1; /* Image first on mobile */
-    }
-
-    @media screen and (min-width: 768px) {
         .product__title h1 {
-            font-size: 2.5rem;
+            font-weight: 450;
+            font-size: 2rem;
+            color: var(--pj_blue_80);
+            margin: 0;
+        }
+
+        .divider__border {
+            width: 100%;
+            border-top: 1px solid var(--pj_blue_20);
         }
 
         .product-hero__overview {
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
+            display: flex;
+            flex-direction: column;
+            grid-template-columns: 2fr;
+            gap: 2rem;
         }
 
         .product-hero__content {
-            order: 1; /* Text first on tablet+ */
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            order: 2; /* Text after image on mobile */
+        }
+
+        .product__text {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-4);
+        }
+
+        .lede-text {
+            font-size: 1.25rem;
+            line-height: 1.75rem;
+            color: var(--pj_blue_70);
+            margin: 0;
         }
 
         .product-detail__media {
-            order: 2; /* Image second on tablet+ */
-        }
-    }
-
-    @media screen and (min-width: 1024px) {
-        .product-hero__wrapper {
-            grid-column: 3 / -3;
-            margin-bottom: 5rem;
+            order: 1; /* Image first on mobile */
         }
 
-        .product-hero__overview {
-            gap: 4rem;
+        @media screen and (min-width: 768px) {
+            .product__title h1 {
+                font-size: 2.5rem;
+            }
+
+            .product-hero__overview {
+                grid-template-columns: 1fr 1fr;
+                gap: 3rem;
+            }
+
+            .product-hero__content {
+                order: 1; /* Text first on tablet+ */
+            }
+
+            .product-detail__media {
+                order: 2; /* Image second on tablet+ */
+            }
         }
-    }
-</style>
+
+        @media screen and (min-width: 1024px) {
+            .product-hero__wrapper {
+                flex-direction: column;
+                grid-column: 3 / -3;
+                margin-bottom: 5rem;
+            }
+
+            .product-hero__overview {
+                display: grid;
+                grid-template-columns: 6fr 6fr; /* Text takes 5 parts, image takes 7 parts */
+                gap: 4rem;
+            }
+        }
+    </style>
+</div>
