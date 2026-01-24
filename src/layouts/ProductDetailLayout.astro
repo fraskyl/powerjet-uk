@@ -8,6 +8,9 @@ import Button from "../components/UI/Button.astro";
 import BulletList from "../components/Content/BulletList.astro";
 import SpecList from "../components/Content/SpecList.astro";
 import PerformanceTable from "../components/Content/PerformanceTable.astro";
+import EngineData from "../components/Content/EngineData.astro";
+import BuildOptions from "../components/Content/BuildOptions.astro";
+import PhysicalSpecs from "../components/Content/PhysicalSpecs.astro";
 import BaseLayout from "./BaseLayout.astro";
 import SectionTitle from "../components/Content/SectionTitle.astro";
 import ProductHero from "../components/Product/ProductHero.astro";
@@ -43,21 +46,27 @@ interface Props {
             hp?: string;
         }>;
 
-        // Physical Specs (Optional)
+        // Physical Characteristics (Optional)
         hasPhysicalSpecs?: boolean;
         physicalSpecs?: {
             dimensions?: string;
-            weight?: string;
+            weightDry?: string;
+            weightWet?: string;
+            waterTankCapacity?: string;
+            fuelTankCapacity?: string;
+            adBlueCapacity?: string;
+            soundAttenuation?: string;
         };
 
-        // Engine Specs (Optional)
-        hasEngineSpecs?: boolean;
-        engineSpecs?: {
+        // Engine Data (Optional)
+        hasEngineData?: boolean;
+        engineData?: {
             manufacturer?: string;
             model?: string;
-            fuelType?: string;
-            fuelCapacity?: string;
-            power?: string;
+            ratings?: string;
+            emissionCompliancy?: string;
+            fuelConsumption?: string;
+            adblueConsumption?: string;
         };
 
         // Build Options (Optional)
@@ -65,12 +74,6 @@ interface Props {
         buildOptions?: Array<{
             code?: string;
             description?: string;
-        }>;
-
-        // Key Specs (Always Available)
-        keySpecs?: Array<{
-            label: string;
-            value: string;
         }>;
 
         // Additional
@@ -96,31 +99,6 @@ const productLede = product?.lede || "";
 const productDescription = product?.description || null;
 const productImageUrl = product?.imageUrl || "";
 const productImageAlt = product?.imageAlt || "Product image";
-
-// Hard-coded test data
-const testPerformanceTable = {
-    headers: [
-        "Model",
-        "Plunger Size",
-        "PSI",
-        "BAR",
-        "L/PM",
-        "G/PM",
-        "kW",
-        "HP",
-    ],
-    rows: [
-        {
-            cells: ["3015", "10", "15,000", "1034", "77", "17.1", "149", "200"],
-        },
-        {
-            cells: ["3020", "9", "20,000", "1378", "55", "12.4", "149", "200"],
-        },
-        {
-            cells: ["3040", "7", "40,000", "2758", "23", "5.1", "149", "200"],
-        },
-    ],
-};
 ---
 
 <BaseLayout>
@@ -146,81 +124,70 @@ const testPerformanceTable = {
                 dataSheetUrl={product.dataSheetUrl}
             />
 
-            <div class="divider__border"></div>
 
-            <!-- Performance Table Section with test data -->
-            <section class="section__product-performance-table">
-                <div class="section__product-performance-table-title">
-                    <SectionTitle
-                        headline="Performance Specifications"
-                        headingSize="small"
-                    />
-                </div>
-                <div class="section__product-performance-table-content">
-                    <PerformanceTable
-                        headers={testPerformanceTable.headers}
-                        rows={testPerformanceTable.rows}
-                    />
-                </div>
-            </section>
+            <!-- Performance Table Section - Renders conditionally based on hasPerformanceTable -->
+            {product.hasPerformanceTable && product.performanceSpecs && (
+            <div class="divider__border"></div>
+                <section class="section__product-performance-table">
+                    <div class="section__product-performance-table-title">
+                        <SectionTitle
+                            headline="Performance Specifications"
+                            headingSize="small"
+                        />
+                    </div>
+                    <div class="section__product-performance-table-content">
+                        <PerformanceTable
+                            headers={[
+                                "Model",
+                                "Plunger Size",
+                                "PSI",
+                                "BAR",
+                                "L/min",
+                                "GPM",
+                                "kW",
+                                "HP",
+                            ]}
+                            rows={product.performanceSpecs.map((spec) => ({
+                                cells: [
+                                    spec.model || '-',
+                                    spec.plungerSize || '-',
+                                    spec.psi || '-',
+                                    spec.bar || '-',
+                                    spec.lpm || '-',
+                                    spec.gpm || '-',
+                                    spec.kw || '-',
+                                    spec.hp || '-'
+                                ]
+                            }))}
+                        />
+                    </div>
+                </section>
+            )}
      
 
         <section class="section__product-detail-additional-specs-wrapper">
-            <div class="section__product-detail-physical-specs">
+
+            {product.hasPhysicalSpecs && product.physicalSpecs && (
+                <div class="section__product-detail-physical-specs">
                 <div class="divider__border"></div>
-                <div class="section__product-detail-physical-specs-title">
-                    <SectionTitle
-                        headline="Physical Characteristics"
-                        headingSize="small"
-                    />
-                </div>
+                <PhysicalSpecs physicalSpecs={product.physicalSpecs} />
+                </div> 
+           )}
 
-                <div class="section__product-detail-physical-specs-content">
-                    <SpecList>
-                        <span slot="title">Dimensions (mm)</span>
-                        <span slot="data">W 2067 x L 4789 x H 2200</span>
-                    </SpecList>
-                    <SpecList>
-                        <span slot="title">Weight (Dry)</span>
-                        <span slot="data">3080kg</span>
-                    </SpecList>
+            {product.hasEngineData && product.engineData && (
+                <div class="section__product-detail-engine-specs">
+                    <div class="divider__border"></div>
+                    <EngineData engineData={product.engineData} />
                 </div>
-            </div>
-
-            <div class="section__product-detail-engine-specs">
-                <div class="divider__border"></div>
-                <div class="section__product-detail-engine-specs-title">
-                    <SectionTitle headline="Engine Data" headingSize="small" />
-                </div>
-
-                <div class="section__product-detail-engine-specs-content">
-                    <SpecList>
-                        <span slot="title">Dimensions (mm)</span>
-                        <span slot="data">W 2067 x L 4789 x H 2200</span>
-                    </SpecList>
-                    <SpecList>
-                        <span slot="title">Weight (Dry)</span>
-                        <span slot="data">3080kg</span>
-                    </SpecList>
-                </div>
-            </div>
+            )}
         </section>
 
-        <div class="divider__border"></div>
-
-        <section class="section__product-detail-build-options">
-            <div class="section__product-detail-build-options-title">
-                <SectionTitle headline="Build Options" headingSize="small" />
-            </div>
-            <div class="section__product-detail-build-options-content">
-                <BulletList>
-                    <span slot="title">D3200-SM</span>
-                    <span slot="item1"
-                        >Bolt-On Skid-Frame with Sound Attenuated Enclosure</span
-                    >
-                </BulletList>
-            </div>
-        </section>
+        {product.hasBuildOptions && product.buildOptions && (
+            <>
+                <div class="divider__border"></div>
+                <BuildOptions options={product.buildOptions} />
+            </>
+        )}
 
         <div class="divider__border"></div>
 

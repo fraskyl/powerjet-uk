@@ -1,0 +1,127 @@
+---
+/**
+ * BuildOptions.astro
+ * 
+ * Displays available product build/configuration options.
+ * 
+ * Props:
+ *   - options: Array of objects with code and description
+ * 
+ * Example usage:
+ *   {hasBuildOptions && buildOptions && (
+ *     <BuildOptions options={buildOptions} />
+ *   )}
+ */
+
+interface BuildOption {
+  code?: string;
+  description?: string;
+}
+
+interface Props {
+  options: BuildOption[];
+}
+
+const { options } = Astro.props;
+
+// Handle empty or missing data gracefully
+if (!options || options.length === 0) {
+  return null;
+}
+---
+
+<section class="build-options__container">
+  <h2>Available Build Options</h2>
+  
+  <div class="build-options__list">
+    {options.map((option) => (
+      <div class="build-option__item">
+        <div class="build-option__header">
+          <h3 class="build-option__code">{option.code || 'Option'}</h3>
+        </div>
+        {option.description && (
+          <p class="build-option__description">{option.description}</p>
+        )}
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .build-options__container {
+    margin: 3rem 0;
+    grid-column: 2 / -2;
+  }
+
+  .build-options__container h2 {
+    font-size: 1.5rem;
+    font-weight: 450;
+    color: var(--pj_blue_80);
+    margin-bottom: 2rem;
+  }
+
+  .build-options__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .build-option__item {
+    background: linear-gradient(135deg, var(--pj_blue_05) 0%, white 100%);
+    border: 1px solid var(--pj_blue_20);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .build-option__item:hover {
+    border-color: var(--pj_blue_80);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .build-option__header {
+    margin-bottom: 1rem;
+  }
+
+  .build-option__code {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--pj_blue_80);
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.5px;
+  }
+
+  .build-option__description {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--pj_blue_70);
+  }
+
+  @media screen and (max-width: 768px) {
+    .build-options__container {
+      grid-column: 1 / -1;
+      padding: 0 1rem;
+      margin: 2rem 0;
+    }
+
+    .build-options__list {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .build-option__item {
+      padding: 1rem;
+    }
+
+    .build-option__code {
+      font-size: 1rem;
+    }
+
+    .build-option__description {
+      font-size: 0.875rem;
+    }
+  }
+</style>

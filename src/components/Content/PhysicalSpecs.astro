@@ -1,0 +1,132 @@
+---
+/**
+ * 
+ * Displays physical specifications in a clean card/list format.
+ * 
+ * Props:
+ *   - physicalSpecs: Object with dimensions, weightDry, weightWet, waterTankCapacity, fuelTankCapacity, adBlueCapacity, soundAttenuation
+ * 
+ * Example usage:
+ *   {hasPhysicalSpecs && physicalSpecs && (
+ *     <PhysicalSpecs physicalSpecs={physicalSpecs} />
+ *   )}
+ */
+
+interface PhysicalSpecsProps {
+  dimensions?: string;
+  weightDry?: string;
+  weightWet?: string;
+  waterTankCapacity?: string;
+  fuelTankCapacity?: string;
+  adBlueCapacity?: string;
+  soundAttenuation?: string;
+}
+
+interface Props {
+  physicalSpecs: PhysicalSpecsProps;
+}
+
+const { physicalSpecs } = Astro.props;
+
+// Handle empty or missing data gracefully
+if (!physicalSpecs) {
+  return null;
+}
+
+// Filter out empty fields so we only display what we have
+const dataEntries = Object.entries(physicalSpecs)
+  .filter(([_, value]) => value)
+  .map(([key, value]) => ({
+    key,
+    value,
+    label: formatLabel(key)
+  }));
+
+function formatLabel(key: string): string {
+  const labels: Record<string, string> = {
+    dimensions: 'Dimensions',
+    weightDry: 'Weight (Dry)',
+    weightWet: 'Weight (Wet)',
+    waterTankCapacity: 'Water Tank Capacity',
+    fuelTankCapacity: 'Fuel Tank Capacity',
+    adBlueCapacity: 'AdBlue Tank Capacity',
+    soundAttenuation: 'Sound Attenuation'
+  };
+  return labels[key] || key;
+}
+---
+
+<section class="physical-specs__container">
+  <h2>Physical Characteristics</h2>
+
+  <div class="physical-specs__grid">
+    {dataEntries.map(({ label, value }) => (
+      <div class="physical-specs__item">
+        <dt class="physical-specs__label">{label}</dt>
+        <dd class="physical-specs__value">{value}</dd>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .physical-specs__container {
+    margin: 3rem 0;
+    grid-column: 2 / -2;
+  }
+
+  .physical-specs__container h2 {
+    font-size: 1.5rem;
+    font-weight: 450;
+    color: var(--pj_blue_80);
+    margin-bottom: 2rem;
+  }
+
+  .physical-specs__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .physical-specs__item {
+    background-color: var(--pj_blue_05);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    border-left: 4px solid var(--pj_blue_80);
+  }
+
+  .physical-specs__label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--pj_blue_70);
+    margin-bottom: 0.5rem;
+    margin: 0;
+  }
+
+  .physical-specs__value {
+    font-size: 1rem;
+    color: var(--pj_blue_80);
+    font-weight: 500;
+    margin: 0;
+    margin-top: 0.5rem;
+  }
+
+  @media screen and (max-width: 768px) {
+    .physical-specs__container {
+      grid-column: 1 / -1;
+      padding: 0 1rem;
+      margin: 2rem 0;
+    }
+
+    .physical-specs__grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .physical-specs__item {
+      padding: 1rem;
+    }
+  }
+</style>
