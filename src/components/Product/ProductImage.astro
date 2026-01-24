@@ -1,15 +1,15 @@
 ---
 // src/components/Product/ProductImage.astro
 interface Props {
-  imageURL: string;
+  imageUrl: string;
   imageAlt: string;
 }
 
-const { imageURL, imageAlt } = Astro.props;
+const { imageUrl, imageAlt } = Astro.props;
 ---
 
 <div class="product-image">
-  <img src={imageURL} alt={imageAlt} />
+  <img src={imageUrl} alt={imageAlt} />
 </div>
 
 <style>

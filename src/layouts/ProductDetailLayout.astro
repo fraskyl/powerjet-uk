@@ -88,14 +88,13 @@ interface Props {
     };
 }
 
-const { title, product } = Astro.props;
+const { product } = Astro.props;
 
 // Provide fallback values for development
 const productTitle = product?.title || "Product";
 const productLede = product?.lede || "";
 const productDescription = product?.description || null;
-const productImageUrl =
-    product?.imageUrl || "/src/assets/New_Image_Magtrack-lrg.jpeg";
+const productImageUrl = product?.imageUrl || "";
 const productImageAlt = product?.imageAlt || "Product image";
 
 // Hard-coded test data
@@ -142,8 +141,7 @@ const testPerformanceTable = {
                 title={productTitle}
                 lede={productLede}
                 description={productDescription}
-                imageURL={productImageUrl ||
-                    "/images/products/product-placeholder.jpg"}
+                imageUrl={productImageUrl}
                 imageAlt={productImageAlt || product.title}
                 dataSheetUrl={product.dataSheetUrl}
             />

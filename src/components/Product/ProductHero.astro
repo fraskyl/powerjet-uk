@@ -8,12 +8,12 @@ interface Props {
     title: string;
     lede?: string;
     description?: any;
-    imageURL?: string;
-    imageAlt?: string;
+    imageUrl: string;
+    imageAlt: string;
     dataSheetUrl?: string;
 }
 
-const { title, lede, description, imageURL, imageAlt, dataSheetUrl } =
+const { title, lede, description, imageUrl, imageAlt, dataSheetUrl } =
     Astro.props;
 ---
 
@@ -38,7 +38,7 @@ const { title, lede, description, imageURL, imageAlt, dataSheetUrl } =
             <ProductActions dataSheetUrl={dataSheetUrl} />
         </div>
         <div class="product-detail__media">
-            <ProductImage imageURL={imageURL} imageAlt={imageAlt} />
+            <ProductImage imageUrl={imageUrl} imageAlt={imageAlt} />
         </div>
     </div>
 
