@@ -14,7 +14,7 @@
  */
 
 interface BuildOption {
-  code?: string;
+  optionTitle?: string;
   description?: string;
 }
 
@@ -37,7 +37,7 @@ if (!options || options.length === 0) {
     {options.map((option) => (
       <div class="build-option__item">
         <div class="build-option__header">
-          <h3 class="build-option__code">{option.code || 'Option'}</h3>
+          <h3 class="build-option__title">{option.optionTitle || 'Option'}</h3>
         </div>
         {option.description && (
           <p class="build-option__description">{option.description}</p>
@@ -84,7 +84,7 @@ if (!options || options.length === 0) {
     margin-bottom: 1rem;
   }
 
-  .build-option__code {
+  .build-option__title {
     margin: 0;
     font-size: 1.1rem;
     font-weight: 600;
