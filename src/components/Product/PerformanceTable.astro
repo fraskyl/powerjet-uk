@@ -10,27 +10,27 @@ const { headers, rows } = Astro.props;
 ---
 
 <div class="performance-table__container">
-  <h2>Performance Specifications</h2>
+    <h2>Performance Specifications</h2>
 
     <div class="performance-table__data">
-    <table class="performance-table">
-        <thead>
-            <tr>
-                {headers.map((header) => (
-                    <th>{header}</th>
-                ))}
-            </tr>
-        </thead>
-        <tbody>
-            {rows.map((row) => (
+        <table class="performance-table">
+            <thead>
                 <tr>
-                    {row.cells.map((cell) => (
-                        <td>{cell}</td>
-                    ))}
+                    {headers.map((header) => <th>{header}</th>)}
                 </tr>
-            ))}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {
+                    rows.map((row) => (
+                        <tr>
+                            {row.cells.map((cell) => (
+                                <td>{cell}</td>
+                            ))}
+                        </tr>
+                    ))
+                }
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -41,21 +41,20 @@ const { headers, rows } = Astro.props;
     }
 
     .performance-table__container h2 {
-    font-size: 1.5rem;
-    font-weight: 450;
-    color: var(--pj_blue_80);
-    margin-bottom: 2rem;
-  }
+        font-size: 1.5rem;
+        font-weight: 450;
+        color: var(--pj_blue_80);
+        margin-bottom: 2rem;
+    }
 
     .performance-table {
         width: 100%;
         border-collapse: collapse;
         font-size: 0.875rem;
         background-color: white;
-        
     }
 
-    .performance-table__data{
+    .performance-table__data {
         width: 100%;
         background-color: white;
         border-radius: 0.25rem;

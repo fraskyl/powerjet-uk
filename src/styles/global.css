@@ -237,3 +237,6 @@ body > h6,
   min-width: 280px;
 }
 
+address {
+  font-style: normal;
+}

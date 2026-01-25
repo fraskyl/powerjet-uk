@@ -2,7 +2,7 @@
 import "../styles/global.css";
 
 import { sanityClient } from "../lib/sanity";
-import { contactPageQuery} from "../lib/queries";
+import { contactPageQuery } from "../lib/queries";
 
 import Footer from "../components/Layout/Footer.astro";
 import Header from "../components/Layout/Header.astro";
@@ -32,7 +32,8 @@ const mapUrl = contactData?.mapUrl;
 const enableHoneypot = contactData?.enableHoneypot ?? true;
 const requirePhone = contactData?.requiredFields?.requirePhone ?? false;
 const requireCompany = contactData?.requiredFields?.requireCompany ?? false;
-const successMessage = contactData?.successMessage || "Thank you for your message!";
+const successMessage =
+	contactData?.successMessage || "Thank you for your message!";
 
 const title = "Contact | Powerjet";
 ---
@@ -100,7 +101,17 @@ const title = "Contact | Powerjet";
 							}
 						</div>
 					</div>
-					<div class="contact__details-map"></div>
+					<div class="contact__details-map">
+						<iframe
+							src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d4478.647979499521!2d-4.317614!3d55.857045!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x488846097d869d2d%3A0xb21be2c11900d55f!2s97%20Loanbank%20Quadrant%2C%20Glasgow%20G51%203HZ%2C%20UK!5e0!3m2!1sen!2sus!4v1769361705475!5m2!1sen!2sus"
+							width="100%"
+							height="100%"
+							style="border:0;"
+							allowfullscreen=""
+							loading="lazy"
+							referrerpolicy="no-referrer-when-downgrade"
+						></iframe>
+					</div>
 				</div>
 			</section>
 
@@ -108,11 +119,11 @@ const title = "Contact | Powerjet";
 
 			<div class="section__contact-form">
 				<h2>Have an equiry? Let's talk</h2>
-				<ContactForm 
-				enableHoneypot={enableHoneypot} 
-				requirePhone={requirePhone}
-				requireCompany={requireCompany}
-				successMessage={successMessage}
+				<ContactForm
+					enableHoneypot={enableHoneypot}
+					requirePhone={requirePhone}
+					requireCompany={requireCompany}
+					successMessage={successMessage}
 				/>
 			</div>
 		</div>
@@ -144,19 +155,19 @@ const title = "Contact | Powerjet";
 
 	.section__contact-details h1 {
 		font-weight: 500;
-		color: var(--pj_blue_90);
+		color: var(--pj_blue_80);
 	}
 
 	.section__contact-details h5 {
 		font-weight: 400;
-		color: var(--pj_blue_90);
+		color: var(--pj_blue_80);
 	}
 
 	.contact__details-map {
 		width: 100%;
-		height: 500px;
-		background-color: var(--pj_blue_10);
+		height: 400px;
 		border-radius: 4px;
+		overflow: hidden;
 	}
 
 	.contact__details-block p {
@@ -188,6 +199,14 @@ const title = "Contact | Powerjet";
 		gap: 1rem;
 	}
 
+	 .section__contact-form h2 {
+    font-size: 2rem;
+	line-height: auto;
+    font-weight: 450;
+    color: var(--pj_blue_80);
+    margin-bottom: 2rem;
+  }
+
 	@media screen and (min-width: 768px) {
 		.contact__details-wrapper {
 			display: flex;
@@ -200,6 +219,10 @@ const title = "Contact | Powerjet";
 			flex-direction: row;
 			gap: 1rem;
 		}
+
+		.contact__details-map {
+		height: 500px;
+	}
 	}
 
 	@media screen and (min-width: 1024px) {
