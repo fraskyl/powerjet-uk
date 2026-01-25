@@ -51,8 +51,8 @@ if (!options || options.length === 0) {
 
 <style>
   .build-options__container {
-    margin: 3rem 0;
     grid-column: 2 / -2;
+    margin-bottom: 6rem;
   }
 
   .build-options__container h2 {
@@ -68,45 +68,29 @@ if (!options || options.length === 0) {
     gap: 1.5rem;
   }
 
-  .build-option__item {
-    background: linear-gradient(135deg, var(--pj_blue_05) 0%, white 100%);
-    border: 1px solid var(--pj_blue_20);
-    border-radius: 0.5rem;
-    padding: 1.5rem;
-    transition: all 0.3s ease;
-  }
-
-  .build-option__item:hover {
-    border-color: var(--pj_blue_80);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transform: translateY(-2px);
-  }
-
   .build-option__header {
     margin-bottom: 1rem;
   }
 
   .build-option__title {
     margin: 0;
-    font-size: 1.1rem;
-    font-weight: 600;
+    font-size: 1rem;
+    font-weight: 500;
     color: var(--pj_blue_80);
-    font-family: 'Courier New', monospace;
     letter-spacing: 0.5px;
   }
 
   .build-option__description {
     margin: 0;
-    font-size: 0.95rem;
+    font-size: 0.875rem;
     line-height: 1.6;
     color: var(--pj_blue_70);
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (min-width: 768px) {
     .build-options__container {
-      grid-column: 1 / -1;
-      padding: 0 1rem;
-      margin: 2rem 0;
+      grid-column: 3 / -3;
+      margin-bottom: 7.75rem;
     }
 
     .build-options__list {
@@ -114,9 +98,6 @@ if (!options || options.length === 0) {
       gap: 1rem;
     }
 
-    .build-option__item {
-      padding: 1rem;
-    }
 
     .build-option__code {
       font-size: 1rem;
