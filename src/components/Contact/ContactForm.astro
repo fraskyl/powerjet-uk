@@ -1,5 +1,7 @@
 ---
 // src/components/Contact/ContactForm.astro
+import Button from '../UI/Button.astro';
+
 interface Props {
   enableHoneypot?: boolean;
   requirePhone?: boolean;
@@ -76,10 +78,12 @@ const {
     />
   )}
   
-  <button type="submit" class="submit-btn">
+  <button class="submit-btn" type="submit">
     Send Message
   </button>
-  
+
+
+
   <div class="form-message" data-success-message={successMessage}></div>
 </form>
 
@@ -90,7 +94,7 @@ const {
       
       const formElement = e.target as HTMLFormElement;
       const messageDiv = formElement.querySelector('.form-message') as HTMLElement;
-      const submitBtn = formElement.querySelector('.submit-btn') as HTMLButtonElement;
+      const submitBtn = formElement.querySelector('button[type="submit"]') as HTMLButtonElement;
       const successMessage = messageDiv.getAttribute('data-success-message') || 'Thank you!';
       
       // Disable button during submission
@@ -172,6 +176,7 @@ const {
     font-size: 1rem;
     transition: background-color 0.3s;
     justify-self: start;
+    width: fit-content;
   }
   
   .submit-btn:hover:not(:disabled) {

@@ -51,15 +51,15 @@ const title = "Contact | Powerjet";
 					<div class="contact__details">
 						<div class="contact__details-block-wrapper">
 							<div class="contact__details-block">
-								<h5>Call</h5>
-								<p>+44 (0) 141 440 5757</p>
+								<h5>Call us</h5>
+								<tel>{phoneDisplay}</tel>
 							</div>
 							<div class="contact__details-block">
-								<h5>Email</h5>
+								<h5>Email us</h5>
 								<p>mail@powerjet-uk.com</p>
 							</div>
 						</div>
-						<div class="contact__details-block-wrapper">
+						<div class="contact__details-office">
 							{
 								address && (
 									<div class="contact__details-address">
@@ -118,7 +118,7 @@ const title = "Contact | Powerjet";
 			<div class="divider__border"></div>
 
 			<div class="section__contact-form">
-				<h2>Have an equiry? Let's talk</h2>
+				<h2>Have an enquiry? <br>Let's talk</h2>
 				<ContactForm
 					enableHoneypot={enableHoneypot}
 					requirePhone={requirePhone}
@@ -138,36 +138,51 @@ const title = "Contact | Powerjet";
 		grid-column: 2 / -2;
 		gap: 1rem;
 		margin-top: 4rem;
+		overflow: hidden;
 	}
+
+	.contact__details-wrapper {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			gap: 2rem;
+			margin-bottom: 4rem;
+			flex-wrap: nowrap;
+		}
+	
 
 	.contact__details {
 		display: flex;
 		flex-direction: column;
 		gap: 2rem;
+		flex-shrink: 0;
+		min-width: 0;
 	}
 
 	.contact__details-opening-hours {
 		display: flex;
 		flex-direction: row;
 		gap: 1rem;
-		margin-bottom: 3rem;
 	}
 
 	.section__contact-details h1 {
 		font-weight: 500;
 		color: var(--pj_blue_80);
-	}
-
-	.section__contact-details h5 {
-		font-weight: 400;
-		color: var(--pj_blue_80);
-	}
+	}	
 
 	.contact__details-map {
 		width: 100%;
-		height: 400px;
+		height: 300px;
 		border-radius: 4px;
 		overflow: hidden;
+		flex-shrink: 1;
+		aspect-ratio: 5/4;
+	}
+
+	.contact__details-map iframe {
+		width: 100%;
+		height: 100%;
+		max-width: 100%;
 	}
 
 	.contact__details-block p {
@@ -178,19 +193,31 @@ const title = "Contact | Powerjet";
 	.contact__details-block-wrapper {
 		display: flex;
 		flex-direction: column;
+		width: 100%;
 		gap: 1rem;
 	}
 
 	.contact__details-block {
 		display: flex;
-		padding: 16px;
+		padding: 1rem;
 		flex-direction: column;
 		align-items: flex-start;
-		width: max-content;
-		gap: 4px;
+		width: 100%;
+		gap: 0.25rem;
 		flex: 1 0 0;
-		border-radius: 4px;
+		border-radius: 0.25rem;
 		background: var(--pj_blue_10);
+	}
+
+	.contact__details-office {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.contact__details-office  h5{
+		font-weight: 500;
+		color: var(--pj_blue_80);
 	}
 
 	.contact__details-opening-hours {
@@ -199,12 +226,18 @@ const title = "Contact | Powerjet";
 		gap: 1rem;
 	}
 
+
+	.section__contact-form{
+		grid-column: 2 / -2;
+		margin: 1rem 0 7.75rem 0;	
+	}
+
 	 .section__contact-form h2 {
     font-size: 2rem;
 	line-height: auto;
     font-weight: 450;
     color: var(--pj_blue_80);
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
   }
 
 	@media screen and (min-width: 768px) {
@@ -212,16 +245,27 @@ const title = "Contact | Powerjet";
 			display: flex;
 			flex-direction: row;
 			gap: 2rem;
+			margin-bottom: 4rem;
+			flex-wrap: nowrap;
 		}
 
 		.contact__details-block-wrapper {
 			display: flex;
 			flex-direction: row;
+			width: 100%;
 			gap: 1rem;
+		}
+
+		.contact__details-office {
+			flex-direction: row;
+			gap: 2rem;
 		}
 
 		.contact__details-map {
 		height: 500px;
+		width: 100%;
+		max-width: 800px;
+		aspect-ratio: 5 /4;
 	}
 	}
 
@@ -234,16 +278,21 @@ const title = "Contact | Powerjet";
 			margin-top: 4rem;
 		}
 
+			.contact__details-office {
+			flex-direction: row;
+			gap: 3rem;
+		}
+
 		.contact__details-block {
 			display: flex;
 			padding: 16px;
 			flex-direction: column;
 			align-items: flex-start;
-			width: max-content;
+			width: 100%;
 
-			gap: 4px;
+			gap: 0.25rem;
 			flex: 1 0 0;
-			border-radius: 4px;
+			border-radius: 0.25rem;
 			background: var(--pj_blue_10);
 		}
 	}

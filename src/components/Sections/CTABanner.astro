@@ -1,5 +1,5 @@
 ---
-import Button from "../UI/Button.astro";
+import Link from "../UI/Link.astro";
 
 
 interface Props {
@@ -27,12 +27,12 @@ const {
 <div class="cta__banner__wrapper span-full">
     <div class="cta__banner__content">
         <div class="cta__banner__text">
-            <h2>{headline}</h2>
+            <h3>{headline}</h3>
             <p>
                 {bodyCopy}
             </p>
         </div>
-        <Button href={buttonLink} variant="secondary">{buttonLabel}</Button>
+        <Link href={buttonLink} variant="inverse">{buttonLabel}</Link>
     </div>
     <div class="cta__banner__image">
         <img
@@ -67,8 +67,9 @@ const {
         width: 90%
     }
 
-    .cta__banner__text h2 {
-        font-weight: 400;
+    .cta__banner__text h3 {
+        font-weight: 500;
+        font-size: 1.6rem;
     }
 
     .cta__banner__text p {

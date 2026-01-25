@@ -1,0 +1,62 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import type { ButtonProps } from "../../types";
+
+interface Props extends HTMLAttributes<"a"> {
+    variant: "default" | "inverse";
+    type: string
+}
+const { variant, ...props } = Astro.props;
+---
+
+<div class="link">
+    <a
+        {...props}
+        class:list={[
+            "link",
+            { default: variant === "default" },
+            { inverse: variant === "inverse" },
+
+            Astro.props.class,
+        ]}
+    >
+        <slot />
+    </a>
+</div>
+
+<style>
+    .link {
+        display: inline-block;
+        text-align: left;
+        font-size: inherit;
+        font-weight: 400;
+        width: fit-content;
+    }
+
+    .default {
+        color: var(--pj_brand_blue);
+        padding: 0.5rem 1.5rem;
+        text-decoration: underline;
+    }
+
+    .inverse {
+        color: white;
+        padding: 0.175rem 0rem;
+        justify-content: center;
+        border-bottom: 1px solid white;
+    }
+
+    .default:hover {
+        background-color: var(--pj_blue_90);
+        transition: background-color 0.3s ease;
+    }
+
+    .inverse:hover {
+        color: var(--pj_blue_10);
+        border-bottom: 1px solid var(--pj_blue_10);
+        transition: background-color 0.3s ease;
+    }
+    
+
+
+</style>
