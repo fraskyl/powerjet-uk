@@ -9,7 +9,10 @@ interface Props {
 const { headers, rows } = Astro.props;
 ---
 
-<div class="performance-table-wrapper">
+<div class="performance-table__container">
+  <h2>Performance Specifications</h2>
+
+    <div class="performance-table__data">
     <table class="performance-table">
         <thead>
             <tr>
@@ -28,22 +31,37 @@ const { headers, rows } = Astro.props;
             ))}
         </tbody>
     </table>
+    </div>
 </div>
 
 <style>
-    .performance-table-wrapper {
+    .performance-table__container {
         width: 100%;
-        overflow-x: auto; /* Horizontal scroll on mobile */
         margin-bottom: 2rem;
-        border-radius: 0.25rem;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow */
     }
+
+    .performance-table__container h2 {
+    font-size: 1.5rem;
+    font-weight: 450;
+    color: var(--pj_blue_80);
+    margin-bottom: 2rem;
+  }
 
     .performance-table {
         width: 100%;
         border-collapse: collapse;
         font-size: 0.875rem;
         background-color: white;
+        
+    }
+
+    .performance-table__data{
+        width: 100%;
+        background-color: white;
+        border-radius: 0.25rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        overflow-x: auto; /* Horizontal scroll on mobile */
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
     }
 
     /* Header styling - Dark blue background like your image */
@@ -112,7 +130,7 @@ const { headers, rows } = Astro.props;
         }
 
         /* Make table scrollable horizontally */
-        .performance-table-wrapper {
+        .performance-table__container {
             -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
         }
     }

@@ -126,12 +126,7 @@ const productImageAlt = product?.imageAlt || "Product image";
             {product.hasPerformanceTable && product.performanceSpecs && (
             <div class="divider__border"></div>
                 <section class="section__product-performance-table">
-                    <div class="section__product-performance-table-title">
-                        <SectionTitle
-                            headline="Performance Specifications"
-                            headingSize="small"
-                        />
-                    </div>
+                 
                     <div class="section__product-performance-table-content">
                         <PerformanceTable
                             headers={[
