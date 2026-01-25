@@ -13,6 +13,8 @@
  *   )}
  */
 
+import RichText from '../Content/RichText.astro';
+
 interface BuildOption {
   optionTitle?: string;
   description?: string;
@@ -40,7 +42,7 @@ if (!options || options.length === 0) {
           <h3 class="build-option__title">{option.optionTitle || 'Option'}</h3>
         </div>
         {option.description && (
-          <p class="build-option__description">{option.description}</p>
+          <RichText value={option.description} className="build-option__description" />
         )}
       </div>
     ))}
