@@ -8,7 +8,7 @@ import Button from '../UI/Button.astro';
             <h3>Get in touch with our team today</h3>
         </div>
         <div class="block__contact-action">
-            <Button variant="tertiary" href="/contact">Contact us</Button>
+            <Button type="button" variant="tertiary" href="/contact">Contact us</Button>
         </div>  
     </div>
 </div>
@@ -19,7 +19,6 @@ import Button from '../UI/Button.astro';
         grid-template-columns: subgrid;
         grid-column: 2 / -2;
         margin-bottom: 4rem;
-        max-height: 91px;
     }
 
     .block__contact-container{
@@ -48,6 +47,8 @@ import Button from '../UI/Button.astro';
             display: grid;
             grid-template-columns: subgrid;
             grid-column: 2 / -2;
+        max-height: 91px;
+
         }
 
 
