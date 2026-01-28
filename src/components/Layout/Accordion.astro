@@ -1,0 +1,108 @@
+---
+interface Props {
+    defaultOpen?: boolean;
+}
+
+const { defaultOpen = false } = Astro.props;
+---
+
+<details class="accordion-native" open={defaultOpen}>
+    <summary class="accordion-native__header">
+        <div class="accordion-native__title">
+            <slot name="title" || 'Details'/>
+        </div>
+        <span class="accordion-native__icon material-symbols-outlined" aria-hidden="true">
+            expand_more
+        </span>
+    </summary>
+    
+    <div class="accordion-native__content">
+        <slot />
+    </div>
+</details>
+
+<style>
+    .accordion-native {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    /* Remove default browser styling */
+    .accordion-native summary {
+        list-style: none; /* Remove default marker */
+    }
+
+    /* Hide default disclosure triangle in WebKit browsers */
+    .accordion-native summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .accordion-native__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        user-select: none; /* Prevent text selection on double-click */
+        margin-bottom: 2rem;
+    }
+
+    .accordion-native__header:hover {
+        opacity: 0.8;
+    }
+
+    .accordion-native__header:focus {
+        outline: 2px solid var(--pj_brand_blue);
+        outline-offset: 2px;
+    }
+
+    .accordion-native__title {
+        font-family: "Instrument Sans";
+        font-size: 1.125rem;
+        font-weight: 500;
+        color: var(--pj_brand_blue);
+        margin: 0;
+    }
+
+    .accordion-native__icon {
+        color: var(--pj_brand_blue);
+        font-size: 1.5rem;
+        transition: transform 0.3s ease;
+        flex-shrink: 0;
+    }
+
+    /* Rotate icon when open */
+    .accordion-native[open] .accordion-native__icon {
+        transform: rotate(180deg);
+    }
+
+    .accordion-native__content {
+        padding-top: 1rem;
+        animation: slideDown 0.3s ease;
+    }
+
+    /* Optional: Add smooth animation when opening */
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Ensure child components maintain their own styling */
+    .accordion-native__content > * {
+        /* Don't add any styles here - let children keep their own styles */
+    }
+
+    @media screen and (min-width: 768px) {
+        .accordion-native__title {
+            font-size: 1.25rem;
+        }
+    }
+</style>

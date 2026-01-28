@@ -12,21 +12,23 @@
  *   )}
  */
 
-interface PhysicalSpecsProps {
-  dimensions?: string;
+import Accordion from "../Layout/Accordion.astro";
+
+
+interface Props {
+physicalSpecs: {  dimensions?: string;
   weightDry?: string;
   weightWet?: string;
   waterTankCapacity?: string;
   fuelTankCapacity?: string;
   adBlueCapacity?: string;
   soundAttenuation?: string;
+};
+useAccordion?: boolean;
+defaultOpen?: boolean;
 }
 
-interface Props {
-  physicalSpecs: PhysicalSpecsProps;
-}
-
-const { physicalSpecs } = Astro.props;
+const { physicalSpecs, useAccordion = true, defaultOpen = true } = Astro.props;
 
 // Handle empty or missing data gracefully
 if (!physicalSpecs) {
@@ -55,8 +57,22 @@ function formatLabel(key: string): string {
   return labels[key] || key;
 }
 ---
-
 <section class="physical-specs__container">
+{useAccordion ? 
+(<Accordion defaultOpen={true}>
+  <h2 slot="title">Physical Characteristics</h2>
+
+  <div class="physical-specs__grid">
+    {dataEntries.map(({ label, value }) => (
+      <div class="physical-specs__item">
+        <dt class="physical-specs__label">{label}</dt>
+        <dd class="physical-specs__value">{value}</dd>
+      </div>
+    ))}
+  </div>
+
+</Accordion>)
+ : 
   <h2>Physical Characteristics</h2>
 
   <div class="physical-specs__grid">
@@ -67,7 +83,8 @@ function formatLabel(key: string): string {
       </div>
     ))}
   </div>
-</section>
+}
+</section> 
 
 <style>
   .physical-specs__container {
@@ -78,7 +95,6 @@ function formatLabel(key: string): string {
     font-size: 1.5rem;
     font-weight: 450;
     color: var(--pj_blue_80);
-    margin-bottom: 2rem;
   }
 
   .physical-specs__grid {
@@ -113,7 +129,6 @@ function formatLabel(key: string): string {
     .physical-specs__container {
       grid-column: 1 / -1;
       padding: 0 1rem;
-      margin: 2rem 0;
     }
 
     .physical-specs__grid {
