@@ -1,11 +1,11 @@
 ---
 /**
- * 
+ *
  * Displays physical specifications in a clean card/list format.
- * 
+ *
  * Props:
  *   - physicalSpecs: Object with dimensions, weightDry, weightWet, waterTankCapacity, fuelTankCapacity, adBlueCapacity, soundAttenuation
- * 
+ *
  * Example usage:
  *   {hasPhysicalSpecs && physicalSpecs && (
  *     <PhysicalSpecs physicalSpecs={physicalSpecs} />
@@ -14,21 +14,19 @@
 
 import Accordion from "../Layout/Accordion.astro";
 
-
 interface Props {
-physicalSpecs: {  dimensions?: string;
-  weightDry?: string;
-  weightWet?: string;
-  waterTankCapacity?: string;
-  fuelTankCapacity?: string;
-  adBlueCapacity?: string;
-  soundAttenuation?: string;
-};
-useAccordion?: boolean;
-defaultOpen?: boolean;
+  physicalSpecs: {
+    dimensions?: string;
+    weightDry?: string;
+    weightWet?: string;
+    waterTankCapacity?: string;
+    fuelTankCapacity?: string;
+    adBlueCapacity?: string;
+    soundAttenuation?: string;
+  };
 }
 
-const { physicalSpecs, useAccordion = true, defaultOpen = true } = Astro.props;
+const { physicalSpecs } = Astro.props;
 
 // Handle empty or missing data gracefully
 if (!physicalSpecs) {
@@ -41,54 +39,68 @@ const dataEntries = Object.entries(physicalSpecs)
   .map(([key, value]) => ({
     key,
     value,
-    label: formatLabel(key)
+    label: formatLabel(key),
   }));
 
 function formatLabel(key: string): string {
   const labels: Record<string, string> = {
-    dimensions: 'Dimensions',
-    weightDry: 'Weight (Dry)',
-    weightWet: 'Weight (Wet)',
-    waterTankCapacity: 'Water Tank Capacity',
-    fuelTankCapacity: 'Fuel Tank Capacity',
-    adBlueCapacity: 'AdBlue Tank Capacity',
-    soundAttenuation: 'Sound Attenuation'
+    dimensions: "Dimensions",
+    weightDry: "Weight (Dry)",
+    weightWet: "Weight (Wet)",
+    waterTankCapacity: "Water Tank Capacity",
+    fuelTankCapacity: "Fuel Tank Capacity",
+    adBlueCapacity: "AdBlue Tank Capacity",
+    soundAttenuation: "Sound Attenuation",
   };
   return labels[key] || key;
 }
 ---
+
 <section class="physical-specs__container">
-{useAccordion ? 
-(<Accordion defaultOpen={true}>
-  <h2 slot="title">Physical Characteristics</h2>
-
-  <div class="physical-specs__grid">
-    {dataEntries.map(({ label, value }) => (
-      <div class="physical-specs__item">
-        <dt class="physical-specs__label">{label}</dt>
-        <dd class="physical-specs__value">{value}</dd>
+  <!-- Mobile: With Accordion -->
+  <div class="mobile-only">
+    <Accordion defaultOpen={true}>
+      <h2 slot="title">Physical Characteristics</h2>
+      <div class="physical-specs__grid">
+        {
+          dataEntries.map(({ label, value }) => (
+            <div class="physical-specs__item">
+              <dt class="physical-specs__label">{label}</dt>
+              <dd class="physical-specs__value">{value}</dd>
+            </div>
+          ))
+        }
       </div>
-    ))}
+    </Accordion>
   </div>
 
-</Accordion>)
- : 
-  <h2>Physical Characteristics</h2>
-
-  <div class="physical-specs__grid">
-    {dataEntries.map(({ label, value }) => (
-      <div class="physical-specs__item">
-        <dt class="physical-specs__label">{label}</dt>
-        <dd class="physical-specs__value">{value}</dd>
-      </div>
-    ))}
+  <!-- Desktop: No Accordion -->
+  <div class="desktop-only">
+    <h2>Physical Characteristics</h2>
+    <div class="physical-specs__grid">
+      {
+        dataEntries.map(({ label, value }) => (
+          <div class="physical-specs__item">
+            <dt class="physical-specs__label">{label}</dt>
+            <dd class="physical-specs__value">{value}</dd>
+          </div>
+        ))
+      }
+    </div>
   </div>
-}
-</section> 
+</section>
 
 <style>
+  /* Mobile: Show accordion only */
+  .mobile-only {
+    display: block;
+  }
+  .desktop-only {
+    display: none;
+  }
+
   .physical-specs__container {
-    grid-column: 2 / -2;
+    grid-column: 1 / -1;
   }
 
   .physical-specs__container h2 {
@@ -125,16 +137,27 @@ function formatLabel(key: string): string {
     margin: 0;
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (min-width: 768px) {
+    /* Desktop: Show regular content */
+      .mobile-only {
+        display: none;
+      }
+      .desktop-only {
+        display: block;
+      }
+    
+
+    .physical-specs__container h2 {
+      margin-bottom: 2rem;
+    }
+
     .physical-specs__container {
-      grid-column: 1 / -1;
-      padding: 0 1rem;
+      grid-column: 2 / -2;
     }
 
     .physical-specs__grid {
       grid-template-columns: 1fr;
       gap: 1rem;
     }
-
   }
 </style>

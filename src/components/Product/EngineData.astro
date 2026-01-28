@@ -13,17 +13,18 @@
  *   )}
  */
 
-interface EngineDataProps {
+import Accordion from '../Layout/Accordion.astro';
+
+interface Props {
+  engineData: {
   manufacturer?: string;
   model?: string;
   ratings?: string;
   emissionCompliancy?: string;
   fuelConsumption?: string;
   adblueConsumption?: string;
-}
+  };
 
-interface Props {
-  engineData: EngineDataProps;
 }
 
 const { engineData } = Astro.props;
@@ -56,8 +57,11 @@ function formatLabel(key: string): string {
 ---
 
 <section class="engine-data__container">
-  <h2>Engine Specifications</h2>
-  
+  <!-- Mobile: With Accordion -->
+  <div class="mobile-only">
+<Accordion defaultOpen={true}>
+  <h2 slot="title">Engine Specifications</h2>
+
   <div class="engine-data__grid">
     {dataEntries.map(({ label, value }) => (
       <div class="engine-data__item">
@@ -66,18 +70,40 @@ function formatLabel(key: string): string {
       </div>
     ))}
   </div>
+</Accordion>
+  </div>
+
+    <!-- Desktop: No Accordion -->
+  <div class="desktop-only">
+    <h2>Engine Specifications</h2>
+    <div class="engine-data__grid">
+      {dataEntries.map(({ label, value }) => (
+        <div class="engine-data__item">
+          <dt class="engine-data__label">{label}</dt>
+          <dd class="engine-data__value">{value}</dd>
+        </div>
+      ))}
+    </div>
+  </div>
 </section>
 
 <style>
+  /* Mobile: Show accordion only */
+  .mobile-only {
+    display: block;
+  }
+  .desktop-only {
+    display: none;
+  }
+
   .engine-data__container {
-    grid-column: 2 / -2;
+    grid-column: 1 / -1;
   }
 
   .engine-data__container h2 {
     font-size: 1.5rem;
     font-weight: 450;
     color: var(--pj_blue_80);
-    margin-bottom: 2rem;
   }
 
   .engine-data__grid {
@@ -108,12 +134,23 @@ function formatLabel(key: string): string {
     margin: 0;
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (min-width: 768px) {
+     /* Desktop: Show regular content */
+      .mobile-only {
+        display: none;
+      }
+      .desktop-only {
+        display: block;
+      }
+
     .engine-data__container {
-      grid-column: 1 / -1;
+      grid-column: 2 / -2;
       padding: 0 1rem;
-      margin: 2rem 0;
     }
+
+    .engine-data__container h2 {
+      margin-bottom: 2rem;
+    } 
 
     .engine-data__grid {
       grid-template-columns: 1fr;

@@ -1,4 +1,6 @@
 ---
+import Accordion from "../Layout/Accordion.astro";
+
 interface Props {
     headers: string[];
     rows: Array<{
@@ -10,41 +12,78 @@ const { headers, rows } = Astro.props;
 ---
 
 <div class="performance-table__container">
-    <h2>Performance Specifications</h2>
+    <!-- Mobile: With Accordion -->
+    <div class="mobile-only">
+        <Accordion defaultOpen={true}>
+            <h2 slot="title">Performance Specifications</h2>
 
-    <div class="performance-table__data">
-        <table class="performance-table">
-            <thead>
-                <tr>
-                    {headers.map((header) => <th>{header}</th>)}
-                </tr>
-            </thead>
-            <tbody>
-                {
-                    rows.map((row) => (
+            <div class="performance-table__data">
+                <table class="performance-table">
+                    <thead>
                         <tr>
-                            {row.cells.map((cell) => (
-                                <td>{cell}</td>
-                            ))}
+                            {headers.map((header) => <th>{header}</th>)}
                         </tr>
-                    ))
-                }
-            </tbody>
-        </table>
+                    </thead>
+                    <tbody>
+                        {
+                            rows.map((row) => (
+                                <tr>
+                                    {row.cells.map((cell) => (
+                                        <td>{cell}</td>
+                                    ))}
+                                </tr>
+                            ))
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </Accordion>
+    </div>
+
+    <!-- Desktop: No Accordion -->
+    <div class="desktop-only">
+        <h2>Performance Specifications</h2>
+
+        <div class="performance-table__data">
+            <table class="performance-table">
+                <thead>
+                    <tr>
+                        {headers.map((header) => <th>{header}</th>)}
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        rows.map((row) => (
+                            <tr>
+                                {row.cells.map((cell) => (
+                                    <td>{cell}</td>
+                                ))}
+                            </tr>
+                        ))
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
 <style>
+      /* Mobile: Show accordion only */
+  .mobile-only {
+    display: block;
+  }
+  .desktop-only {
+    display: none;
+  }
+
     .performance-table__container {
         width: 100%;
-        margin-bottom: 2rem;
     }
 
     .performance-table__container h2 {
         font-size: 1.5rem;
         font-weight: 450;
         color: var(--pj_blue_80);
-        margin-bottom: 2rem;
     }
 
     .performance-table {
@@ -73,7 +112,7 @@ const { headers, rows } = Astro.props;
         padding: 1rem;
         text-align: center;
         font-weight: 500;
-        font-size: 0.875rem;
+        font-size: 0.75rem;
         white-space: nowrap; /* Prevents header text wrapping */
         border-right: 1px solid rgba(255, 255, 255, 0.2); /* Subtle dividers */
     }
@@ -118,9 +157,21 @@ const { headers, rows } = Astro.props;
     }
 
     /* Mobile responsive */
-    @media screen and (max-width: 768px) {
+    @media screen and (min-width: 768px) {
+          /* Desktop: Show regular content */
+      .mobile-only {
+        display: none;
+      }
+      .desktop-only {
+        display: block;
+      }
+
+    .performance-table__container h2 {
+        margin-bottom: 2rem;
+    }
+
         .performance-table {
-            font-size: 0.75rem;
+            font-size: 0.875rem;
         }
 
         .performance-table th,

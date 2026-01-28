@@ -12,17 +12,18 @@
  *     <BuildOptions options={buildOptions} />
  *   )}
  */
-
+import Accordion from "../Layout/Accordion.astro";
 import RichText from '../Content/RichText.astro';
 
-interface BuildOption {
-  optionTitle?: string;
-  description?: string;
-}
-
 interface Props {
-  options: BuildOption[];
-}
+  options: {
+    optionTitle?: string;
+    description?: string;
+  }[]; 
+};
+
+
+
 
 const { options } = Astro.props;
 
@@ -33,8 +34,28 @@ if (!options || options.length === 0) {
 ---
 
 <section class="build-options__container">
-  <h2>Available Build Options</h2>
-  
+  <!-- Mobile: With Accordion -->
+  <div class="mobile-only">
+  <Accordion defaultOpen={true}>
+    <h2 slot="title">Build Options</h2>
+    <div class="build-options__list">
+      {options.map((option) => (
+        <div class="build-option__item">
+          <div class="build-option__header">
+            <h3 class="build-option__title">{option.optionTitle || 'Option'}</h3>
+          </div>
+          {option.description && (
+            <RichText value={option.description} className="build-option__description" />
+          )}
+        </div>
+      ))}
+    </div>
+  </Accordion>
+  </div>
+
+  <!-- Desktop: No Accordion -->
+  <div class="desktop-only">
+  <h2>Build Options</h2>
   <div class="build-options__list">
     {options.map((option) => (
       <div class="build-option__item">
@@ -47,9 +68,18 @@ if (!options || options.length === 0) {
       </div>
     ))}
   </div>
+  </div>
 </section>
 
 <style>
+   /* Mobile: Show accordion only */
+  .mobile-only {
+    display: block;
+  }
+  .desktop-only {
+    display: none;
+  }
+
   .build-options__container {
     grid-column: 2 / -2;
     margin-bottom: 6rem;
@@ -59,7 +89,6 @@ if (!options || options.length === 0) {
     font-size: 1.5rem;
     font-weight: 450;
     color: var(--pj_blue_80);
-    margin-bottom: 2rem;
   }
 
   .build-options__list {
@@ -88,15 +117,30 @@ if (!options || options.length === 0) {
   }
 
   @media screen and (min-width: 768px) {
+     /* Desktop: Show regular content */
+      .mobile-only {
+        display: none;
+      }
+      .desktop-only {
+        display: block;
+      }
+
     .build-options__container {
-      grid-column: 3 / -3;
+      grid-column: 2 / -2;
       margin-bottom: 7.75rem;
     }
+
+    .build-options__container h2 {
+      margin-bottom: 2rem;
+    }
+
 
     .build-options__list {
       grid-template-columns: 1fr;
       gap: 1rem;
     }
+
+    
 
 
     .build-option__code {
