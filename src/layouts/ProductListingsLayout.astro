@@ -127,18 +127,22 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
 
 <style>
 
+  .product-tab__container {
+    grid-column: 1 / -1;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 1rem;
+  } 
+
   .product-tab__header {
     grid-column: 2 / -2;
   }
 
   .products-tabs {
-    grid-column: 2 / -2;
     display: flex;
     gap: 0.75rem;
-    margin-bottom: 3rem;
-    overflow-x: auto;
     padding-bottom: 0.5rem;
-    -webkit-overflow-scrolling: touch;
+    padding: 0 2rem;
   }
 
   .tab-btn {
@@ -201,18 +205,33 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
   }
 
   @media screen and (min-width: 768px) {
+
+      .product-tab__container {
+    margin-bottom: 3rem;
+  } 
+
     .products-grid {
       grid-template-columns: repeat(4, 1fr);
     }
 
     .products-tabs {
       gap: 1rem;
+      padding: 0 3.5rem;
     }
   }
 
   @media screen and (min-width: 1024px) {
+
+
+  .product-tab__container {
+    margin-bottom: 4rem;
+  } 
+
+
     .products-tabs {
       grid-column: 3 / -3;
+      padding: 0 4.5rem;
+
     }
 
     .products-grid {
