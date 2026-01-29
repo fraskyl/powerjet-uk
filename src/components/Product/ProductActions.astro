@@ -3,19 +3,22 @@
 import Button from "../UI/Button.astro";
 
 interface Props {
-  dataSheetUrl?: string;
+  hasDatasheet?: boolean;
+  datasheetUrl?: string;
+  datasheetFileName?: string;
 }
 
-const { dataSheetUrl } = Astro.props;
+const { hasDatasheet=false, datasheetUrl, datasheetFileName } = Astro.props;
 ---
 
 <div class="product-actions">
-  {dataSheetUrl && (
-    <Button variant="tertiary" href={dataSheetUrl} download>
+  {datasheetUrl && (
+    <Button type="button" variant="tertiary" href={datasheetUrl} download={datasheetFileName}
+    target="_blank" rel="noopener noreferrer">
       Download Datasheet
     </Button>
   )}
-  <Button variant="primary" href="/contact">
+  <Button type="button" variant="primary" href="/contact">
     Request a Quote
   </Button>
 </div>

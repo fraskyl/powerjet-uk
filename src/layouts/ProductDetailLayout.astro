@@ -22,6 +22,9 @@ interface Props {
         description?: any;
         imageUrl: string;
         imageAlt: string;
+        hasDatasheet?: boolean;
+        datasheetUrl?: string;
+        datasheetFileName?: string;
 
         // Categorization
         availability?: string[];
@@ -74,7 +77,6 @@ interface Props {
         }>;
 
         // Additional
-        dataSheetUrl?: string;
         featured?: boolean;
         order?: number;
 
@@ -118,7 +120,9 @@ const productImageAlt = product?.imageAlt || "Product image";
                 description={productDescription}
                 imageUrl={productImageUrl}
                 imageAlt={productImageAlt || product.title}
-                dataSheetUrl={product.dataSheetUrl}
+                hasDatasheet={product.hasDatasheet}
+                datasheetUrl={product.datasheetUrl}
+                datasheetFileName={product.datasheetFileName}
             />
 
 

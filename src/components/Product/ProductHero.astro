@@ -10,10 +10,12 @@ interface Props {
     description?: any;
     imageUrl: string;
     imageAlt: string;
-    dataSheetUrl?: string;
+    hasDatasheet?: boolean;
+    datasheetUrl?: string;
+    datasheetFileName?: string;
 }
 
-const { title, lede, description, imageUrl, imageAlt, dataSheetUrl } =
+const { title, lede, description, imageUrl, imageAlt, hasDatasheet, datasheetUrl, datasheetFileName } =
     Astro.props;
 ---
 
@@ -35,7 +37,11 @@ const { title, lede, description, imageUrl, imageAlt, dataSheetUrl } =
                 }
             </div>
 
-            <ProductActions dataSheetUrl={dataSheetUrl} />
+            <ProductActions 
+                hasDatasheet={hasDatasheet} 
+                datasheetUrl={datasheetUrl}
+                datasheetFileName={datasheetFileName}
+            />
         </div>
         <div class="product-detail__media">
             <ProductImage imageUrl={imageUrl} imageAlt={imageAlt} />
