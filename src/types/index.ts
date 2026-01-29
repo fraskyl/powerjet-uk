@@ -181,8 +181,13 @@ export interface Application {
   title: string;
   slug: string;
   description: string;
-  imageUrl: string;
-  imageAlt: string;
+  images: Array<{
+    url: string;
+    alt: string;
+    caption?: string;
+    hotspot?: any;
+    crop?: any;
+  }>;
   recommendedProducts?: Product[];
 }
 
@@ -194,9 +199,25 @@ export interface Product {
   slug: string;
   description: string;
   additionalDescription?: string;
-  mainImageUrl: string;
-  mainImageAlt: string;
-  dataSheetUrl?: string;
+  images: Array<{
+    url: string;
+    alt: string;
+    caption?: string;
+    hotspot?: any;
+    crop?: any;
+  }>;
+  hasDatasheet?: boolean;
+  datasheetUrl?: string;
+  datasheetFileName?: string;
+  availability: string[];
+  lede: string;
+  productType: {
+    title: string;
+    slug: string;
+  };
+  featured: boolean;
+  order: number;
+  // Detailed specs
   performanceSpecs?: PerformanceSpec[];
   physicalSpecs?: PhysicalSpecs;
   engineSpecs?: EngineSpecs;

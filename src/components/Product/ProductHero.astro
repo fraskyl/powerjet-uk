@@ -3,6 +3,7 @@ import "../../styles/global.css";
 import RichText from "../Content/RichText.astro";
 import ProductActions from "./ProductActions.astro";
 import ProductImage from "./ProductImage.astro";
+import ImageGallery from "../UI/ImageGallery.astro";
 
 interface Props {
     title: string;
@@ -10,13 +11,28 @@ interface Props {
     description?: any;
     imageUrl: string;
     imageAlt: string;
+    images?: Array<{
+        url: string;
+        alt: string;
+        caption?: string;
+    }>;
     hasDatasheet?: boolean;
     datasheetUrl?: string;
     datasheetFileName?: string;
 }
 
-const { title, lede, description, imageUrl, imageAlt, hasDatasheet, datasheetUrl, datasheetFileName } =
-    Astro.props;
+const { 
+    title,
+    lede,
+    description,
+    imageUrl,
+    imageAlt,
+    images,
+    hasDatasheet,
+    datasheetUrl,
+    datasheetFileName
+ } = Astro.props;
+
 ---
 
 <div class="product-hero__wrapper">
@@ -44,7 +60,12 @@ const { title, lede, description, imageUrl, imageAlt, hasDatasheet, datasheetUrl
             />
         </div>
         <div class="product-detail__media">
-            <ProductImage imageUrl={imageUrl} imageAlt={imageAlt} />
+           <!-- <ProductImage imageUrl={imageUrl} imageAlt={imageAlt} /> -->
+            <ProductImage 
+            imageUrl={imageUrl}
+            imageAlt={imageAlt}
+            images={images} 
+            />
         </div>
     </div>
 

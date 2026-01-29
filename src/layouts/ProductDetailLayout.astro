@@ -11,6 +11,7 @@ import PhysicalSpecs from "../components/Product/PhysicalSpecs.astro";
 import BaseLayout from "./BaseLayout.astro";
 import SectionTitle from "../components/Content/SectionTitle.astro";
 import ProductHero from "../components/Product/ProductHero.astro";
+import ImageGallery from "../components/UI/ImageGallery.astro";
 
 interface Props {
     title: string;
@@ -22,6 +23,11 @@ interface Props {
         description?: any;
         imageUrl: string;
         imageAlt: string;
+        images?: Array<{
+            url: string;
+            alt: string;
+            caption?: string;
+        }>;
         hasDatasheet?: boolean;
         datasheetUrl?: string;
         datasheetFileName?: string;
@@ -32,6 +38,8 @@ interface Props {
             title: string;
             slug: string;
         };
+
+       
 
         // Performance Table (Optional)
         hasPerformanceTable?: boolean;
@@ -92,6 +100,16 @@ interface Props {
 
 const { product } = Astro.props;
 
+// Handle both new images array and legacy single image
+let productImages = product?.images || [];
+if (productImages.length === 0 && product?.imageUrl) {
+    // Backwards compatibility: convert single image to array
+    productImages = [{
+        url: product.imageUrl,
+        alt: product.imageAlt || product.title
+    }];
+}
+
 // Provide fallback values for development
 const productTitle = product?.title || "Product";
 const productLede = product?.lede || "";
@@ -118,6 +136,7 @@ const productImageAlt = product?.imageAlt || "Product image";
                 title={productTitle}
                 lede={productLede}
                 description={productDescription}
+                images={productImages}
                 imageUrl={productImageUrl}
                 imageAlt={productImageAlt || product.title}
                 hasDatasheet={product.hasDatasheet}
