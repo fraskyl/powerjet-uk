@@ -9,21 +9,41 @@ import TextHero from "../../components/Sections/TextHero.astro";
 import Card from "../../components/UI/Card.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-import Divider from "../../components/UI/Divider.astro";
 
 // Fetch all applications from Sanity
 let applications = [];
 let fetchError = false;
 
+
+const title = "Applications | Powerjet";
+
 try {
     applications = await sanityClient.fetch(applicationsIndexQuery);
     console.log("✅ Fetched applications:", applications?.length || 0);
+    
+    // Process applications to extract first image from images array
+    applications = applications.map((app: any) => {
+        let imageUrl = app.imageUrl;
+        let imageAlt = app.imageAlt;
+        
+        // Use first image from images array if available
+        if (app.images && app.images.length > 0) {
+            imageUrl = app.images[0].url;
+            imageAlt = app.images[0].alt;
+        }
+        
+        return {
+            ...app,
+            imageUrl,
+            imageAlt
+        };
+    });
+    
 } catch (error) {
     console.error("❌ Sanity fetch error:", error);
     fetchError = true;
 }
 
-const title = "Applications | Powerjet";
 ---
 
 <BaseLayout title={title}>
