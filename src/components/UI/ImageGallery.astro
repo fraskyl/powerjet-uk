@@ -12,32 +12,32 @@ interface Props {
 const { imageUrl, imageAlt, images } = Astro.props;
 
 // Determine if we have a gallery or single image
-let productImages = images || [];
+let galleryImages = images || [];
 
 // Backwards compatibility: convert single image props to array format
-if (productImages.length === 0 && imageUrl) {
-  productImages = [{
+if (galleryImages.length === 0 && imageUrl) {
+  galleryImages = [{
     url: imageUrl,
     alt: imageAlt || "Product image"
   }];
 }
 
 // Check if we should show gallery controls
-const isSingleImage = productImages.length === 1;
+const isSingleImage = galleryImages.length === 1;
 ---
 
-<div class="product-image" data-gallery={!isSingleImage}>
+<div class="image-gallery" data-gallery={!isSingleImage}>
   {isSingleImage ? (
     <!-- Single image view -->
-    <div class="product-image__single">
-      <img src={productImages[0].url} alt={productImages[0].alt} />
+    <div class="image-gallery__single">
+      <img src={galleryImages[0].url} alt={galleryImages[0].alt} />
     </div>
   ) : (
     <!-- Gallery view -->
-    <div class="product-image__gallery">
+    <div class="image-gallery__gallery">
       <!-- Main Image Display -->
       <div class="gallery-main">
-        {productImages.map((image, index) => (
+        {galleryImages.map((image, index) => (
           <div 
             class="gallery-slide" 
             data-index={index}
@@ -73,7 +73,7 @@ const isSingleImage = productImages.length === 1;
       
       <!-- Thumbnail Navigation -->
       <div class="gallery-thumbnails">
-        {productImages.map((image, index) => (
+        {galleryImages.map((image, index) => (
           <button
             class={`thumbnail ${index === 0 ? 'active' : ''}`}
             data-index={index}
@@ -90,7 +90,7 @@ const isSingleImage = productImages.length === 1;
       
       <!-- Dot Navigation (Mobile Only) -->
       <div class="gallery-dots">
-        {productImages.map((image, index) => (
+        {galleryImages.map((image, index) => (
           <button
             class={`dot ${index === 0 ? 'active' : ''}`}
             data-index={index}
@@ -105,26 +105,26 @@ const isSingleImage = productImages.length === 1;
 
 <style>
   /* Base container */
-  .product-image {
+  .image-gallery {
     width: 100%;
     display: flex;
     flex-direction: column;
   }
 
   /* Single image styles */
-  .product-image__single {
+  .image-gallery__single {
     aspect-ratio: 3 / 2;
     overflow: hidden;
     border-radius: 0.25rem;
   }
 
-  .product-image__single img {
+  .image-gallery__single img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  .product-image__gallery {
+  .image-gallery__gallery {
     width: 100%;
     max-width: 100%;
     display: flex;
@@ -354,7 +354,7 @@ const isSingleImage = productImages.length === 1;
     }
     
     /* Ensure gallery doesn't cause horizontal scroll */
-    .product-image__gallery,
+    .image-gallery__gallery,
     .gallery-main {
       max-width: 100%;
     }
@@ -363,8 +363,8 @@ const isSingleImage = productImages.length === 1;
 
 <script>
   // Gallery functionality
-  function initProductGallery() {
-    const galleries = document.querySelectorAll('.product-image__gallery');
+  function initImageGallery() {
+    const galleries = document.querySelectorAll('.image-gallery__gallery');
     
     galleries.forEach(gallery => {
       const slides = gallery.querySelectorAll('.gallery-slide');
@@ -465,8 +465,8 @@ const isSingleImage = productImages.length === 1;
   }
   
   // Initialize on page load
-  document.addEventListener('DOMContentLoaded', initProductGallery);
+  document.addEventListener('DOMContentLoaded', initImageGallery);
   
   // Re-initialize on Astro view transitions (if using)
-  document.addEventListener('astro:page-load', initProductGallery);
+  document.addEventListener('astro:page-load', initImageGallery);
 </script>
