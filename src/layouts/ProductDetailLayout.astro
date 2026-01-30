@@ -115,6 +115,8 @@ const productLede = product?.lede || "";
 const productDescription = product?.description || null;
 const productImageUrl = product?.imageUrl || "";
 const productImageAlt = product?.imageAlt || "Product image";
+
+const relatedProducts = product?.relatedProducts || [];
 ---
 
 <BaseLayout>
@@ -203,39 +205,35 @@ const productImageAlt = product?.imageAlt || "Product image";
             </>
         )}
 
-        <div class="divider__border"></div>
 
-        <section class="section__product-detail-related-products">
-            <div class="section__product-detail-related-products-title">
-                <SectionTitle headline="Related Products" headingSize="small" />
-            </div>
-            <div class="section__product-detail-related-products-cards">
-                <Card
-                    imageURL="/src/assets/New_Image_Magtrack-lrg.jpeg"
-                    imageAlt="MagTrack unit removing paint from the side of a ship's hull"
-                    href="/application-detail"
-                    buttonLabel="Surface Preparation"
-                    icon={true}
-                    style="light"
-                />
-                <Card
-                    imageURL="/src/assets/New_Image_Magtrack-lrg.jpeg"
-                    imageAlt="MagTrack unit removing paint from the side of a ship's hull"
-                    href="/sales"
-                    buttonLabel="Sales"
-                    icon={true}
-                    style="light"
-                />
-                <Card
-                    imageURL="/src/assets/New_Image_Magtrack-lrg.jpeg"
-                    imageAlt="MagTrack unit removing paint from the side of a ship's hull"
-                    href="/sales"
-                    buttonLabel="Sales"
-                    icon={true}
-                    style="light"
-                />
-            </div>
-        </section>
+
+
+{
+                relatedProducts.length > 0 && (
+                <div class="divider__border"></div>
+                    <section class="section__product-detail-related-products">
+                        <div class="section__product-detail-related-products-title">
+                            <SectionTitle
+                                headline="Recommended Products"
+                                headingSize="small"
+                            />
+                        </div>
+                        <div class="section__product-detail-related-products-cards">
+                        {relatedProducts.map((product: any) => (
+                            <Card
+                                imageURL={product.imageUrl}
+                                imageAlt={product.imageAlt}
+                                href={`/products/${product.slug}`}
+                                buttonLabel={product.title}
+                                icon={true}
+                                style="light"
+                            />
+                        ))}
+                    </div>
+                 
+                    </section>
+                )
+            }
 
         <ContactBlock />
            </div>
