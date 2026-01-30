@@ -39,6 +39,22 @@ try {
   const filteredProducts = allProducts.filter((product: any) => 
     product.availability?.includes(pageType)
   );
+
+  // Extract first image from the images array
+  allProducts = allProducts.map((product: any) => {
+    let imageUrl = product.imageUrl;
+    let imageAlt = product.imageAlt;
+if (product.images && product.images.length > 0) {
+  imageUrl = product.images[0].url;
+  imageAlt = product.images[0].alt;
+}
+
+return {
+  ...product,
+  imageUrl,
+  imageAlt
+};
+  });
   
   console.log(`✅ Products after filtering:`, filteredProducts.length);
   
