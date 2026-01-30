@@ -2,8 +2,14 @@
 // Shared layout for both Rentals and Sales pages with tab filtering
 
 import "../styles/global.css";
+
 import { sanityClient } from "../lib/sanity";
-import { productTypesQuery, allProductsQuery } from "../lib/queries";
+import { topLevelProductTypesQuery,
+         allProductsWithCategoriesQuery,
+         allProductTypesWithParentsQuery,
+      } from "../lib/queries";
+
+
 import BaseLayout from "./BaseLayout.astro";
 import Header from "../components/Layout/Header.astro";
 import Footer from "../components/Layout/Footer.astro";
@@ -19,52 +25,91 @@ interface Props {
 
 const { pageType, headline } = Astro.props;
 
-let productTypes = [];
+let topLevelCategories = [];
 let allProducts = [];
+let allProductTypes = []; // Add this
 let fetchError = false;
 
+
 try {
-  productTypes = await sanityClient.fetch(productTypesQuery);
-  allProducts = await sanityClient.fetch(allProductsQuery);
-  
-  // Server-side logs (check your terminal)
-  console.log(`\n📦 ${pageType.toUpperCase()} PAGE - Raw products:`, allProducts.length);
-  
-  if (allProducts.length > 0) {
-    console.log('Sample product data:', JSON.stringify(allProducts[0], null, 2));
-  }
-  
-  // Filter products by availability
-  const filteredProducts = allProducts.filter((product: any) => 
-    product.availability?.includes(pageType)
+   // Fetch all product types (including those without products)
+  allProductTypes = await sanityClient.fetch(allProductTypesWithParentsQuery,
+    { 
+      availability: pageType 
+    }
   );
 
-  // Extract first image from the images array
-  allProducts = allProducts.map((product: any) => {
-    let imageUrl = product.imageUrl;
-    let imageAlt = product.imageAlt;
-if (product.images && product.images.length > 0) {
-  imageUrl = product.images[0].url;
-  imageAlt = product.images[0].alt;
-}
+  // Fetch top-level categories and products with full category hierarchy
+  topLevelCategories = await sanityClient.fetch(topLevelProductTypesQuery,
+    {
+      availability: pageType
+    }
+  );
 
-return {
-  ...product,
-  imageUrl,
-  imageAlt
-};
+  const rawProducts = await sanityClient.fetch(allProductsWithCategoriesQuery, 
+  { 
+    availability: pageType 
   });
   
-  console.log(`✅ Products after filtering:`, filteredProducts.length);
+  console.log(`\n📦 ${pageType.toUpperCase()} PAGE - Raw products:`, rawProducts.length);
+  console.log(`✅ Top-level categories:`, topLevelCategories.length);
+  console.log(`✅ All product types:`, allProductTypes.length);
+  console.log(`✅ Products (filtered by ${pageType}):`, rawProducts.length);
+  
+ console.log('\n🔍 FIRST 3 PRODUCTS RAW DATA:');
+  rawProducts.slice(0, 3).forEach((p: any) => {
+    console.log(`  Product: ${p.title}`);
+    console.log(`    Availability: ${JSON.stringify(p.availability)}`);
+    console.log(`    Product Type: ${p.productType?.title} (${p.productType?.slug})`);
+    console.log(`    Parent: ${p.productType?.parent?.title || 'none'}`);
+  });
+  
+  if (rawProducts.length > 0) {
+    console.log('\n📄 FULL SAMPLE PRODUCT DATA:');
+    console.log(JSON.stringify(rawProducts[0], null, 2));
+  }
+  
+  // Process products: extract images and build category paths
+  allProducts = rawProducts.map((product: any) => {
+    let imageUrl = product.imageUrl;
+    let imageAlt = product.imageAlt;
+    
+    // Extract first image from array if exists
+    if (product.images && product.images.length > 0) {
+      imageUrl = product.images[0].url;
+      imageAlt = product.images[0].alt;
+    }
+    
+    // Build category path array (current → parent → grandparent)
+    const categoryPath = [];
+    if (product.productType?.slug) {
+      categoryPath.push(product.productType.slug);
+      
+      if (product.productType.parent?.slug) {
+        categoryPath.push(product.productType.parent.slug);
+        
+        if (product.productType.parent.parent?.slug) {
+          categoryPath.push(product.productType.parent.parent.slug);
+        }
+      }
+    }
+    
+    return {
+      ...product,
+      imageUrl,
+      imageAlt,
+      categoryPath
+    };
+  });
+  
+  console.log(`✅ Processed products:`, allProducts.length);
   
   // Check for missing images
-  filteredProducts.forEach((product: any) => {
+  allProducts.forEach((product: any) => {
     if (!product.imageUrl) {
       console.warn(`⚠️ Missing image URL for product: ${product.title}`);
     }
   });
-  
-  allProducts = filteredProducts;
   
 } catch (error) {
   console.error(`❌ Error fetching ${pageType} products:`, error);
@@ -87,32 +132,54 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
       ) : (
         <>
         <div class="product-tab__header">
-          <SectionTitle headline="Browse by product type" headingSize="small" />
-          </div>  
-        <div class="product-tab__container">
-          <!-- Tab Navigation -->
-          {productTypes.length > 0 && (
-            <div class="products-tabs">
-              <button class="tab-btn active" data-type="all">
-                All Products
+          <SectionTitle
+            headline="Browse by product type"
+            headingSize="small"
+          />  
+        </div>  
+
+
+        <!-- Main Category Tabs (Top Level) -->
+        <div class="product-tab__container" id="level-1-container">
+          <div class="products-tabs" id="level-1-tabs">
+              <button class="tab-btn active" data-category="all" data-level="1">
+                All products
               </button>
-              {productTypes.map((type: any) => (
-                <button class="tab-btn" data-type={type.slug}>
-                  {type.title}
+         {topLevelCategories.map((cat: any) => (
+                <button 
+                  class="tab-btn" 
+                  data-category={cat.slug}
+                  data-category-id={cat._id}
+                  data-level="0"
+                >
+                  {cat.title}
                 </button>
               ))}
             </div>
-          )}
           </div>
 
+             <!-- Level 2: Second-level Category Tabs (Hidden by Default) -->
+          <div class="product-tab__container nested-tabs-container" id="level-2-container" style="display: none;">
+            <div class="products-tabs nested-tabs" id="level-2-tabs">
+              <!-- Populated dynamically by JavaScript -->
+            </div>
+          </div>
+
+          <!-- Level 3: Third-level Category Tabs (Hidden by Default) -->
+          <div class="product-tab__container nested-tabs-container deeper-nested" id="level-3-container" style="display: none;">
+            <div class="products-tabs nested-tabs deeper-tabs" id="level-3-tabs">
+              <!-- Populated dynamically by JavaScript -->
+            </div>
+          </div>
+   
           <!-- Products Grid -->
           <div class="products-grid">
             {allProducts.length > 0 ? (
               allProducts.map((product: any) => (
                 <div
                   class="product-card"
+                  data-categories={JSON.stringify(product.categoryPath || [])}
                   data-product-type={product.productType?.slug || "uncategorized"}
-                  data-featured={product.featured}
                   data-image-url={product.imageUrl || 'missing'}
                 >
                   <Card
@@ -141,13 +208,22 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
 </BaseLayout>
 
 <style>
-
   .product-tab__container {
     grid-column: 1 / -1;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     margin-bottom: 1rem;
-  } 
+  }
+
+  .nested-tabs-container {
+    background-color: var(--pj_blue_05);
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .deeper-nested {
+    background-color: var(--pj_blue_10);
+  }
 
   .product-tab__header {
     grid-column: 2 / -2;
@@ -159,6 +235,10 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
     padding-bottom: 0.5rem;
     padding: 0 2rem;
     margin-bottom: 1rem;
+  }
+
+  .nested-tabs {
+    padding-top: 0.5rem;
   }
 
   .tab-btn {
@@ -174,6 +254,13 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
     font-family: "Instrument Sans", sans-serif;
   }
 
+  .tab-btn .count {
+    color: var(--pj_blue_60);
+    font-weight: 400;
+    font-size: 0.75rem;
+    margin-left: 0.25rem;
+  }
+
   .tab-btn:hover {
     background-color: var(--pj_blue_20);
   }
@@ -181,8 +268,40 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
   .tab-btn.active {
     background-color: var(--pj_brand_blue);
     border: 1px solid var(--pj_brand_blue);
-
     color: white;
+  }
+
+  .tab-btn.active .count {
+    color: var(--pj_blue_20);
+  }
+
+  /* Level 2 nested tab styling */
+  .nested-tabs .tab-btn {
+    background: white;
+    border-color: var(--pj_blue_30);
+  }
+
+  .nested-tabs .tab-btn:hover {
+    background-color: var(--pj_blue_10);
+  }
+
+  .nested-tabs .tab-btn.active {
+    background-color: var(--pj_blue_70);
+  }
+
+  /* Level 3 deeper nested tab styling */
+  .deeper-tabs .tab-btn {
+    background: white;
+    border-color: var(--pj_blue_40);
+    font-size: 0.8125rem;
+  }
+
+  .deeper-tabs .tab-btn:hover {
+    background-color: var(--pj_blue_20);
+  }
+
+  .deeper-tabs .tab-btn.active {
+    background-color: var(--pj_blue_60);
   }
 
   .products-grid {
@@ -201,11 +320,6 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
     display: none;
   }
 
-  /* Featured products could have special styling */
-  .product-card[data-featured="true"] {
-    /* Add special styles for featured products if desired */
-  }
-
   .empty-state,
   .error-message {
     grid-column: 2 / -2;
@@ -220,11 +334,25 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
     margin: 0;
   }
 
-  @media screen and (min-width: 768px) {
+  .empty-state-dynamic {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem;
+    color: var(--pj_blue_70);
+    background-color: var(--pj_blue_05);
+    border-radius: 0.25rem;
+    margin-top: 2rem;
+  }
 
-      .product-tab__container {
-    margin-bottom: 3rem;
-  } 
+  .empty-state-dynamic p {
+    font-size: 1.125rem;
+    margin: 0;
+  }
+
+  @media screen and (min-width: 768px) {
+    .product-tab__container {
+      margin-bottom: 3rem;
+    }
 
     .products-grid {
       grid-template-columns: repeat(4, 1fr);
@@ -237,17 +365,13 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
   }
 
   @media screen and (min-width: 1024px) {
-
-
-  .product-tab__container {
-    margin-bottom: 4rem;
-  } 
-
+    .product-tab__container {
+      margin-bottom: 4rem;
+    }
 
     .products-tabs {
       grid-column: 3 / -3;
       padding: 0 4.5rem;
-
     }
 
     .products-grid {
@@ -261,45 +385,289 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
   }
 </style>
 
-<script>
-  // Client-side tab filtering
-  function initProductFilters() {
-    const tabs = document.querySelectorAll('.tab-btn');
+<script define:vars={{ allProducts, topLevelCategories, allProductTypes }}>
+  // Store category hierarchy data
+  const categoryData = {
+    products: allProducts,
+    topLevel: topLevelCategories,
+    allTypes: allProductTypes,
+    currentLevel1: null, // Track current level 1 selection
+    currentLevel2: null  // Track current level 2 selection
+  };
+
+  console.log('\n🎯 CLIENT-SIDE DATA:');
+  console.log('Products received:', categoryData.products.length);
+  console.log('Top-level categories:', categoryData.topLevel.length);
+  console.log('All product types:', categoryData.allTypes.length);
+  console.log('\n📋 Available categories:');
+categoryData.allTypes.forEach(type => {
+  console.log(`  - ${type.title} (slug: ${type.slug}, parent: ${type.parentSlug || 'none'})`);
+});
+
+  // Get child categories for a given parent category
+  function getChildCategories(parentSlug) {
+    console.log(`\n🔍 Looking for children of: "${parentSlug}"`);
+    
+    // Filter from the already-filtered allTypes array
+    const children = categoryData.allTypes
+      .filter(type => type.parentSlug === parentSlug)
+      .map(type => ({
+        slug: type.slug,
+        title: type.title,
+        _id: type._id,
+        order: type.order || 0
+      }))
+      .sort((a, b) => a.order - b.order || a.title.localeCompare(b.title));
+    
+    console.log(`📊 Found ${children.length} child categories:`, children.map(c => c.title));
+    return children;
+  }
+
+  // Count products in a specific category (including its children)
+  function countProductsInCategory(categorySlug) {
+    let count = 0;
+    categoryData.products.forEach(product => {
+      const categoriesJson = product.categoryPath || [];
+      if (categoriesJson.includes(categorySlug)) {
+        count++;
+      }
+    });
+    return count;
+  }
+
+  // Show Level 2 tabs (when Level 1 is clicked)
+  function showLevel2Tabs(parentSlug) {
+    console.log(`\n🎨 Showing Level 2 tabs for: "${parentSlug}"`);
+    
+    const children = getChildCategories(parentSlug);
+    const container = document.getElementById('level-2-container');
+    const tabs = document.getElementById('level-2-tabs');
+    
+    // Hide Level 3 when showing Level 2
+    document.getElementById('level-3-container').style.display = 'none';
+    categoryData.currentLevel2 = null;
+    
+    if (children.length === 0) {
+      console.log('  ℹ️  No Level 2 categories available - hiding')
+      container.style.display = 'none';
+      return;
+    }
+    
+    console.log(`  ✓ Building ${children.length} Level 2 tabs`);
+    
+    tabs.innerHTML = children
+      .map(cat => {
+        const productCount = countProductsInCategory(cat.slug);
+        return `
+          <button 
+            class="tab-btn level-2-btn" 
+            data-category="${cat.slug}"
+            data-parent-category="${parentSlug}"
+            data-level="2"
+            data-product-count="${productCount}"
+          >
+            ${cat.title} <span class="count">(${productCount})</span>
+          </button>
+        `;
+      })
+      .join('');
+    
+    container.style.display = 'block';
+    attachLevel2Handlers();
+  }
+
+  // Show Level 3 tabs (when Level 2 is clicked)
+  function showLevel3Tabs(parentSlug) {
+    console.log(`\n🎨 Showing Level 3 tabs for: "${parentSlug}"`);
+    
+    const children = getChildCategories(parentSlug);
+    const container = document.getElementById('level-3-container');
+    const tabs = document.getElementById('level-3-tabs');
+    
+    if (children.length === 0) {
+      console.log('  ℹ️  No Level 3 categories available - hiding');
+      container.style.display = 'none';
+      return;
+    }
+    
+    console.log(`  ✓ Building ${children.length} Level 3 tabs`);
+    
+    tabs.innerHTML = children
+      .map(cat => {
+        const productCount = countProductsInCategory(cat.slug);
+        return `
+          <button 
+            class="tab-btn level-3-btn" 
+            data-category="${cat.slug}"
+            data-parent-category="${parentSlug}"
+            data-level="3"
+            data-product-count="${productCount}"
+          >
+            ${cat.title} <span class="count">(${productCount})</span>
+          </button>
+        `;
+      })
+      .join('');
+    
+    container.style.display = 'block';
+    attachLevel3Handlers();
+  }
+
+  // Filter products
+  function filterProducts(categorySlug) {
+    console.log(`\n🔎 Filtering products for: "${categorySlug}"`);
+    
     const products = document.querySelectorAll('.product-card');
+    const existingEmptyState = document.querySelector('.empty-state-dynamic');
+    let visibleCount = 0;
+    
+    products.forEach(product => {
+      const categoriesJson = product.getAttribute('data-categories');
+      const categories = JSON.parse(categoriesJson || '[]');
+      
+      if (categorySlug === 'all' || categories.includes(categorySlug)) {
+        product.classList.remove('hidden');
+        visibleCount++;
+      } else {
+        product.classList.add('hidden');
+      }
+    });
+    
+    // Manage empty state
+    if (visibleCount === 0) {
+      if (!existingEmptyState) {
+        const productsGrid = document.querySelector('.products-grid');
+        const emptyDiv = document.createElement('div');
+        emptyDiv.className = 'empty-state-dynamic';
+        emptyDiv.innerHTML = '<p>Sorry, there are no products available in this category.</p>';
+        productsGrid.appendChild(emptyDiv);
+      } else {
+        existingEmptyState.style.display = 'block';
+      }
+    } else {
+      if (existingEmptyState) {
+        existingEmptyState.style.display = 'none';
+      }
+    }
+    
+    console.log(`📊 Result: ${visibleCount} products visible`);
+    return visibleCount;
+  }
 
-    if (tabs.length === 0 || products.length === 0) return;
-
-    tabs.forEach(tab => {
+  // Handle Level 2 tab clicks
+  function attachLevel2Handlers() {
+    const level2Tabs = document.querySelectorAll('.level-2-btn');
+    
+    level2Tabs.forEach(tab => {
       tab.addEventListener('click', () => {
-        const filterType = tab.getAttribute('data-type');
-
-        // Update active tab
-        tabs.forEach(t => t.classList.remove('active'));
+        const categorySlug = tab.getAttribute('data-category');
+        
+        console.log(`\n👆 Level 2 tab clicked: "${categorySlug}"`);
+        
+        // Update active Level 2 tab
+        level2Tabs.forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
-
-        // Filter products with smooth transition
-        products.forEach(product => {
-          const productType = product.getAttribute('data-product-type');
-          
-          if (filterType === 'all' || productType === filterType) {
-            product.classList.remove('hidden');
-          } else {
-            product.classList.add('hidden');
-          }
-        });
-
-        // Log for debugging
-        const visibleCount = Array.from(products).filter(
-          p => !p.classList.contains('hidden')
-        ).length;
-        console.log(`Showing ${visibleCount} products for type: ${filterType}`);
+        
+        // Clear Level 3 active states
+        const level3Tabs = document.querySelectorAll('.level-3-btn');
+        level3Tabs.forEach(t => t.classList.remove('active'));
+        
+        // Store current selection
+        categoryData.currentLevel2 = categorySlug;
+        
+        // Check for Level 3 children
+        const children = getChildCategories(categorySlug);
+        
+        if (children.length > 0) {
+          console.log(`  → Has ${children.length} Level 3 children - showing Level 3 tabs`);
+          showLevel3Tabs(categorySlug);
+          // Filter to Level 2 category (shows all products in this and sub-categories)
+          filterProducts(categorySlug);
+        } else {
+          console.log('  → No Level 3 children - just filtering');
+          document.getElementById('level-3-container').style.display = 'none';
+          filterProducts(categorySlug);
+        }
       });
     });
   }
 
+  // Handle Level 3 tab clicks
+  function attachLevel3Handlers() {
+    const level3Tabs = document.querySelectorAll('.level-3-btn');
+    
+    level3Tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const categorySlug = tab.getAttribute('data-category');
+        
+        console.log(`\n👆 Level 3 tab clicked: "${categorySlug}"`);
+        
+        // Update active Level 3 tab
+        level3Tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        
+        // Filter products
+        filterProducts(categorySlug);
+      });
+    });
+  }
+
+  // Initialize Level 1 (main) tabs
+  function initProductFilters() {
+    console.log('\n🚀 Initializing product filters...');
+    
+    const level1Tabs = document.querySelectorAll('#level-1-tabs .tab-btn');
+    const products = document.querySelectorAll('.product-card');
+
+    console.log(`  Found ${level1Tabs.length} Level 1 tabs`);
+    console.log(`  Found ${products.length} products`);
+
+    level1Tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const categorySlug = tab.getAttribute('data-category');
+
+        console.log(`\n👆 Level 1 tab clicked: "${categorySlug}"`);
+
+        // Update active Level 1 tab
+        level1Tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        // Clear Level 2 and 3 active states
+        document.querySelectorAll('.level-2-btn, .level-3-btn').forEach(t => 
+          t.classList.remove('active')
+        );
+
+        // Store current selection
+        categoryData.currentLevel1 = categorySlug;
+        categoryData.currentLevel2 = null;
+
+        if (categorySlug === 'all') {
+          console.log('  → Showing all products');
+          filterProducts('all');
+          document.getElementById('level-2-container').style.display = 'none';
+          document.getElementById('level-3-container').style.display = 'none';
+        } else {
+          // Check for Level 2 children
+          const children = getChildCategories(categorySlug);
+          
+          if (children.length > 0) {
+             console.log(`  → Has ${children.length} Level 2 children available - showing Level 2 tabs`);
+            showLevel2Tabs(categorySlug);
+            filterProducts(categorySlug);
+          } else {
+             console.log('  → No Level 2 children available for this page - just filtering');
+            document.getElementById('level-2-container').style.display = 'none';
+            document.getElementById('level-3-container').style.display = 'none';
+            filterProducts(categorySlug);
+          }
+        }
+      });
+    });
+    
+    console.log('✅ Product filters initialized\n');
+  }
+
   // Initialize on page load
   document.addEventListener('DOMContentLoaded', initProductFilters);
-  
-  // Re-initialize on Astro view transitions (if using)
   document.addEventListener('astro:page-load', initProductFilters);
 </script>
