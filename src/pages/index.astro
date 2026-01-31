@@ -167,7 +167,7 @@ const partnerLogos = homepage?.partnerLogos || [];
 		align-items: center;
 		margin-top: 2rem;
 		margin-bottom: 7.75rem;
-		gap: 3rem;
+		gap: 1.5rem;
 		padding: 0 1rem; /* Add horizontal padding for mobile */
 	}
 
@@ -176,7 +176,7 @@ const partnerLogos = homepage?.partnerLogos || [];
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: center;
-        gap: 2rem;
+        gap: 1rem;
         width: 100%;
 		max-width: 100%;  /* Prevent overflow */
 	}
@@ -243,7 +243,7 @@ const partnerLogos = homepage?.partnerLogos || [];
     }
     
     .grid__partner-logo img {
-        height: 5rem; /* Original height restored */
+        height: 4rem; /* Original height restored */
     }
 
 	
@@ -272,7 +272,7 @@ const partnerLogos = homepage?.partnerLogos || [];
     
     .grid__partner-logo {
         width: fit-content; /* Allow natural sizing */
-        max-width: none; /* No constraint on desktop */
+        max-width: calc(33.333% - 2rem);
     }
 }
 </style>
