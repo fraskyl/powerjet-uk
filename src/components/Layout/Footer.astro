@@ -3,173 +3,168 @@ import Navigation from "./Navigation.astro";
 ---
 
 <footer>
-    <div class="footer__wrapper">
-        <div class="footer__row">
-            <div class="footer__logo">
-                <a href="/">
-                    <img src="/src/assets/POWERJET HPWJS_Logo-white.svg" /></a
-                >
-            </div>
-            <div class="footer__associate-logos">
-                <div class="footer__logo__right">
-                    <a href="/"> <img src="/src/assets/Dark Logo.svg" /></a>
-                </div>
-                <div class="footer__logo__right">
-                    <a href="/">
-                        <img
-                            src="/src/assets/Water Jetting Association.svg"
-                        /></a
-                    >
-                </div>
-            </div>
+  <div class="footer__wrapper">
+    <div class="footer__row">
+      <div class="footer__logo">
+        <a href="/"> <img src="/src/assets/POWERJET HPWJS_Logo-white.svg" /></a>
+      </div>
+      <div class="footer__associate-logos">
+        <div class="footer__logo__right">
+          <a href="/"> <img src="/src/assets/Dark Logo.svg" /></a>
         </div>
-        <div class="footer__navigation">
-            <Navigation />
+        <div class="footer__logo__right">
+          <a href="/">
+            <img src="/src/assets/Water Jetting Association.svg" /></a
+          >
         </div>
-
-        <div class="divider__border"></div>
-
-        <div class="footer__copyright">
-            <p>
-                © Powerjet Rentals Ltd | Powerjet Solutions Ltd 2025. All
-                Rights Reserved.
-            </p>
-        </div>
+      </div>
     </div>
+    <div class="footer__navigation">
+      <Navigation />
+    </div>
+
+    <div class="divider__border"></div>
+
+    <div class="footer__copyright">
+      <p>
+        © Powerjet Rentals Ltd | Powerjet Solutions Ltd 2025. All Rights
+        Reserved.
+      </p>
+    </div>
+  </div>
 </footer>
 
 <style>
-    /* footer styles */
-    .footer {
-        grid-column: 1 / -1;
+  /* footer styles */
+  .footer {
+    grid-column: 1 / -1;
+  }
+
+  .footer__wrapper {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    background-color: var(--pj_brand_blue);
+    color: white;
+    gap: 2rem;
+  }
+
+  .footer__row {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .footer__left {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .footer__left p {
+    font-family: "Instrument Sans";
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+
+  .footer__associate-logos {
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    gap: 1.5rem;
+  }
+
+  .footer__logo {
+    grid-column: 1 / span 2;
+    height: auto;
+  }
+
+  .footer__logo img {
+    height: 64px;
+  }
+
+  .footer__logo__right {
+    grid-column: 1 / span 2;
+    height: auto;
+  }
+
+  .footer__logo__right img {
+    height: 110px;
+  }
+
+  .footer__wrapper li {
+    list-style: none;
+  }
+
+  .footer__wrapper a {
+    color: white;
+    text-decoration: none;
+  }
+
+  .footer__copyright {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer__copyright p {
+    font-family: "Instrument Sans";
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 16px;
+  }
+
+  .footer__navigation {
+    display: none;
+  }
+
+  .footer__row .nav__links {
+    display: flex; /* Override the display: none from global.css */
+    width: 100%;
+    justify-content: center;
+  }
+
+  .footer__row .nav__links ul {
+    display: flex;
+    justify-content: center; /* Center the flex items */
+    gap: 2rem; /* Add spacing between links */
+  }
+
+  @media screen and (min-width: 768px) {
+    .footer__wrapper {
+      gap: 3rem;
     }
 
-    .footer__wrapper {
-        height: auto;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 2rem;
-        background-color: var(--pj_brand_blue);
-        color: white;
-        gap: 2rem;
+    .footer__navigation {
+      display: block;
     }
 
     .footer__row {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
-        gap: 2rem;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2rem;
     }
 
     .footer__left {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .footer__left p {
-        font-family: "Instrument Sans";
-        font-size: 1rem;
-        line-height: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: left;
     }
 
     .footer__associate-logos {
-        display: flex;
-        flex-direction: row;
-        align-items: left;
-        gap: 1.5rem;
+      display: flex;
+      flex-direction: row;
+      align-items: left;
+      gap: 1.5rem;
     }
-
-    .footer__logo {
-        grid-column: 1 / span 2;
-        height: auto;
-    }
-
-    .footer__logo img {
-        height: 64px;
-    }
-
-    .footer__logo__right {
-        grid-column: 1 / span 2;
-        height: auto;
-    }
-
-    .footer__logo__right img {
-        height: 110px;
-    }
-
-    li {
-        list-style: none;
-    }
-
-    a {
-        color: white;
-        text-decoration: none;
-    }
-
-    .footer__copyright {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .footer__copyright p {
-        font-family: "Instrument Sans";
-        font-size: 12px;
-        font-style: normal;
-        font-weight: 300;
-        line-height: 16px;
-    }
-
-    .footer__navigation {
-        display: none;
-    }
-
-    .footer__row .nav__links {
-        display: flex; /* Override the display: none from global.css */
-        width: 100%;
-        justify-content: center;
-    }
-
-    .footer__row .nav__links ul {
-        display: flex;
-        justify-content: center; /* Center the flex items */
-        gap: 2rem; /* Add spacing between links */
-    }
-
-    @media screen and (min-width: 768px) {
-        .footer__wrapper {
-        gap: 3rem;
-    }
-
-    .footer__navigation {
-        display: block;
-    }
-
-    .footer__row {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        gap: 2rem;
-    }
-
-    .footer__left {
-        display: flex;
-        flex-direction: column;
-        align-items: left;
-    }
-
-
-        .footer__associate-logos {
-            display: flex;
-            flex-direction: row;
-            align-items: left;
-            gap: 1.5rem;
-        }
-    }
+  }
 </style>

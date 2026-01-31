@@ -2,7 +2,7 @@
 // src/components/Dev/EnvironmentBadge.astro
 // Shows which environment/dataset is currently active
 
-const dataset = import.meta.env.SANITY_DATASET || "unknown";
+const dataset = import.meta.env.SANITY_STUDIO_DATASET || "unknown";
 const mode = import.meta.env.MODE || "unknown";
 const isDev = import.meta.env.DEV;
 
