@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "astro dev --host",
     "dev:staging": "astro dev --mode staging",
+    "dev:production": "astro dev --mode production",
 
     "build": "astro build",
     "build:staging": "astro build --mode staging",
@@ -16,6 +17,7 @@
 
     "sanity:dev": "sanity dev",
     "sanity:staging": "SANITY_STUDIO_DATASET=staging sanity dev",
+    "sanity:production": "SANITY_STUDIO_DATASET=production sanity dev",
     "sanity:deploy": "sanity deploy",
     "sanity:deploy-staging": "SANITY_STUDIO_DATASET=staging sanity deploy"
   },
