@@ -1,0 +1,58 @@
+# ============================================
+# STAGING SITE CONFIGURATION
+# ============================================
+# This configuration is for powerjet-staging.netlify.app
+
+[build]
+  command = "npm run build:staging"
+  publish = "dist"
+  
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_VERSION = "10"
+
+# Production branch (if this is your staging site)
+[context.production]
+  command = "npm run build:staging"
+  
+[context.production.environment]
+  PUBLIC_SANITY_DATASET = "staging"
+  SANITY_DATASET = "staging"
+  NODE_ENV = "staging"
+
+# Deploy previews (from pull requests)
+[context.deploy-preview]
+  command = "npm run build:staging"
+  
+[context.deploy-preview.environment]
+  PUBLIC_SANITY_DATASET = "staging"
+  SANITY_DATASET = "staging"
+  NODE_ENV = "staging"
+
+# Branch deploys
+[context.branch-deploy]
+  command = "npm run build:staging"
+  
+[context.branch-deploy.environment]
+  PUBLIC_SANITY_DATASET = "staging"
+  SANITY_DATASET = "staging"
+  NODE_ENV = "staging"
+
+# ============================================
+# REDIRECTS & HEADERS
+# ============================================
+
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Cache static assets
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
