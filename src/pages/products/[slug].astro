@@ -7,20 +7,27 @@ import { productSlugsQuery, productBySlugQuery } from "../../lib/queries";
 import ProductDetailLayout from "../../layouts/ProductDetailLayout.astro";
 
 // Generate static paths for all products at build time
-export async function getStaticPaths() {
-    try {
-        // Fetch all products slugs from Sanity
-        const products = await sanityClient.fetch(productSlugsQuery);
-        console.log("✅ Generating paths for products:", products?.length || 0);
 
-        // Create a path for each application
-        return products.map((product: any) => ({
-            params: { slug: product.slug },
-        }));
-    } catch (error) {
-        console.error("❌ Error generating product paths:", error);
-        return [];
-    }
+export async function getStaticPaths() {
+  try {
+    const products = await sanityClient.fetch(productSlugsQuery);
+
+    // 🔍 DEBUG: Log all slugs being generated
+    console.log("=== PRODUCTS FOUND ===");
+    console.log("Total products:", products?.length || 0);
+    console.log(
+      "Slugs:",
+      products?.map((p: any) => p.slug),
+    );
+    console.log("=====================");
+
+    return products.map((product: any) => ({
+      params: { slug: product.slug },
+    }));
+  } catch (error) {
+    console.error("❌ Error generating product paths:", error);
+    return [];
+  }
 }
 
 // Get the slug from the URL
@@ -29,22 +36,19 @@ const { slug } = Astro.params;
 // Fetch the specific product data
 let product;
 try {
-    product = await sanityClient.fetch(productBySlugQuery, { slug });
-    console.log("✅ Fetched product:", product?.title);
+  product = await sanityClient.fetch(productBySlugQuery, { slug });
+  console.log("✅ Fetched product:", product?.title);
 } catch (error) {
-    console.error("❌ Error fetching product:", error);
+  console.error("❌ Error fetching product:", error);
 }
 
 // If no product found, you might want to redirect to 404
 if (!product) {
-    return Astro.redirect("/404");
+  return Astro.redirect("/404");
 }
 
 // Set page title
 const title = `${product.title} | Products | Powerjet`;
 ---
 
-<ProductDetailLayout 
-    title={title}
-    product={product}
-/>
+<ProductDetailLayout title={title} product={product} />
