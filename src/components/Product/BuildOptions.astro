@@ -1,29 +1,26 @@
 ---
 /**
  * BuildOptions.astro
- * 
+ *
  * Displays available product build/configuration options.
- * 
+ *
  * Props:
  *   - options: Array of objects with code and description
- * 
+ *
  * Example usage:
  *   {hasBuildOptions && buildOptions && (
  *     <BuildOptions options={buildOptions} />
  *   )}
  */
 import Accordion from "../Layout/Accordion.astro";
-import RichText from '../Content/RichText.astro';
+import RichText from "../Content/RichText.astro";
 
 interface Props {
   options: {
     optionTitle?: string;
     description?: string;
-  }[]; 
-};
-
-
-
+  }[];
+}
 
 const { options } = Astro.props;
 
@@ -36,43 +33,57 @@ if (!options || options.length === 0) {
 <section class="build-options__container">
   <!-- Mobile: With Accordion -->
   <div class="mobile-only">
-  <Accordion defaultOpen={true}>
-    <h2 slot="title">Build Options</h2>
-    <div class="build-options__list">
-      {options.map((option) => (
-        <div class="build-option__item">
-          <div class="build-option__header">
-            <h3 class="build-option__title">{option.optionTitle || 'Option'}</h3>
-          </div>
-          {option.description && (
-            <RichText value={option.description} className="build-option__description" />
-          )}
-        </div>
-      ))}
-    </div>
-  </Accordion>
+    <Accordion defaultOpen={true}>
+      <h2 slot="title">Build Options</h2>
+      <div class="build-options__list">
+        {
+          options.map((option) => (
+            <div class="build-option__item">
+              <div class="build-option__header">
+                <h3 class="build-option__title">
+                  {option.optionTitle || "Option"}
+                </h3>
+              </div>
+              {option.description && (
+                <RichText
+                  value={option.description}
+                  className="build-option__description"
+                />
+              )}
+            </div>
+          ))
+        }
+      </div>
+    </Accordion>
   </div>
 
   <!-- Desktop: No Accordion -->
   <div class="desktop-only">
-  <h2>Build Options</h2>
-  <div class="build-options__list">
-    {options.map((option) => (
-      <div class="build-option__item">
-        <div class="build-option__header">
-          <h3 class="build-option__title">{option.optionTitle || 'Option'}</h3>
-        </div>
-        {option.description && (
-          <RichText value={option.description} className="build-option__description" />
-        )}
-      </div>
-    ))}
-  </div>
+    <h2>Build Options</h2>
+    <div class="build-options__list">
+      {
+        options.map((option) => (
+          <div class="build-option__item">
+            <div class="build-option__header">
+              <h3 class="build-option__title">
+                {option.optionTitle || "Option"}
+              </h3>
+            </div>
+            {option.description && (
+              <RichText
+                value={option.description}
+                className="build-option__description"
+              />
+            )}
+          </div>
+        ))
+      }
+    </div>
   </div>
 </section>
 
 <style>
-   /* Mobile: Show accordion only */
+  /* Mobile: Show accordion only */
   .mobile-only {
     display: block;
   }
@@ -117,13 +128,13 @@ if (!options || options.length === 0) {
   }
 
   @media screen and (min-width: 768px) {
-     /* Desktop: Show regular content */
-      .mobile-only {
-        display: none;
-      }
-      .desktop-only {
-        display: block;
-      }
+    /* Desktop: Show regular content */
+    .mobile-only {
+      display: none;
+    }
+    .desktop-only {
+      display: block;
+    }
 
     .build-options__container {
       grid-column: 3 / -3;
@@ -134,17 +145,9 @@ if (!options || options.length === 0) {
       margin-bottom: 2rem;
     }
 
-
     .build-options__list {
       grid-template-columns: 1fr;
       gap: 1rem;
-    }
-
-    
-
-
-    .build-option__code {
-      font-size: 1rem;
     }
 
     .build-option__description {

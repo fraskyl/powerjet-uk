@@ -213,10 +213,7 @@ const relatedProducts = product?.relatedProducts || [];
                 <div class="divider__border"></div>
                     <section class="section__product-detail-related-products">
                         <div class="section__product-detail-related-products-title">
-                            <SectionTitle
-                                headline="Recommended Products"
-                                headingSize="small"
-                            />
+                            <h2>Related Products</h2>
                         </div>
                         <div class="section__product-detail-related-products-cards">
                         {relatedProducts.map((product: any) => (
@@ -341,10 +338,18 @@ const relatedProducts = product?.relatedProducts || [];
         margin-bottom: 6rem;
     }
 
-    .section__applications-recommended-products-cards {
+    .section__product-detail-related-products-title h2 {
+    font-size: 1.5rem;
+    font-weight: 450;
+    color: var(--pj_blue_80);
+    margin-bottom: 2rem;
+  }
+
+
+    .section__product-detail-related-products-cards {
         display: grid;
-        gap: 1.5rem;
-        grid-column: 2 / -2;
+        grid-template-columns: 1fr;
+        gap: 2rem;
     }
 
     .divider__border {
@@ -411,10 +416,8 @@ const relatedProducts = product?.relatedProducts || [];
 
         .section__product-detail-related-products-cards {
             display: grid;
-            grid-template-columns: repeat(
-                3,
-                1fr
-            ); /* Tablet/Desktop: 3 columns */
+            grid-template-columns: repeat(auto-fill, minmax(220px, 320px));
+            justify-content: start;
             gap: 1.5rem;
             grid-column: 2 / -2;
             margin-bottom: 4rem;

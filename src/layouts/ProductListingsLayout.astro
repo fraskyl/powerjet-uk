@@ -353,18 +353,55 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
   }
 
   /* Desktop Layout */
-  .products-layout { grid-column: 2 / -2; display: flex; flex-direction: column; gap: 2rem; margin-bottom: 5rem; }
-  .sidebar-nav { display: none; }
-  .products-main { flex: 1; }
-  .products-header { margin-bottom: 1.5rem; }
-  .products-count { font-size: 0.9375rem; color: var(--pj_blue_70); margin: 0; }
-  .products-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
-  .product-card { transition: opacity 0.3s ease; }
-  .product-card.hidden { display: none; }
+  .products-layout {
+    grid-column: 2 / -2;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 5rem; 
+  }
+
+  .sidebar-nav { 
+    display: none;
+   }
+
+  .products-main { 
+    flex: 1; 
+  }
+
+  .products-header { 
+    margin-bottom: 1.5rem; 
+  }
+
+  .products-count { 
+    font-size: 0.9375rem; 
+    color: var(--pj_blue_70); 
+    margin: 0;
+   }
+
+  .products-grid { 
+    grid-column: 2 / -2;
+    display: grid; 
+    grid-template-columns: 1fr; 
+    gap: 2rem; 
+    margin-bottom: 5rem;
+  }
+
+  .product-card { 
+    transition: opacity 0.3s ease; 
+  }
+
+  .product-card.hidden { 
+    display: none; 
+  }
   
   .empty-state-dynamic {
-    grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--pj_blue_70);
-    background-color: var(--pj_blue_05); border-radius: 0.25rem;
+    grid-column: 1 / -1; 
+    text-align: center; 
+    padding: 3rem; 
+    color: var(--pj_blue_70);
+    background-color: var(--pj_blue_05); 
+    border-radius: 0.25rem;
   }
 
   @media screen and (min-width: 768px) {
@@ -388,9 +425,14 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
       flex-direction: row;
       gap: 3rem;
     }
+
+      .product-card {
+      max-width: 350px; /* Prevents excessive stretching */
+    }
     
-    .products-grid {
-      grid-template-columns: repeat(2, 1fr);
+      .products-grid {
+       grid-template-columns: repeat(auto-fill, minmax(240px, 350px));
+      justify-content: start; /* Left-align when not filling row */
     }
     
     .category-nav {
@@ -524,8 +566,13 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
       width: 320px;
     }
     
-    .products-grid {
-      grid-template-columns: repeat(3, 1fr);
+        .products-grid {
+      grid-column: 3 / -3;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 340px));
+    }
+
+    .product-card {
+      max-width: 380px;
     }
   }
 </style>

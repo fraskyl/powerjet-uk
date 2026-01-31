@@ -1,5 +1,5 @@
 ---
-import "../../styles/global.css"
+import "../../styles/global.css";
 import { sanityClient } from "../../lib/sanity";
 import { applicationsIndexQuery } from "../../lib/queries";
 
@@ -9,113 +9,109 @@ import TextHero from "../../components/Sections/TextHero.astro";
 import Card from "../../components/UI/Card.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-
 // Fetch all applications from Sanity
 let applications = [];
 let fetchError = false;
 
-
 const title = "Applications | Powerjet";
 
 try {
-    applications = await sanityClient.fetch(applicationsIndexQuery);
-    console.log("✅ Fetched applications:", applications?.length || 0);
-    
-    // Process applications to extract first image from images array
-    applications = applications.map((app: any) => {
-        let imageUrl = app.imageUrl;
-        let imageAlt = app.imageAlt;
-        
-        // Use first image from images array if available
-        if (app.images && app.images.length > 0) {
-            imageUrl = app.images[0].url;
-            imageAlt = app.images[0].alt;
-        }
-        
-        return {
-            ...app,
-            imageUrl,
-            imageAlt
-        };
-    });
-    
-} catch (error) {
-    console.error("❌ Sanity fetch error:", error);
-    fetchError = true;
-}
+  applications = await sanityClient.fetch(applicationsIndexQuery);
+  console.log("✅ Fetched applications:", applications?.length || 0);
 
+  // Process applications to extract first image from images array
+  applications = applications.map((app: any) => {
+    let imageUrl = app.imageUrl;
+    let imageAlt = app.imageAlt;
+
+    // Use first image from images array if available
+    if (app.images && app.images.length > 0) {
+      imageUrl = app.images[0].url;
+      imageAlt = app.images[0].alt;
+    }
+
+    return {
+      ...app,
+      imageUrl,
+      imageAlt,
+    };
+  });
+} catch (error) {
+  console.error("❌ Sanity fetch error:", error);
+  fetchError = true;
+}
 ---
 
 <BaseLayout title={title}>
-    <Header />
-    <body>
-        <div class="page-grid">
-            <TextHero
-                headline="Applications"
-            />
+  <Header />
+  <body>
+    <div class="page-grid">
+      <TextHero headline="Applications" />
 
-
-
-              <div class="section__applications">
-                <div class="section__applications-cards">
-                    {fetchError ? (
-                        <div class="error-message">
-                            <p>Unable to load applications. Please try again later.</p>
-                        </div>
-                    ) : applications.length > 0 ? (
-                        applications.map((app: any) => (
-                            <Card
-                                imageURL={app.imageUrl}
-                                imageAlt={app.imageAlt}
-                                href={`/applications/${app.slug}`}
-                                buttonLabel={app.title}
-                                icon={true}
-                            />
-                        ))
-                    ) : (
-                        <div class="empty-state">
-                            <p>No applications available yet. Check back soon!</p>
-                        </div>
-                    )}
-                </div>
-            </div>
+      <div class="section__applications">
+        <div class="section__applications-cards">
+          {
+            fetchError ? (
+              <div class="error-message">
+                <p>Unable to load applications. Please try again later.</p>
+              </div>
+            ) : applications.length > 0 ? (
+              applications.map((app: any) => (
+                <Card
+                  imageURL={app.imageUrl}
+                  imageAlt={app.imageAlt}
+                  href={`/applications/${app.slug}`}
+                  buttonLabel={app.title}
+                  icon={true}
+                />
+              ))
+            ) : (
+              <div class="empty-state">
+                <p>No applications available yet. Check back soon!</p>
+              </div>
+            )
+          }
         </div>
-    </body>
-    <Footer />
+      </div>
+    </div>
+  </body>
+  <Footer />
 </BaseLayout>
 
-    <style>
-        .section__applications {
-            display: grid;
-            grid-template-columns: 1fr;
-            grid-column: 2 / -2;
-            margin-bottom: 7.75rem;
-        }
+<style>
+  .section__applications {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-column: 2 / -2;
+    margin-bottom: 7.75rem;
+  }
 
-        .section__applications-cards {
-            display: grid;
-            grid-template-columns: 1fr;
-            grid-column: 2 / -2;
+  .section__applications-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-column: 2 / -2;
+    gap: 2rem;
+  }
 
-            gap: 2rem;
-        }
-
-	@media screen and (min-width: 768px) {
-         .section__applications {
-            display: grid;
-            grid-template-columns:1fr;
-            grid-column: 2 / -2;
-            margin-bottom: 7.75rem;
-        }
-
-        .section__applications-cards {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr;
-            gap: 2rem;
-        }
+  @media screen and (min-width: 768px) {
+    .section__applications {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-column: 2 / -2;
+      margin-bottom: 7.75rem;
     }
 
-       
+    .section__applications-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 350px));
+      justify-content: start;
+      gap: 2rem;
+    }
+  }
 
-    </style>
-</html>
+  @media screen and (min-width: 1024px) {
+    .section__applications-cards {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 380px));
+    }
+  }
+</style>
