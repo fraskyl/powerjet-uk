@@ -4,9 +4,20 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev --host",
+    "dev:staging": "astro dev --mode staging",
+
     "build": "astro build",
+    "build:staging": "astro build --mode staging",
+    "build:production": "astro build --mode production",
+
     "preview": "astro preview",
-    "astro": "astro"
+    "preview:staging": "astro preview --mode staging",
+    "previw:production": "astro preview --mode production",
+
+    "sanity:dev": "sanity dev",
+    "sanity:staging": "SANITY_STUDIO_DATASET=staging sanity dev",
+    "sanity:deploy": "sanity deploy",
+    "sanity:deploy-staging": "SANITY_STUDIO_DATASET=staging sanity deploy"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",

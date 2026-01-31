@@ -1,7 +1,6 @@
 ---
 import "../../styles/global.css";
 import RichText from "../Content/RichText.astro";
-import ProductActions from "./ProductActions.astro";
 import ImageGallery from "../UI/ImageGallery.astro";
 
 interface Props {
@@ -14,34 +13,21 @@ interface Props {
     url: string;
     alt: string;
   }>;
-  hasDatasheet?: boolean;
-  datasheetUrl?: string;
-  datasheetFileName?: string;
 }
 
-const {
-  title,
-  lede,
-  description,
-  imageUrl,
-  imageAlt,
-  images,
-  hasDatasheet,
-  datasheetUrl,
-  datasheetFileName,
-} = Astro.props;
+const { title, lede, description, imageUrl, imageAlt, images } = Astro.props;
 ---
 
-<div class="product-hero__wrapper">
-  <div class="product__title">
+<div class="application-hero__wrapper">
+  <div class="application__title">
     <h1>{title}</h1>
   </div>
 
   <div class="divider__border"></div>
 
-  <div class="product-hero__overview">
-    <div class="product-hero__content">
-      <div class="product__text">
+  <div class="application-hero__overview">
+    <div class="application-hero__content">
+      <div class="application__text">
         {lede && <p class="lede-text">{lede}</p>}
         {
           description && (
@@ -49,21 +35,14 @@ const {
           )
         }
       </div>
-
-      <ProductActions
-        hasDatasheet={hasDatasheet}
-        datasheetUrl={datasheetUrl}
-        datasheetFileName={datasheetFileName}
-      />
     </div>
-    <div class="product-detail__media">
-      <!-- <ProductImage imageUrl={imageUrl} imageAlt={imageAlt} /> -->
+    <div class="application-detail__media">
       <ImageGallery imageUrl={imageUrl} imageAlt={imageAlt} images={images} />
     </div>
   </div>
 
   <style>
-    .product-hero__wrapper {
+    .application-hero__wrapper {
       grid-column: 2 / -2;
       display: flex;
       flex-direction: column;
@@ -71,7 +50,7 @@ const {
       margin-bottom: 3rem;
     }
 
-    .product__title h1 {
+    .application__title h1 {
       font-weight: 450;
       font-size: 2rem;
       color: var(--pj_blue_80);
@@ -83,21 +62,21 @@ const {
       border-top: 1px solid var(--pj_blue_20);
     }
 
-    .product-hero__overview {
+    .application-hero__overview {
       display: flex;
       flex-direction: column;
       grid-template-columns: 2fr;
       gap: 2rem;
     }
 
-    .product-hero__content {
+    .application-hero__content {
       display: flex;
       flex-direction: column;
       gap: 2rem;
       order: 2; /* Text after image on mobile */
     }
 
-    .product__text {
+    .application__text {
       display: flex;
       flex-direction: column;
       gap: var(--space-4);
@@ -110,37 +89,37 @@ const {
       margin: 0;
     }
 
-    .product-detail__media {
+    .application-detail__media {
       order: 1; /* Image first on mobile */
     }
 
     @media screen and (min-width: 768px) {
-      .product__title h1 {
+      .application__title h1 {
         font-size: 2.5rem;
       }
 
-      .product-hero__overview {
+      .application-hero__overview {
         grid-template-columns: 1fr 1fr;
         gap: 3rem;
       }
 
-      .product-hero__content {
+      .application-hero__content {
         order: 2; /* Text first on tablet+ */
       }
 
-      .product-detail__media {
+      .application-detail__media {
         order: 1; /* Image second on tablet+ */
       }
     }
 
     @media screen and (min-width: 1024px) {
-      .product-hero__wrapper {
+      .application-hero__wrapper {
         flex-direction: column;
         grid-column: 3 / -3;
-        margin-bottom: 5rem;
+        margin-bottom: 7.75rem;
       }
 
-      .product-hero__overview {
+      .application-hero__overview {
         display: grid;
         grid-template-columns: 6fr 6fr; /* Text takes 5 parts, image takes 7 parts */
         gap: 4rem;

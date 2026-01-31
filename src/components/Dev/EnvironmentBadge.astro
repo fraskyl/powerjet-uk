@@ -1,0 +1,148 @@
+---
+// src/components/Dev/EnvironmentBadge.astro
+// Shows which environment/dataset is currently active
+
+const dataset = import.meta.env.SANITY_DATASET || "unknown";
+const mode = import.meta.env.MODE || "unknown";
+const isDev = import.meta.env.DEV;
+
+// Only show in non-production environments
+const showBadge = dataset !== "production" || isDev || mode !== "production";
+
+// Badge colors based on environment
+const getBadgeColor = () => {
+  if (dataset === "staging") return "#FF9500"; // Orange
+  if (dataset === "development") return "#34C759"; // Green
+  if (isDev) return "#007AFF"; // Blue
+  return "#FF3B30"; // Red (fallback)
+};
+---
+
+{
+  showBadge && (
+    <div class="env-badge" data-env={dataset} data-mode={mode}>
+      <div class="env-badge__icon">
+        {dataset === "staging" && "🧪"}
+        {dataset === "development" && "🔧"}
+        {isDev && "💻"}
+      </div>
+      <div class="env-badge__content">
+        <div class="env-badge__text">
+          <strong>{dataset.toUpperCase()}</strong>
+          {isDev && <span class="env-badge__mode"> (Local Dev)</span>}
+        </div>
+        <div class="env-badge__project">
+          {import.meta.env.SANITY_PROJECT_ID?.slice(0, 8)}...
+        </div>
+      </div>
+    </div>
+  )
+}
+
+<style define:vars={{ badgeColor: getBadgeColor() }}>
+  .env-badge {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    padding: 0.75rem 1rem;
+    background: var(--badgeColor);
+    color: white;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    box-shadow:
+      0 4px 6px rgba(0, 0, 0, 0.1),
+      0 2px 4px rgba(0, 0, 0, 0.06);
+    backdrop-filter: blur(10px);
+    animation: slideIn 0.3s ease-out;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  @keyframes slideIn {
+    from {
+      transform: translateY(100px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .env-badge__icon {
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+
+  .env-badge__content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  .env-badge__text {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    line-height: 1;
+  }
+
+  .env-badge__mode {
+    font-weight: 400;
+    opacity: 0.9;
+    font-size: 0.7rem;
+  }
+
+  .env-badge__project {
+    font-size: 0.65rem;
+    opacity: 0.8;
+    font-weight: 400;
+    font-family: monospace;
+    line-height: 1;
+  }
+
+  /* Hover effect */
+  .env-badge:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 6px 12px rgba(0, 0, 0, 0.15),
+      0 3px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+  }
+
+  /* Hide on very small screens */
+  @media screen and (max-width: 400px) {
+    .env-badge {
+      bottom: 0.5rem;
+      right: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.65rem;
+    }
+
+    .env-badge__icon {
+      font-size: 1rem;
+    }
+  }
+
+  /* Hide in production (safety check) */
+  .env-badge[data-env="production"][data-mode="production"] {
+    display: none !important;
+  }
+</style>
+
+<script>
+  // Additional client-side check (safety)
+  if (
+    window.location.hostname.includes("powerjet-uk.com") &&
+    !window.location.hostname.includes("staging")
+  ) {
+    const badge = document.querySelector(".env-badge");
+    if (badge) {
+      badge.remove();
+    }
+  }
+</script>

@@ -7,8 +7,7 @@ import Header from "../components/Layout/Header.astro";
 import SectionTitle from "../components/Content/SectionTitle.astro";
 import ContactBlock from "../components/Sections/ContactBlock.astro";
 import Card from "../components/UI/Card.astro";
-import ImageGallery from "../components/UI/ImageGallery.astro"
-import RichText from "../components/Content/RichText.astro";
+import ApplicationHero from "../components/Sections/ApplicationHero.astro";
 
 interface Props {
     title: string;
@@ -68,13 +67,13 @@ const appRecommendedProducts = application?.recommendedProducts || [];
                 </a>
             </div>
 
-           <div class="section__applications-wrapper">
-                <!-- Image Gallery Section -->
+            <!-- <div class="section__applications-wrapper">
+               Image Gallery Section
                 <div class="section__applications-gallery">
                     <ImageGallery images={appImages} />
                 </div>
 
-                <!-- Application Info Section -->
+                Application Info Section
                 <div class="section__applications-info">
                     <div class="application-header">
                         <h1>{appTitle}</h1>
@@ -90,6 +89,16 @@ const appRecommendedProducts = application?.recommendedProducts || [];
                     )}
                 </div>
             </div>
+             -->
+
+             <ApplicationHero
+                title={appTitle}
+                lede={appLede}
+                description={appDescription}
+                images={appImages}
+                imageUrl={application.imageUrl}
+                imageAlt={application.imageAlt || application.title}
+            />
 
 
             {
@@ -259,7 +268,7 @@ const appRecommendedProducts = application?.recommendedProducts || [];
         .section__applications-wrapper {
             grid-column: 3 / -3;
             gap: 4rem;
-            margin-bottom: 5rem;
+            margin-bottom: 7rem;
         }
 
         .divider__border {
