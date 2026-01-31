@@ -6,15 +6,12 @@
     "dev": "astro dev --host",
     "dev:staging": "astro dev --mode staging",
     "dev:production": "astro dev --mode production",
-
     "build": "astro build",
     "build:staging": "astro build --mode staging",
     "build:production": "astro build --mode production",
-
     "preview": "astro preview",
     "preview:staging": "astro preview --mode staging",
     "previw:production": "astro preview --mode production",
-
     "sanity:dev": "sanity dev",
     "sanity:staging": "SANITY_STUDIO_DATASET=staging sanity dev",
     "sanity:production": "SANITY_STUDIO_DATASET=production sanity dev",
@@ -22,6 +19,7 @@
     "sanity:deploy-staging": "SANITY_STUDIO_DATASET=staging sanity deploy"
   },
   "dependencies": {
+    "@sanity/client": "^7.14.1",
     "@tailwindcss/vite": "^4.1.18",
     "astro": "^5.16.6",
     "astro-portabletext": "^0.13.0",
