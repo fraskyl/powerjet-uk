@@ -4,19 +4,15 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev --host",
-    "dev:staging": "astro dev --mode staging",
-    "dev:production": "astro dev --mode production",
+    "dev:staging": "astro dev --mode staging --host",
+    "dev:production": "astro dev --mode production --host",
     "build": "astro build",
     "build:staging": "astro build --mode staging",
     "build:production": "astro build --mode production",
     "preview": "astro preview",
     "preview:staging": "astro preview --mode staging",
-    "previw:production": "astro preview --mode production",
-    "sanity:dev": "sanity dev",
-    "sanity:staging": "SANITY_STUDIO_DATASET=staging sanity dev",
-    "sanity:production": "SANITY_STUDIO_DATASET=production sanity dev",
-    "sanity:deploy": "sanity deploy",
-    "sanity:deploy-staging": "SANITY_STUDIO_DATASET=staging sanity deploy"
+    "preview:production": "astro preview --mode production",
+    "astro": "astro"
   },
   "dependencies": {
     "@sanity/client": "^7.14.1",
@@ -25,5 +21,9 @@
     "astro": "^5.16.6",
     "astro-portabletext": "^0.13.0",
     "tailwindcss": "^4.1.18"
+  },
+  "devDependencies": {
+    "@sanity/cli": "^3.66.0",
+    "cross-env": "^7.0.3"
   }
 }
