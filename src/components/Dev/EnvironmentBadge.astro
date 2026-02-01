@@ -1,210 +1,37 @@
 ---
-// src/components/Dev/EnvironmentBadge.astro
-// Fixed version that works correctly on Netlify
+const dataset = import.meta.env.PUBLIC_SANITY_DATASET || "unknown";
+const appEnv = import.meta.env.PUBLIC_APP_ENV || "unknown";
+const isProd = import.meta.env.PROD; // Build optimization flag
 
-const dataset =
-  import.meta.env.PUBLIC_SANITY_DATASET ||
-  import.meta.env.SANITY_DATASET ||
-  "unknown";
+let label = "";
+let icon = "";
+let color = "";
 
-const mode = import.meta.env.MODE || "development";
-const isDev = import.meta.env.DEV;
-const isProd = import.meta.env.PROD;
+if (appEnv === "local") {
+  label = "LOCAL DEV";
+  icon = "💻";
+  color = "#007AFF";
+} else if (appEnv === "staging") {
+  label = "STAGING";
+  icon = "🧪";
+  color = "#FF9500";
+} else if (appEnv === "production") {
+  label = "PRODUCTION";
+  icon = "🚀";
+  color = "#34C759";
+}
 
 // Only show badge in non-production environments
-const showBadge = dataset !== "production" || !isProd;
-
-// Determine environment type
-const getEnvironmentType = () => {
-  // If it's a Netlify deploy (PROD is true) but dataset is staging
-  if (isProd && dataset === "staging") {
-    return "STAGING DEPLOY";
-  }
-  // Local development
-  if (isDev) {
-    return "LOCAL DEV";
-  }
-  // Staging mode
-  if (mode === "staging") {
-    return "STAGING";
-  }
-  // Production
-  if (dataset === "production") {
-    return "PRODUCTION";
-  }
-  return "UNKNOWN";
-};
-
-// Badge colors based on environment
-const getBadgeColor = () => {
-  if (dataset === "staging") return "#FF9500"; // Orange
-  if (dataset === "unknown") return "#FF3B30"; // Red
-  if (isDev) return "#007AFF"; // Blue
-  return "#FF3B30"; // Red (fallback)
-};
-
-const badgeText = getEnvironmentType();
+const showBadge = appEnv !== "production";
 ---
 
 {
   showBadge && (
-    <div class="env-badge" data-env={dataset} data-mode={mode}>
-      <div class="env-badge__icon">
-        {dataset === "staging" && "🧪"}
-        {dataset === "unknown" && "⚠️"}
-        {isDev && "💻"}
-      </div>
-      <div class="env-badge__content">
-        <div class="env-badge__text">
-          <strong>{badgeText}</strong>
-        </div>
-        <div class="env-badge__details">
-          <div class="env-badge__project">Dataset: {dataset}</div>
-          {dataset === "unknown" && (
-            <div class="env-badge__warning">Check .env config</div>
-          )}
-        </div>
+    <div class="env-badge" style={`background: ${color};`}>
+      {icon} {label}
+      <div class="details">
+        Dataset: {dataset} | Build: {isProd ? "Optimized" : "Dev"}
       </div>
     </div>
   )
 }
-
-<style define:vars={{ badgeColor: getBadgeColor() }}>
-  .env-badge {
-    position: fixed;
-    bottom: 1rem;
-    right: 1rem;
-    padding: 0.75rem 1rem;
-    background: var(--badgeColor);
-    color: white;
-    border-radius: 0.5rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    z-index: 99999;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    box-shadow:
-      0 4px 6px rgba(0, 0, 0, 0.1),
-      0 2px 4px rgba(0, 0, 0, 0.06);
-    backdrop-filter: blur(10px);
-    animation: slideIn 0.3s ease-out;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  }
-
-  .env-badge[data-env="unknown"] {
-    animation:
-      slideIn 0.3s ease-out,
-      pulse 2s ease-in-out infinite;
-  }
-
-  @keyframes slideIn {
-    from {
-      transform: translateY(100px);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-
-  @keyframes pulse {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.8;
-    }
-  }
-
-  .env-badge__icon {
-    font-size: 1.25rem;
-    line-height: 1;
-  }
-
-  .env-badge__content {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .env-badge__text {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    line-height: 1;
-  }
-
-  .env-badge__details {
-    display: flex;
-    flex-direction: column;
-    gap: 0.125rem;
-  }
-
-  .env-badge__project,
-  .env-badge__warning {
-    font-size: 0.65rem;
-    opacity: 0.9;
-    font-weight: 400;
-    line-height: 1;
-  }
-
-  .env-badge__warning {
-    background: rgba(255, 255, 255, 0.2);
-    padding: 0.125rem 0.25rem;
-    border-radius: 0.125rem;
-    margin-top: 0.125rem;
-  }
-
-  .env-badge:hover {
-    transform: translateY(-2px);
-    box-shadow:
-      0 6px 12px rgba(0, 0, 0, 0.15),
-      0 3px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.2s ease;
-  }
-
-  @media screen and (max-width: 400px) {
-    .env-badge {
-      bottom: 0.5rem;
-      right: 0.5rem;
-      padding: 0.5rem 0.75rem;
-      font-size: 0.65rem;
-    }
-
-    .env-badge__icon {
-      font-size: 1rem;
-    }
-  }
-
-  /* Hide in production */
-  .env-badge[data-env="production"][data-mode="production"] {
-    display: none !important;
-  }
-</style>
-
-<script>
-  // Safety check - hide on production domain
-  if (window.location.hostname === "powerjet-uk.com") {
-    const badge = document.querySelector(".env-badge");
-    if (badge) {
-      badge.remove();
-    }
-  }
-
-  // Debug logging
-  const badge = document.querySelector(".env-badge");
-  if (badge) {
-    const dataset = badge.getAttribute("data-env");
-    const mode = badge.getAttribute("data-mode");
-
-    console.group("🔧 Environment Info");
-    console.log("Dataset:", dataset);
-    console.log("Mode:", mode);
-    console.log("Is Dev:", import.meta.env.DEV);
-    console.log("Is Prod:", import.meta.env.PROD);
-    console.groupEnd();
-  }
-</script>

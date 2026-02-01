@@ -4,6 +4,7 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  NODE_ENV = "production"
   NPM_VERSION = "10"
 
 # Environment variables (also set these in Netlify UI)
@@ -15,7 +16,7 @@
   SANITY_DATASET = "staging"
   SANITY_API_VERSION = "2024-01-01"
   PUBLIC_SITE_URL = "https://staging-powerjet.netlify.app"
-  NODE_ENV = "staging"
+  NODE_ENV = "production"
 
 # Headers for security
 [[headers]]
