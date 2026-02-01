@@ -1,55 +1,30 @@
-# ============================================
-# STAGING SITE CONFIGURATION
-# ============================================
-# This configuration is for powerjet-staging.netlify.app
-
 [build]
   command = "npm run build:staging"
   publish = "dist"
-  
+
 [build.environment]
   NODE_VERSION = "20"
   NPM_VERSION = "10"
 
-# Production branch (if this is your staging site)
-[context.production]
-  command = "npm run build:staging"
-  
+# Environment variables (also set these in Netlify UI)
 [context.production.environment]
+  PUBLIC_SANITY_PROJECT_ID = "84258b3v"
   PUBLIC_SANITY_DATASET = "staging"
+  PUBLIC_SANITY_API_VERSION = "2024-01-01"
+  SANITY_PROJECT_ID = "84258b3v"
   SANITY_DATASET = "staging"
+  SANITY_API_VERSION = "2024-01-01"
+  PUBLIC_SITE_URL = "https://staging-powerjet.netlify.app"
   NODE_ENV = "staging"
 
-# Deploy previews (from pull requests)
-[context.deploy-preview]
-  command = "npm run build:staging"
-  
-[context.deploy-preview.environment]
-  PUBLIC_SANITY_DATASET = "staging"
-  SANITY_DATASET = "staging"
-  NODE_ENV = "staging"
-
-# Branch deploys
-[context.branch-deploy]
-  command = "npm run build:staging"
-  
-[context.branch-deploy.environment]
-  PUBLIC_SANITY_DATASET = "staging"
-  SANITY_DATASET = "staging"
-  NODE_ENV = "staging"
-
-# ============================================
-# REDIRECTS & HEADERS
-# ============================================
-
-# Security headers
+# Headers for security
 [[headers]]
   for = "/*"
   [headers.values]
-    X-Frame-Options = "DENY"
-    X-Content-Type-Options = "nosniff"
-    X-XSS-Protection = "1; mode=block"
     Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
 
 # Cache static assets
 [[headers]]
