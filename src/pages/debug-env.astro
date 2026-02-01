@@ -1,0 +1,314 @@
+---
+// src/pages/debug-env.astro
+// Visit this page to see exactly what environment variables are set
+// URL: https://powerjet-staging.netlify.app/debug-env
+
+import { sanityClient, sanityConfig } from '../lib/sanity';
+
+// Only allow this page in non-production
+const isProduction = import.meta.env.PUBLIC_SANITY_DATASET === 'production';
+const allowDebug = !isProduction;
+
+// Try to fetch one document to test connection
+let testQuery = null;
+let testError = null;
+
+if (allowDebug) {
+  try {
+    testQuery = await sanityClient.fetch(`*[_type == "product"][0]`);
+  } catch (error) {
+    testError = error.message;
+  }
+}
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Environment Debug</title>
+  <style>
+    body {
+      font-family: 'Monaco', 'Courier New', monospace;
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 2rem;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    h1 {
+      color: #4ec9b0;
+      border-bottom: 2px solid #4ec9b0;
+      padding-bottom: 0.5rem;
+    }
+    
+    h2 {
+      color: #dcdcaa;
+      margin-top: 2rem;
+    }
+    
+    .section {
+      background: #252526;
+      padding: 1rem;
+      border-radius: 4px;
+      margin: 1rem 0;
+      border-left: 4px solid #007acc;
+    }
+    
+    .key {
+      color: #9cdcfe;
+      font-weight: bold;
+    }
+    
+    .value {
+      color: #ce9178;
+    }
+    
+    .success {
+      color: #4ec9b0;
+    }
+    
+    .error {
+      color: #f48771;
+    }
+    
+    .warning {
+      color: #dcdcaa;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+    
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #3e3e42;
+    }
+    
+    th {
+      background: #2d2d30;
+      color: #4ec9b0;
+    }
+    
+    .status-good {
+      color: #4ec9b0;
+    }
+    
+    .status-bad {
+      color: #f48771;
+    }
+    
+    .status-unknown {
+      color: #dcdcaa;
+    }
+    
+    pre {
+      background: #1e1e1e;
+      padding: 1rem;
+      border-radius: 4px;
+      overflow-x: auto;
+      border: 1px solid #3e3e42;
+    }
+    
+    .blocked {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    {!allowDebug ? (
+      <div class="blocked">
+        <h1 class="error">🔒 Debug Page Disabled</h1>
+        <p>This page is only available in non-production environments.</p>
+        <p>Current dataset: <span class="value">{import.meta.env.PUBLIC_SANITY_DATASET}</span></p>
+      </div>
+    ) : (
+      <>
+        <h1>🔧 Environment Debug Information</h1>
+        <p>Current URL: <span class="value">{Astro.url.href}</span></p>
+        <p>Generated: <span class="value">{new Date().toISOString()}</span></p>
+
+        {/* Sanity Configuration */}
+        <h2>📦 Sanity Configuration</h2>
+        <div class="section">
+          <table>
+            <thead>
+              <tr>
+                <th>Setting</th>
+                <th>Value</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="key">Project ID</td>
+                <td class="value">{sanityConfig.projectId}</td>
+                <td class={sanityConfig.projectId ? 'status-good' : 'status-bad'}>
+                  {sanityConfig.projectId ? '✓' : '✗'}
+                </td>
+              </tr>
+              <tr>
+                <td class="key">Dataset</td>
+                <td class="value">{sanityConfig.dataset}</td>
+                <td class={sanityConfig.dataset === 'staging' ? 'status-good' : 'status-unknown'}>
+                  {sanityConfig.dataset === 'staging' ? '✓ Staging' : '⚠ Not staging'}
+                </td>
+              </tr>
+              <tr>
+                <td class="key">API Version</td>
+                <td class="value">{sanityConfig.apiVersion}</td>
+                <td class="status-good">✓</td>
+              </tr>
+              <tr>
+                <td class="key">Using CDN</td>
+                <td class="value">{sanityConfig.useCdn ? 'Yes' : 'No'}</td>
+                <td class={!sanityConfig.useCdn ? 'status-good' : 'status-unknown'}>
+                  {!sanityConfig.useCdn ? '✓ Correct (staging)' : '⚠ Should be false'}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        {/* Environment Variables */}
+        <h2>🔐 Environment Variables</h2>
+        <div class="section">
+          <table>
+            <thead>
+              <tr>
+                <th>Variable</th>
+                <th>Value</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="key">PUBLIC_SANITY_PROJECT_ID</td>
+                <td class="value">{import.meta.env.PUBLIC_SANITY_PROJECT_ID || 'undefined'}</td>
+                <td class={import.meta.env.PUBLIC_SANITY_PROJECT_ID ? 'status-good' : 'status-bad'}>
+                  {import.meta.env.PUBLIC_SANITY_PROJECT_ID ? '✓' : '✗ Missing'}
+                </td>
+              </tr>
+              <tr>
+                <td class="key">PUBLIC_SANITY_DATASET</td>
+                <td class="value">{import.meta.env.PUBLIC_SANITY_DATASET || 'undefined'}</td>
+                <td class={import.meta.env.PUBLIC_SANITY_DATASET === 'staging' ? 'status-good' : 'status-bad'}>
+                  {import.meta.env.PUBLIC_SANITY_DATASET === 'staging' ? '✓ Correct' : '✗ Should be "staging"'}
+                </td>
+              </tr>
+              <tr>
+                <td class="key">PUBLIC_SANITY_API_VERSION</td>
+                <td class="value">{import.meta.env.PUBLIC_SANITY_API_VERSION || 'undefined'}</td>
+                <td class={import.meta.env.PUBLIC_SANITY_API_VERSION ? 'status-good' : 'status-bad'}>
+                  {import.meta.env.PUBLIC_SANITY_API_VERSION ? '✓' : '✗ Missing'}
+                </td>
+              </tr>
+              <tr>
+                <td class="key">MODE</td>
+                <td class="value">{import.meta.env.MODE}</td>
+                <td class="status-good">ℹ️</td>
+              </tr>
+              <tr>
+                <td class="key">DEV</td>
+                <td class="value">{import.meta.env.DEV ? 'true' : 'false'}</td>
+                <td class={!import.meta.env.DEV ? 'status-good' : 'status-unknown'}>
+                  {!import.meta.env.DEV ? '✓ Production build' : '⚠ Dev mode (why?)'}
+                </td>
+              </tr>
+              <tr>
+                <td class="key">PROD</td>
+                <td class="value">{import.meta.env.PROD ? 'true' : 'false'}</td>
+                <td class={import.meta.env.PROD ? 'status-good' : 'status-bad'}>
+                  {import.meta.env.PROD ? '✓ Production build' : '✗ Should be true on Netlify'}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        {/* Sanity Connection Test */}
+        <h2>🔌 Sanity Connection Test</h2>
+        <div class="section">
+          {testError ? (
+            <div>
+              <p class="error">✗ Connection Failed</p>
+              <pre>{testError}</pre>
+            </div>
+          ) : testQuery ? (
+            <div>
+              <p class="success">✓ Connection Successful</p>
+              <p>Found document type: <span class="value">{testQuery._type}</span></p>
+              <p>Document ID: <span class="value">{testQuery._id}</span></p>
+            </div>
+          ) : (
+            <p class="warning">⚠ No documents found (dataset might be empty)</p>
+          )}
+        </div>
+
+        {/* Expected Configuration */}
+        <h2>✅ Expected Configuration for Staging</h2>
+        <div class="section">
+          <pre>
+PUBLIC_SANITY_PROJECT_ID=84258b3v
+PUBLIC_SANITY_DATASET=staging
+PUBLIC_SANITY_API_VERSION=2024-01-01
+
+SANITY_PROJECT_ID=84258b3v
+SANITY_DATASET=staging
+SANITY_API_VERSION=2024-01-01
+
+MODE=staging (or production)
+DEV=false
+PROD=true
+          </pre>
+        </div>
+
+        {/* Recommendations */}
+        <h2>💡 Recommendations</h2>
+        <div class="section">
+          <ul>
+            {sanityConfig.dataset !== 'staging' && (
+              <li class="error">✗ Dataset should be "staging" but is "{sanityConfig.dataset}"</li>
+            )}
+            {sanityConfig.useCdn && (
+              <li class="warning">⚠ CDN should be disabled for staging (useCdn: false)</li>
+            )}
+            {import.meta.env.DEV && (
+              <li class="warning">⚠ DEV is true on Netlify - this shouldn't happen</li>
+            )}
+            {!import.meta.env.PUBLIC_SANITY_DATASET && (
+              <li class="error">✗ PUBLIC_SANITY_DATASET not set in Netlify environment variables</li>
+            )}
+            {sanityConfig.dataset === 'staging' && !sanityConfig.useCdn && (
+              <li class="success">✓ Configuration looks correct!</li>
+            )}
+          </ul>
+        </div>
+
+        {/* Next Steps */}
+        <h2>🎯 Next Steps</h2>
+        <div class="section">
+          <ol>
+            <li>Verify Netlify environment variables are set correctly</li>
+            <li>Check that Sanity Studio is using staging dataset</li>
+            <li>Test webhook by publishing content in Studio</li>
+            <li>Check Netlify deploy logs for webhook triggers</li>
+            <li>Once everything works, delete this debug page</li>
+          </ol>
+        </div>
+      </>
+    )}
+  </div>
+</body>
+</html>
