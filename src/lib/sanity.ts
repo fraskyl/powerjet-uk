@@ -1,42 +1,46 @@
-import {createClient} from '@sanity/client'
-import createImageUrlBuilder from '@sanity/image-url'
+// src/lib/sanity.ts
+import { createClient } from '@sanity/client';
 
-// Get environment variables
-const projectId = import.meta.env.PUBLIC_SANITY_STUDIO_PROJECT_ID
-const dataset = import.meta.env.PUBLIC_SANITY_STUDIO_DATASET || 'production'
-const apiVersion = import.meta.env.PUBLIC_SANITY_STUDIO_API_VERSION || '2026-01-31'
+// Get environment variables with multiple fallback checks
+const projectId = 
+  import.meta.env.SANITY_PROJECT_ID || 
+  import.meta.env.PUBLIC_SANITY_PROJECT_ID || 
+  '84258b3v'; // Hard-coded fallback
 
-// Validate environment variables are set
-if (!projectId) {
-  throw new Error(
-    'Missing SANITY_PROJECT_ID environment variable. Please add it to your .env file.'
-  )
-}
+const dataset = 
+  import.meta.env.SANITY_DATASET || 
+  import.meta.env.PUBLIC_SANITY_DATASET || 
+  'staging'; // Hard-coded fallback
 
-// Validate required environment variables
-if (!projectId) {
-  throw new Error('❌ Missing SANITY_PROJECT_ID environment variable');
-}
+const apiVersion = 
+  import.meta.env.SANITY_API_VERSION || 
+  import.meta.env.PUBLIC_SANITY_API_VERSION || 
+  '2024-01-01'; // Hard-coded fallback
 
-if (!dataset) {
-  throw new Error('❌ Missing SANITY_DATASET environment variable');
-}
+const token = import.meta.env.SANITY_TOKEN;
+
+// Log for debugging (will show in build logs)
+console.log('🔍 Sanity Config Check:');
+console.log('  Project ID:', projectId);
+console.log('  Dataset:', dataset);
+console.log('  API Version:', apiVersion);
 
 // Create Sanity client
 export const sanityClient = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: dataset === 'production', // Only use CDN cache in production
-  perspective: 'published', // 'published' or 'previewDrafts'
+  useCdn: dataset === 'production',
+  token,
 });
 
-// Export configuration for debugging
+// Export configuration
 export const sanityConfig = {
   projectId,
   dataset,
+  apiVersion,
   useCdn: dataset === 'production',
-  environment: import.meta.env.MODE,
+  environment: import.meta.env.MODE || 'development',
 };
 
 // Development logging
@@ -50,25 +54,14 @@ if (import.meta.env.DEV) {
   console.groupEnd();
 }
 
-// Helper function to get dataset name (useful for debugging)
 export function getCurrentDataset(): string {
   return dataset;
 }
 
-// Helper function to check if we're in production
 export function isProduction(): boolean {
   return dataset === 'production';
 }
 
-// Helper function to check if we're in staging
 export function isStaging(): boolean {
   return dataset === 'staging';
-}
-
-
-// Helper for generating image URLs
-const builder = createImageUrlBuilder(sanityClient)
-
-export function urlFor(source: any) {
-  return builder.image(source)
 }
