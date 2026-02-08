@@ -211,7 +211,7 @@ export interface Product {
   datasheetFileName?: string;
   availability: string[];
   lede: string;
-  productType: {
+  productCategory: {
     title: string;
     slug: string;
   };

@@ -9,7 +9,6 @@ import EngineData from "../components/Product/EngineData.astro";
 import BuildOptions from "../components/Product/BuildOptions.astro";
 import PhysicalSpecs from "../components/Product/PhysicalSpecs.astro";
 import BaseLayout from "./BaseLayout.astro";
-import SectionTitle from "../components/Content/SectionTitle.astro";
 import ProductHero from "../components/Product/ProductHero.astro";
 
 interface Props {
@@ -33,7 +32,7 @@ interface Props {
 
         // Categorization
         availability?: string[];
-        productType?: {
+        productCategory?: {
             title: string;
             slug: string;
         };

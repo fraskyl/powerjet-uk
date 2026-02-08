@@ -104,7 +104,7 @@ export const applicationSlugsQuery = `*[_type == "application"]{"slug": slug.cur
  */
 
 // Get all product types for tab navigation
-export const productTypesQuery = `*[_type == "productType"] | order(order asc, title asc) {
+export const productCategorysQuery = `*[_type == "productCategory"] | order(order asc, title asc) {
   title,
   "slug": slug.current,
   description,
@@ -120,7 +120,7 @@ export const allProductsQuery = `*[_type == "product"] | order(order asc, _creat
   "slug": slug.current,
   availability,
   lede,
-  "productType": productType->{
+  "productCategory": productCategory->{
     title,
     "slug": slug.current
   },
@@ -144,7 +144,7 @@ export const productsByAvailabilityQuery = `*[_type == "product" && $availabilit
   "imageAlt": mainImage.alt,
   lede,
   availability,
-  "productType": productType->{
+  "productCategory": productCategory->{
     title,
     "slug": slug.current
   },
@@ -165,7 +165,7 @@ export const productBySlugQuery = `*[_type == "product" && slug.current == $slug
       "crop": asset->crop
     },
   availability,
-  "productType": productType->{
+  "productCategory": productCategory->{
     title,
     "slug": slug.current
   },
@@ -196,8 +196,8 @@ export const productBySlugQuery = `*[_type == "product" && slug.current == $slug
 
 
 // Get only top-level categories for main tabs
-export const topLevelProductTypesQuery = `
-  *[_type == "productType" && !defined(parentCategory) && $availability in availability] | order(order asc) {
+export const topLevelProductCategoriesQuery = `
+  *[_type == "productCategory" && !defined(parentCategory) && $availability in availability] | order(order asc) {
     title,
     "slug": slug.current,
     _id,
@@ -209,14 +209,14 @@ export const topLevelProductTypesQuery = `
 
 // Get category hierarchy for a specific parent
 export const categoryHierarchyQuery = `
-  *[_type == "productType" && slug.current == $parentSlug][0] {
+  *[_type == "productCategory" && slug.current == $parentSlug][0] {
     title,
     "slug": slug.current,
-    "subcategories": *[_type == "productType" && parentCategory._ref == ^._id] | order(order asc) {
+    "subcategories": *[_type == "productCategory" && parentCategory._ref == ^._id] | order(order asc) {
       title,
       "slug": slug.current,
       _id,
-      "subcategories": *[_type == "productType" && parentCategory._ref == ^._id] | order(order asc) {
+      "subcategories": *[_type == "productCategory" && parentCategory._ref == ^._id] | order(order asc) {
         title,
         "slug": slug.current,
         _id
@@ -237,7 +237,7 @@ export const allProductsWithCategoriesQuery = `
       "url": asset->url,
       "alt": alt
     },
-    productType->{
+    productCategory->{
       title,
       "slug": slug.current,
       _id,
@@ -255,8 +255,8 @@ export const allProductsWithCategoriesQuery = `
   }
 `;
 
-export const allProductTypesWithParentsQuery = `
-  *[_type == "productType" && $availability in availability] | order(order asc, title asc) {
+export const allProductCategoriesWithParentsQuery = `
+  *[_type == "productCategory" && $availability in availability] | order(order asc, title asc) {
     title,
     "slug": slug.current,
     _id,

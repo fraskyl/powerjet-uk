@@ -1,0 +1,120 @@
+---
+/**
+ *
+ * Allows for a custom product text block with CMS headline and richText body
+ *
+ */
+import Accordion from "../Layout/Accordion.astro";
+import RichText from "../Content/RichText.astro";
+
+interface Props {
+  title: string;
+  description: any;
+}
+
+const { title, description } = Astro.props;
+---
+
+<section class="product-text-block__container">
+  <!-- Mobile: With Accordion -->
+  <div class="mobile-only">
+    <Accordion defaultOpen={true}>
+      <h2 slot="title">{title}</h2>
+      <div class="product-text-block__content">
+        {
+          description && (
+            <RichText value={description} className="prose-slate" />
+          )
+        }
+      </div>
+    </Accordion>
+  </div>
+
+  <!-- Desktop: No Accordion -->
+  <div class="desktop-only">
+    <h2>{title}</h2>
+    <div class="product-text-block__content">
+      {description && <RichText value={description} className="prose-slate" />}
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Mobile: Show accordion only */
+  .mobile-only {
+    display: block;
+  }
+  .desktop-only {
+    display: none;
+  }
+
+  .product-text-block__container {
+    grid-column: 2 / -2;
+    margin-bottom: 6rem;
+  }
+
+  .product-text-block__container h2 {
+    font-size: 1.5rem;
+    font-weight: 450;
+    color: var(--pj_blue_80);
+  }
+
+  .product-text-block__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .build-option__header {
+    margin-bottom: 0.5rem;
+  }
+
+  .build-option__title {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--pj_blue_80);
+    letter-spacing: 0.5px;
+  }
+
+  .build-option__description {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--pj_blue_70);
+  }
+
+  @media screen and (min-width: 768px) {
+    /* Desktop: Show regular content */
+    .mobile-only {
+      display: none;
+    }
+    .desktop-only {
+      display: block;
+    }
+
+    .product-text-block__container {
+      grid-column: 2 / -2;
+      margin-bottom: 7.75rem;
+    }
+
+    .product-text-block__container h2 {
+      margin-bottom: 2rem;
+    }
+
+    .product-text-block__list {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .build-option__description {
+      font-size: 0.875rem;
+    }
+  }
+
+  @media screen and (min-width: 1024px) {
+    .product-text-block__container {
+      grid-column: 3 / -3;
+    }
+  }
+</style>

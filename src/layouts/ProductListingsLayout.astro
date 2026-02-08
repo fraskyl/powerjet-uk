@@ -5,9 +5,9 @@
 import "../styles/global.css";
 import { sanityClient } from "../lib/sanity";
 import { 
-  topLevelProductTypesQuery,
+  topLevelProductCategoriesQuery,
   allProductsWithCategoriesQuery,
-  allProductTypesWithParentsQuery,
+  allProductCategoriesWithParentsQuery,
 } from "../lib/queries";
 
 import BaseLayout from "./BaseLayout.astro";
@@ -27,14 +27,14 @@ const { pageType, headline } = Astro.props;
 
 let topLevelCategories = [];
 let allProducts = [];
-let allProductTypes = [];
+let allProductCategories = [];
 let fetchError = false;
 
 try {
-  allProductTypes = await sanityClient.fetch(allProductTypesWithParentsQuery, { 
+  allProductCategories = await sanityClient.fetch(allProductCategoriesWithParentsQuery, { 
     availability: pageType 
   });
-  topLevelCategories = await sanityClient.fetch(topLevelProductTypesQuery, {
+  topLevelCategories = await sanityClient.fetch(topLevelProductCategoriesQuery, {
     availability: pageType
   });
   const rawProducts = await sanityClient.fetch(allProductsWithCategoriesQuery, { 
@@ -52,12 +52,12 @@ try {
     }
     
     const categoryPath = [];
-    if (product.productType?.slug) {
-      categoryPath.push(product.productType.slug);
-      if (product.productType.parent?.slug) {
-        categoryPath.push(product.productType.parent.slug);
-        if (product.productType.parent.parent?.slug) {
-          categoryPath.push(product.productType.parent.parent.slug);
+    if (product.productCategory?.slug) {
+      categoryPath.push(product.productCategory.slug);
+      if (product.productCategory.parent?.slug) {
+        categoryPath.push(product.productCategory.parent.slug);
+        if (product.productCategory.parent.parent?.slug) {
+          categoryPath.push(product.productCategory.parent.parent.slug);
         }
       }
     }
@@ -576,12 +576,12 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
     }
   }
 </style>
-<script define:vars={{ allProducts, topLevelCategories, allProductTypes }}>
+<script define:vars={{ allProducts, topLevelCategories, allProductCategories }}>
   // Category navigation data
   const categoryData = {
     products: allProducts,
     topLevel: topLevelCategories,
-    allTypes: allProductTypes,
+    allTypes: allProductCategories,
   };
 
   // Initial debug logging
