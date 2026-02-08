@@ -173,14 +173,67 @@ export const productBySlugQuery = `*[_type == "product" && slug.current == $slug
   hasDatasheet,
   "datasheetUrl": datasheet.asset->url,
   "datasheetFileName": datasheet.asset->originalFilename,
-  hasPerformanceTable,
-  performanceSpecs,
-  hasPhysicalSpecs,
-  physicalSpecs,
-  hasEngineData,
-  engineData,
-  hasBuildOptions,
-  buildOptions,
+  // Composable content blocks
+    contentBlocks[] {
+      _type,
+      _key,
+      
+      // Performance Table Block - Now with custom columns
+      _type == "performanceTableBlock" => {
+        sectionTitle,
+        columnHeaders[] {
+          label,
+        },
+        rows[] {
+          rowLabel,
+          cells[] {
+            value
+          }
+        }
+      },
+      
+      // Physical Specs Block
+      _type == "physicalSpecsBlock" => {
+        sectionTitle,
+        specs[] {
+          label,
+          value
+        }
+      },
+      
+      // Engine Specs Block
+      _type == "engineSpecsBlock" => {
+        sectionTitle,
+        specs[] {
+          label,
+          value
+        }
+      },
+      
+      // Build Options Block
+      _type == "buildOptionsBlock" => {
+        sectionTitle,
+        options[] {
+          code,
+          description
+        }
+      },
+      
+      // Key Specs Block
+      _type == "keySpecsBlock" => {
+        sectionTitle,
+        specs[] {
+          label,
+          value
+        }
+      },
+      
+      // Custom Content Block
+      _type == "customContentBlock" => {
+        sectionTitle,
+        content
+      }
+    },
   relatedProducts[]->{
     title,
     "slug": slug.current,
@@ -188,6 +241,84 @@ export const productBySlugQuery = `*[_type == "product" && slug.current == $slug
     "imageAlt": images[0].alt
   }
 }`;
+
+// ═══════════════════════════════════════════════════════════════════
+// Template Library Queries
+// ═══════════════════════════════════════════════════════════════════
+
+export const allPerformanceTableTemplatesQuery = `
+  *[_type == "performanceTableTemplate"] | order(templateName asc) {
+    _id,
+    templateName,
+    description,
+    sectionTitle,
+    columnHeaders,
+    exampleRows
+  }
+`;
+
+export const allSpecsListTemplatesQuery = `
+  *[_type == "specsListTemplate"] | order(templateName asc) {
+    _id,
+    templateName,
+    templateType,
+    description,
+    sectionTitle,
+    specFields
+  }
+`;
+
+export const allBuildOptionsTemplatesQuery = `
+  *[_type == "buildOptionsTemplate"] | order(templateName asc) {
+    _id,
+    templateName,
+    description,
+    sectionTitle,
+    options
+  }
+`;
+
+export const allCustomContentTemplatesQuery = `
+  *[_type == "customContentTemplate"] | order(templateName asc) {
+    _id,
+    templateName,
+    description,
+    sectionTitle,
+    content
+  }
+`;
+
+// ═══════════════════════════════════════════════════════════════════
+// Get specific template by ID
+// ═══════════════════════════════════════════════════════════════════
+
+export const getTemplateByIdQuery = (templateType: string) => `
+  *[_type == "${templateType}" && _id == $templateId][0] {
+    _id,
+    templateName,
+    description,
+    sectionTitle,
+    
+    // Type-specific fields
+    _type == "performanceTableTemplate" => {
+      columnHeaders,
+      exampleRows
+    },
+    
+    _type == "specsListTemplate" => {
+      templateType,
+      specFields
+    },
+    
+    _type == "buildOptionsTemplate" => {
+      options
+    },
+    
+    _type == "customContentTemplate" => {
+      content
+    }
+  }
+`;
 
 
 // Get all product slugs for static path generation

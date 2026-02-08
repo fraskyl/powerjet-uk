@@ -10,6 +10,7 @@ import BuildOptions from "../components/Product/BuildOptions.astro";
 import PhysicalSpecs from "../components/Product/PhysicalSpecs.astro";
 import BaseLayout from "./BaseLayout.astro";
 import ProductHero from "../components/Product/ProductHero.astro";
+import RichText from "../components/Content/RichText.astro";
 
 interface Props {
     title: string;
@@ -36,51 +37,25 @@ interface Props {
             title: string;
             slug: string;
         };
-
        
+         // Composable Content Blocks
+        contentBlocks?: Array<{
+            _type: string;
+            _key: string;
+            [key: string]: any;
+        }>;
 
-        // Performance Table (Optional)
+
+        // Legacy support - will be removed eventually
         hasPerformanceTable?: boolean;
-        performanceSpecs?: Array<{
-            model?: string;
-            plungerSize?: string;
-            psi?: string;
-            bar?: string;
-            lpm?: string;
-            gpm?: string;
-            kw?: string;
-            hp?: string;
-        }>;
-
-        // Physical Characteristics (Optional)
+        performanceSpecs?: any[];
         hasPhysicalSpecs?: boolean;
-        physicalSpecs?: {
-            dimensions?: string;
-            weightDry?: string;
-            weightWet?: string;
-            waterTankCapacity?: string;
-            fuelTankCapacity?: string;
-            adBlueCapacity?: string;
-            soundAttenuation?: string;
-        };
-
-        // Engine Data (Optional)
+        physicalSpecs?: any;
         hasEngineData?: boolean;
-        engineData?: {
-            manufacturer?: string;
-            model?: string;
-            ratings?: string;
-            emissionCompliancy?: string;
-            fuelConsumption?: string;
-            adblueConsumption?: string;
-        };
-
-        // Build Options (Optional)
+        engineData?: any;
         hasBuildOptions?: boolean;
-        buildOptions?: Array<{
-            code?: string;
-            description?: string;
-        }>;
+        buildOptions?: any[];
+
 
         // Additional
         order?: number;
@@ -95,7 +70,7 @@ interface Props {
     };
 }
 
-const { product } = Astro.props;
+const { title, product } = Astro.props;
 
 // Handle both new images array and legacy single image
 let productImages = product?.images || [];
@@ -111,10 +86,38 @@ if (productImages.length === 0 && product?.imageUrl) {
 const productTitle = product?.title || "Product";
 const productLede = product?.lede || "";
 const productDescription = product?.description || null;
+const contentBlocks = product?.contentBlocks || [];
 const productImageUrl = product?.imageUrl || "";
 const productImageAlt = product?.imageAlt || "Product image";
-
 const relatedProducts = product?.relatedProducts || [];
+
+// Helper function to transform flexible performance table to component format
+function transformPerformanceTable(block: any) {
+    if (!block?.columnHeaders || !block?.rows) return null;
+    
+    // Extract column labels for headers
+    const headers = block.columnHeaders.map((col: any) => col.label);
+    
+    // Transform rows - extract just the values in order
+    const rows = block.rows.map((row: any) => ({
+        cells: row.cells?.map((cell: any) => cell.value || '-') || []
+    }));
+    
+    return { headers, rows };
+}
+
+// Helper function to transform specs block to component format
+function transformSpecsToComponentFormat(specs: any[]) {
+    if (!specs || specs.length === 0) return null;
+    
+    // Convert array of {label, value} to object format your components expect
+    return specs.reduce((acc: any, spec: any) => {
+        // Create a key from the label (lowercase, replace spaces with underscores)
+        const key = spec.label.toLowerCase().replace(/\s+/g, '_').replace(/[()]/g, '');
+        acc[key] = spec.value;
+        return acc;
+    }, {});
+}
 ---
 
 <BaseLayout>
@@ -144,64 +147,185 @@ const relatedProducts = product?.relatedProducts || [];
             />
 
 
-            <!-- Performance Table Section - Renders conditionally based on hasPerformanceTable -->
-            {product.hasPerformanceTable && product.performanceSpecs && (
-            <div class="divider__border"></div>
-                <section class="section__product-performance-table">
-                 
-                    <div class="section__product-performance-table-content">
-                        <PerformanceTable
-                            headers={[
-                                "Model",
-                                "Plunger Size",
-                                "PSI",
-                                "BAR",
-                                "L/min",
-                                "GPM",
-                                "kW",
-                                "HP",
-                            ]}
-                            rows={product.performanceSpecs.map((spec) => ({
-                                cells: [
-                                    spec.model || '-',
-                                    spec.plungerSize || '-',
-                                    spec.psi || '-',
-                                    spec.bar || '-',
-                                    spec.lpm || '-',
-                                    spec.gpm || '-',
-                                    spec.kw || '-',
-                                    spec.hp || '-'
-                                ]
-                            }))}
-                        />
-                    </div>
-                </section>
+             {/* Render composable content blocks if they exist */}
+            {contentBlocks.length > 0 ? (
+                <>
+                    {contentBlocks.map((block, index) => {
+                        const isLastBlock = index === contentBlocks.length - 1;
+                        
+                        return (
+                            <>
+                                {/* Performance Table Block */}
+                                {block._type === 'performanceTableBlock' && block.columnHeaders && block.rows && (
+                                    <>
+                                        <div class="divider__border"></div>
+                                        <section class="section__product-performance-table">
+                                            <div class="section__product-performance-table-content">
+                                                <PerformanceTable
+                                                    headers={transformPerformanceTable(block)?.headers || []}
+                                                    rows={transformPerformanceTable(block)?.rows || []}
+                                                />
+                                            </div>
+                                        </section>
+                                    </>
+                                )}
+
+                                {/* Physical Specs and Engine Specs - Group them together if both present */}
+                                {(block._type === 'physicalSpecsBlock' || block._type === 'engineSpecsBlock') && (
+                                    <>
+                                        {/* Check if this is the first specs block in a potential pair */}
+                                        {(() => {
+                                            const currentIndex = index;
+                                            const nextBlock = contentBlocks[currentIndex + 1];
+                                            const isPhysicalFirst = block._type === 'physicalSpecsBlock';
+                                            const hasAdjacentEngineBlock = nextBlock?._type === 'engineSpecsBlock' && isPhysicalFirst;
+                                            const isEngineAlone = block._type === 'engineSpecsBlock' && contentBlocks[currentIndex - 1]?._type !== 'physicalSpecsBlock';
+                                            
+                                            // Only render the wrapper if this is physical (with or without engine following) or engine alone
+                                            if (isPhysicalFirst || isEngineAlone) {
+                                                return (
+                                                    <section class="section__product-detail-additional-specs-wrapper">
+                                                        {/* Physical Specs */}
+                                                        {block._type === 'physicalSpecsBlock' && block.specs && (
+                                                            <div class="section__product-detail-physical-specs">
+                                                                <div class="divider__border"></div>
+                                                                <PhysicalSpecs 
+                                                                    physicalSpecs={transformSpecsToComponentFormat(block.specs)} 
+                                                                />
+                                                            </div>
+                                                        )}
+                                                        
+                                                        {/* Engine Specs - render if it's the adjacent block */}
+                                                        {hasAdjacentEngineBlock && nextBlock.specs && (
+                                                            <div class="section__product-detail-engine-specs">
+                                                                <div class="divider__border"></div>
+                                                                <EngineData 
+                                                                    engineData={transformSpecsToComponentFormat(nextBlock.specs)} 
+                                                                />
+                                                            </div>
+                                                        )}
+                                                        
+                                                        {/* Engine Specs alone */}
+                                                        {isEngineAlone && block.specs && (
+                                                            <div class="section__product-detail-engine-specs">
+                                                                <div class="divider__border"></div>
+                                                                <EngineData 
+                                                                    engineData={transformSpecsToComponentFormat(block.specs)} 
+                                                                />
+                                                            </div>
+                                                        )}
+                                                    </section>
+                                                );
+                                            }
+                                            return null;
+                                        })()}
+                                    </>
+                                )}
+
+                                {/* Build Options Block */}
+                                {block._type === 'buildOptionsBlock' && block.options && (
+                                    <>
+                                        <div class="divider__border"></div>
+                                        <BuildOptions options={block.options} />
+                                    </>
+                                )}
+
+                                {/* Custom Content Block */}
+                                {block._type === 'customContentBlock' && block.content && (
+                                    <>
+                                        <div class="divider__border"></div>
+                                        <section class="section__product-detail-custom-content">
+                                            <div class="section__product-detail-custom-content-title">
+                                                <h2>{block.sectionTitle}</h2>
+                                            </div>
+                                            <div class="section__product-detail-custom-content-body">
+                                                <RichText value={block.content} />
+                                            </div>
+                                        </section>
+                                    </>
+                                )}
+
+                                {/* Key Specs Block - render as physical specs format */}
+                                {block._type === 'keySpecsBlock' && block.specs && (
+                                    <>
+                                        <div class="divider__border"></div>
+                                        <section class="section__product-detail-additional-specs-wrapper">
+                                            <div class="section__product-detail-physical-specs">
+                                                <PhysicalSpecs 
+                                                    physicalSpecs={transformSpecsToComponentFormat(block.specs)} 
+                                                />
+                                            </div>
+                                        </section>
+                                    </>
+                                )}
+                            </>
+                        );
+                    })}
+                </>
+            ) : (
+                /* Legacy support - render old structure if no content blocks */
+                <>
+                    {/* Performance Table Section - Legacy */}
+                    {product.hasPerformanceTable && product.performanceSpecs && (
+                        <>
+                            <div class="divider__border"></div>
+                            <section class="section__product-performance-table">
+                                <div class="section__product-performance-table-content">
+                                    <PerformanceTable
+                                        headers={[
+                                            "Model",
+                                            "Plunger Size",
+                                            "PSI",
+                                            "BAR",
+                                            "L/min",
+                                            "GPM",
+                                            "kW",
+                                            "HP",
+                                        ]}
+                                        rows={product.performanceSpecs.map((spec) => ({
+                                            cells: [
+                                                spec.model || '-',
+                                                spec.plungerSize || '-',
+                                                spec.psi || '-',
+                                                spec.bar || '-',
+                                                spec.lpm || '-',
+                                                spec.gpm || '-',
+                                                spec.kw || '-',
+                                                spec.hp || '-'
+                                            ]
+                                        }))}
+                                    />
+                                </div>
+                            </section>
+                        </>
+                    )}
+
+                    {/* Legacy Specs Section */}
+                    <section class="section__product-detail-additional-specs-wrapper">
+                        {product.hasPhysicalSpecs && product.physicalSpecs && (
+                            <div class="section__product-detail-physical-specs">
+                                <div class="divider__border"></div>
+                                <PhysicalSpecs physicalSpecs={product.physicalSpecs} />
+                            </div>
+                        )}
+
+                        {product.hasEngineData && product.engineData && (
+                            <div class="section__product-detail-engine-specs">
+                                <div class="divider__border"></div>
+                                <EngineData engineData={product.engineData} />
+                            </div>
+                        )}
+                    </section>
+
+                    {/* Legacy Build Options */}
+                    {product.hasBuildOptions && product.buildOptions && (
+                        <>
+                            <div class="divider__border"></div>
+                            <BuildOptions options={product.buildOptions} />
+                        </>
+                    )}
+                </>
             )}
-     
-
-        <section class="section__product-detail-additional-specs-wrapper">
-
-            {product.hasPhysicalSpecs && product.physicalSpecs && (
-                <div class="section__product-detail-physical-specs">
-                <div class="divider__border"></div>
-                <PhysicalSpecs physicalSpecs={product.physicalSpecs} />
-                </div> 
-           )}
-
-            {product.hasEngineData && product.engineData && (
-                <div class="section__product-detail-engine-specs">
-                    <div class="divider__border"></div>
-                    <EngineData engineData={product.engineData} />
-                </div>
-            )}
-        </section>
-
-        {product.hasBuildOptions && product.buildOptions && (
-            <>
-                <div class="divider__border"></div>
-                <BuildOptions options={product.buildOptions} />
-            </>
-        )}
 
 
 
