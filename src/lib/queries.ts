@@ -181,6 +181,16 @@ export const productBySlugQuery = `*[_type == "product" && slug.current == $slug
   engineData,
   hasBuildOptions,
   buildOptions,
+
+  // Custom Content Blocks - fetch referenced documents
+    "contentBlocks": contentBlocks[]-> {
+      _id,
+      _type,
+      title,
+      content
+    },
+
+    
   relatedProducts[]->{
     title,
     "slug": slug.current,

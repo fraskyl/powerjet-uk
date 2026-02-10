@@ -10,6 +10,15 @@ import BuildOptions from "../components/Product/BuildOptions.astro";
 import PhysicalSpecs from "../components/Product/PhysicalSpecs.astro";
 import BaseLayout from "./BaseLayout.astro";
 import ProductHero from "../components/Product/ProductHero.astro";
+import RichText from "../components/Content/RichText.astro";
+
+
+interface ContentBlock {
+    _id: string;
+    _type: string;
+    title: string;
+    content: any;
+}
 
 interface Props {
     title: string;
@@ -29,6 +38,8 @@ interface Props {
         hasDatasheet?: boolean;
         datasheetUrl?: string;
         datasheetFileName?: string;
+
+        contentBlocks?: ContentBlock[];
 
         // Categorization
         availability?: string[];
@@ -142,6 +153,31 @@ const relatedProducts = product?.relatedProducts || [];
                 datasheetUrl={product.datasheetUrl}
                 datasheetFileName={product.datasheetFileName}
             />
+
+            {/* Custom Content Blocks */}
+{product.contentBlocks && product.contentBlocks.length > 0 && (
+    <>
+        {product.contentBlocks.map((block: any, index: number) => (
+            <>
+                {index === 0 && <div class="divider__border"></div>}
+                
+                <section class="section__product-custom-content">
+                    <div class="section__product-custom-content-title">
+                        <h2>{block.title}</h2>
+                    </div>
+                    <div class="section__product-custom-content-body">
+                        <RichText value={block.content} />
+                    </div>
+                </section>
+                
+                {index < product.contentBlocks.length - 1 && (
+                    <div class="divider__border"></div>
+                )}
+            </>
+        ))}
+        <div class="divider__border"></div>
+    </>
+)}
 
 
             <!-- Performance Table Section - Renders conditionally based on hasPerformanceTable -->
@@ -295,6 +331,26 @@ const relatedProducts = product?.relatedProducts || [];
         object-fit: cover;
     }
 
+    /* Custom Content Blocks */
+.section__product-custom-content {
+    display: flex;
+    flex-direction: column;
+    grid-column: 2 / -2;
+    margin-bottom: 5rem;
+}
+
+.section__product-custom-content-title h2 {
+    font-size: 1.5rem;
+    font-weight: 450;
+    color: var(--pj_blue_80);
+    margin-bottom: 2rem;
+}
+
+.section__product-custom-content-body {
+    max-width: 65ch;
+    line-height: 1.6;
+}
+
     .section__product-performance-table {
         display: flex;
         flex-direction: column;
@@ -443,6 +499,10 @@ const relatedProducts = product?.relatedProducts || [];
         .divider__border {
             grid-column: 3 /-3;
         }
+
+         .section__product-custom-content {
+        grid-column: 3 / -3;
+         }
 
         .section__product-performance-table {
             display: grid;
