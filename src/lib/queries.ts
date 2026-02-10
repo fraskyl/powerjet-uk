@@ -182,15 +182,24 @@ export const productBySlugQuery = `*[_type == "product" && slug.current == $slug
   hasBuildOptions,
   buildOptions,
 
-  // Custom Content Blocks - fetch referenced documents
-    "contentBlocks": contentBlocks[]-> {
-      _id,
-      _type,
-      title,
-      content
+  contentBlocks[] {
+      useTemplate,
+      
+      // If using template, fetch and merge template data
+      useTemplate == true => {
+        "title": coalesce(titleOverride, template->defaultTitle, "Section"),
+        "content": coalesce(content, template->defaultContent, []),
+        "templateName": template->templateName
+      },
+      
+      // If custom, use custom data
+      useTemplate == false => {
+        "title": customTitle,
+        content
+      }
     },
 
-    
+
   relatedProducts[]->{
     title,
     "slug": slug.current,
