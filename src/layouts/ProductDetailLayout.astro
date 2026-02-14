@@ -11,6 +11,7 @@ import PhysicalSpecs from "../components/Product/PhysicalSpecs.astro";
 import BaseLayout from "./BaseLayout.astro";
 import ProductHero from "../components/Product/ProductHero.astro";
 import RichText from "../components/Content/RichText.astro";
+import SectionTitle from "../components/Content/SectionTitle.astro";
 
 
 interface ContentBlock {
@@ -19,6 +20,21 @@ interface ContentBlock {
     title: string;
     content: any;
 }
+
+interface SpecItem {
+    label: string;
+    value: string;
+}
+
+interface SpecsListBlock {
+    _type: 'specsListBlock';
+    _id: string;
+    title: string;
+    specs: SpecItem[];
+}
+
+// Union type fro all block types
+type BlockType = ContentBlock | SpecsListBlock;
 
 interface Props {
     title: string;
@@ -39,7 +55,7 @@ interface Props {
         datasheetUrl?: string;
         datasheetFileName?: string;
 
-        contentBlocks?: ContentBlock[];
+        contentBlocks?: BlockType[];
 
         // Categorization
         availability?: string[];
@@ -125,6 +141,7 @@ const productDescription = product?.description || null;
 const productImageUrl = product?.imageUrl || "";
 const productImageAlt = product?.imageAlt || "Product image";
 
+const contentBlocks = product?.contentBlocks || [];
 const relatedProducts = product?.relatedProducts || [];
 ---
 
@@ -154,27 +171,128 @@ const relatedProducts = product?.relatedProducts || [];
                 datasheetFileName={product.datasheetFileName}
             />
 
-            {/* Custom Content Blocks */}
-{product.contentBlocks && product.contentBlocks.length > 0 && (
+{/* CONTENT BLOCKS - Smart Layout for Specs Lists */}
+
+{contentBlocks.length > 0 && (
     <>
-        {product.contentBlocks.map((block: any, index: number) => (
-            <>
-                {index === 0 && <div class="divider__border"></div>}
+        <div class="divider__border"></div>
+        
+        {contentBlocks.map((block, index) => {
+            // ═══════════════════════════════════════════════════════════
+            // SPECS LIST BLOCK - Check for adjacent specs blocks
+            // ═══════════════════════════════════════════════════════════
+            if (block._type === 'specsListBlock') {
+                // Look ahead: Is the NEXT block also a specs list?
+                const nextBlock = contentBlocks[index + 1];
+                const nextIsSpecsList = nextBlock?._type === 'specsListBlock';
                 
-                <section class="section__product-custom-content">
-                    <div class="section__product-custom-content-title">
-                        <h2>{block.title}</h2>
-                    </div>
-                    <div class="section__product-custom-content-body">
-                        <RichText value={block.content} />
-                    </div>
-                </section>
+                // Look behind: Was the PREVIOUS block a specs list?
+                const prevBlock = contentBlocks[index - 1];
+                const prevIsSpecsList = prevBlock?._type === 'specsListBlock';
                 
-                {index < product.contentBlocks.length - 1 && (
-                    <div class="divider__border"></div>
-                )}
-            </>
-        ))}
+                // If previous was specs list, skip rendering (already rendered in pair)
+                if (prevIsSpecsList) {
+                    return null;
+                }
+                
+                // If next is specs list, render BOTH side-by-side
+                if (nextIsSpecsList) {
+                    return (
+                        <>
+                            <section class="section__product-detail-additional-specs-wrapper">
+                                {/* First specs block */}
+                                <div class="section__product-detail-physical-specs">
+                                    <div class="divider__border"></div>
+                                    <div class="section__product-detail-physical-specs-title">
+                                        <SectionTitle
+                                            headline={block.title}
+                                            headingSize="small"
+                                        />
+                                    </div>
+                                    <div class="section__product-detail-physical-specs-content">
+                                        {(block as SpecsListBlock).specs?.map((spec: SpecItem) => (
+                                            <div class="spec-item">
+                                                <span class="spec-label">{spec.label}</span>
+                                                <span class="spec-value">{spec.value}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                
+                                {/* Second specs block (next one) */}
+                                <div class="section__product-detail-engine-specs">
+                                    <div class="divider__border"></div>
+                                    <div class="section__product-detail-engine-specs-title">
+                                        <SectionTitle
+                                            headline={nextBlock.title}
+                                            headingSize="small"
+                                        />
+                                    </div>
+                                    <div class="section__product-detail-engine-specs-content">
+                                        {(nextBlock as SpecsListBlock).specs?.map((spec: SpecItem) => (
+                                            <div class="spec-item">
+                                                <span class="spec-label">{spec.label}</span>
+                                                <span class="spec-value">{spec.value}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </section>
+                        </>
+                    );
+                }
+                
+                // Single specs block - render full width
+                return (
+                    <>
+                        <section class="section__product-single-specs">
+                            <div class="section__product-single-specs-title">
+                                <SectionTitle
+                                    headline={block.title}
+                                    headingSize="small"
+                                />
+                            </div>
+                            <div class="section__product-single-specs-content">
+                                {(block as SpecsListBlock).specs?.map((spec: SpecItem) => (
+                                    <div class="spec-item">
+                                        <span class="spec-label">{spec.label}</span>
+                                        <span class="spec-value">{spec.value}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                        
+                        {index < contentBlocks.length - 1 && (
+                            <div class="divider__border"></div>
+                        )}
+                    </>
+                );
+            }
+            
+            // ═══════════════════════════════════════════════════════════
+            // TEXT CONTENT BLOCK - Regular rendering
+            // ═══════════════════════════════════════════════════════════
+            if (block._type === 'contentBlock') {
+                return (
+                    <>
+                        <section class="section__product-custom-content">
+                            <div class="section__product-custom-content-title">
+                                <h2>{block.title}</h2>
+                            </div>
+                            <div class="section__product-custom-content-body">
+                                <RichText value={block.content} />
+                            </div>
+                        </section>
+                        
+                        {index < contentBlocks.length - 1 && (
+                            <div class="divider__border"></div>
+                        )}
+                    </>
+                );
+            }
+            
+            return null;
+        })}
     </>
 )}
 
@@ -274,6 +392,58 @@ const relatedProducts = product?.relatedProducts || [];
 <Footer />
 
 <style>
+/* ═══════════════════════════════════════════════════════════ */
+/* Specs List Blocks - Matches your existing component styling */
+/* ═══════════════════════════════════════════════════════════ */
+
+/* Single specs block (full width) */
+.section__product-single-specs {
+    display: flex;
+    flex-direction: column;
+    grid-column: 2 / -2;
+    margin-bottom: 5rem;
+}
+
+.section__product-single-specs-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Spec item (label/value pair) */
+.spec-item {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: auto;
+    font-size: 0.875rem;
+    gap: 1rem;
+    justify-content: space-between;
+}
+
+.spec-label {
+    font-weight: 550;
+}
+
+.spec-value {
+    font-weight: normal;
+    text-align: right;
+}
+
+/* Desktop: single specs block */
+@media screen and (min-width: 1024px) {
+    .section__product-single-specs {
+        grid-column: 3 / -3;
+    }
+}
+
+
+
+
+
+
+
+
     .link__prev-page-wrapper {
         grid-column: 2 / -2; /* ✅ Added: Position in grid */
         display: flex;

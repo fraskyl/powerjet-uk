@@ -183,6 +183,10 @@ export const productBySlugQuery = `*[_type == "product" && slug.current == $slug
   buildOptions,
 
   contentBlocks[] {
+      _type,
+
+      //Text Content Block
+      _type == "contentBlock" => {
       useTemplate,
       
       // If using template, fetch and merge template data
@@ -196,6 +200,24 @@ export const productBySlugQuery = `*[_type == "product" && slug.current == $slug
       useTemplate == false => {
         "title": customTitle,
         content
+      }
+    },
+
+    // Specs List Block
+       _type == "specsListBlock" => {
+        useTemplate,
+
+        // If using template, fetch and merge template data
+        useTemplate == true => {
+        "title": coalesce(titleOverride, template->defaultTitle, "Specifications"),
+          "templateLabels": template->specFields[].label,
+          specs
+        },
+
+        useTemplate == false => {
+          "title": customTitle,
+          specs
+        }
       }
     },
 
