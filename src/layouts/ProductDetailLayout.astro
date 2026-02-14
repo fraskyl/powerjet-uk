@@ -177,125 +177,107 @@ const relatedProducts = product?.relatedProducts || [];
     <>
         <div class="divider__border"></div>
         
-        {contentBlocks.map((block, index) => {
-            // ═══════════════════════════════════════════════════════════
-            // SPECS LIST BLOCK - Check for adjacent specs blocks
-            // ═══════════════════════════════════════════════════════════
-            if (block._type === 'specsListBlock') {
-                // Look ahead: Is the NEXT block also a specs list?
-                const nextBlock = contentBlocks[index + 1];
-                const nextIsSpecsList = nextBlock?._type === 'specsListBlock';
-                
-                // Look behind: Was the PREVIOUS block a specs list?
-                const prevBlock = contentBlocks[index - 1];
-                const prevIsSpecsList = prevBlock?._type === 'specsListBlock';
-                
-                // If previous was specs list, skip rendering (already rendered in pair)
-                if (prevIsSpecsList) {
-                    return null;
+        {(() => {
+            const processed = []
+            
+            return contentBlocks.map((block, index) => {
+                // Skip if already processed
+                if (processed.includes(index)) {
+                    return null
                 }
                 
-                // If next is specs list, render BOTH side-by-side
-                if (nextIsSpecsList) {
+                processed.push(index)
+                
+                // SPECS LIST BLOCK
+                if (block._type === 'specsListBlock') {
+                    const nextBlock = contentBlocks[index + 1]
+                    const nextIsSpecsList = nextBlock?._type === 'specsListBlock'
+                    
+                    // Pair with next
+                    if (nextIsSpecsList) {
+                        processed.push(index + 1) // Mark next as processed
+                        
+                        return (
+                            <>
+                                <section class="section__product-detail-additional-specs-wrapper">
+                                    <div class="section__product-detail-physical-specs">
+                                        <div class="divider__border"></div>
+                                        <div class="section__product-detail-physical-specs-title">
+                                            <SectionTitle headline={block.title} headingSize="small" />
+                                        </div>
+                                        <div class="section__product-detail-physical-specs-content">
+                                            {block.specs?.map((spec: SpecItem) => (
+                                                <div class="spec-item">
+                                                    <span class="spec-label">{spec.label}</span>
+                                                    <span class="spec-value">{spec.value}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="section__product-detail-engine-specs">
+                                        <div class="divider__border"></div>
+                                        <div class="section__product-detail-engine-specs-title">
+                                            <SectionTitle headline={nextBlock.title} headingSize="small" />
+                                        </div>
+                                        <div class="section__product-detail-engine-specs-content">
+                                            {(nextBlock as SpecsListBlock).specs?.map((spec: SpecItem) => (
+                                                <div class="spec-item">
+                                                    <span class="spec-label">{spec.label}</span>
+                                                    <span class="spec-value">{spec.value}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </section>
+                                {index + 1 < contentBlocks.length - 1 && <div class="divider__border"></div>}
+                            </>
+                        )
+                    }
+                    
+                    // Single
                     return (
                         <>
-                            <section class="section__product-detail-additional-specs-wrapper">
-                                {/* First specs block */}
-                                <div class="section__product-detail-physical-specs">
-                                    <div class="divider__border"></div>
-                                    <div class="section__product-detail-physical-specs-title">
-                                        <SectionTitle
-                                            headline={block.title}
-                                            headingSize="small"
-                                        />
-                                    </div>
-                                    <div class="section__product-detail-physical-specs-content">
-                                        {(block as SpecsListBlock).specs?.map((spec: SpecItem) => (
-                                            <div class="spec-item">
-                                                <span class="spec-label">{spec.label}</span>
-                                                <span class="spec-value">{spec.value}</span>
-                                            </div>
-                                        ))}
-                                    </div>
+                            <section class="section__product-single-specs">
+                                <div class="section__product-single-specs-title">
+                                    <SectionTitle headline={block.title} headingSize="small" />
                                 </div>
-                                
-                                {/* Second specs block (next one) */}
-                                <div class="section__product-detail-engine-specs">
-                                    <div class="divider__border"></div>
-                                    <div class="section__product-detail-engine-specs-title">
-                                        <SectionTitle
-                                            headline={nextBlock.title}
-                                            headingSize="small"
-                                        />
-                                    </div>
-                                    <div class="section__product-detail-engine-specs-content">
-                                        {(nextBlock as SpecsListBlock).specs?.map((spec: SpecItem) => (
-                                            <div class="spec-item">
-                                                <span class="spec-label">{spec.label}</span>
-                                                <span class="spec-value">{spec.value}</span>
-                                            </div>
-                                        ))}
-                                    </div>
+                                <div class="section__product-single-specs-content">
+                                    {block.specs?.map((spec: SpecItem) => (
+                                        <div class="spec-item">
+                                            <span class="spec-label">{spec.label}</span>
+                                            <span class="spec-value">{spec.value}</span>
+                                        </div>
+                                    ))}
                                 </div>
                             </section>
+                            {index < contentBlocks.length - 1 && <div class="divider__border"></div>}
                         </>
-                    );
+                    )
                 }
                 
-                // Single specs block - render full width
-                return (
-                    <>
-                        <section class="section__product-single-specs">
-                            <div class="section__product-single-specs-title">
-                                <SectionTitle
-                                    headline={block.title}
-                                    headingSize="small"
-                                />
-                            </div>
-                            <div class="section__product-single-specs-content">
-                                {(block as SpecsListBlock).specs?.map((spec: SpecItem) => (
-                                    <div class="spec-item">
-                                        <span class="spec-label">{spec.label}</span>
-                                        <span class="spec-value">{spec.value}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        </section>
-                        
-                        {index < contentBlocks.length - 1 && (
-                            <div class="divider__border"></div>
-                        )}
-                    </>
-                );
-            }
-            
-            // ═══════════════════════════════════════════════════════════
-            // TEXT CONTENT BLOCK - Regular rendering
-            // ═══════════════════════════════════════════════════════════
-            if (block._type === 'contentBlock') {
-                return (
-                    <>
-                        <section class="section__product-custom-content">
-                            <div class="section__product-custom-content-title">
-                                <h2>{block.title}</h2>
-                            </div>
-                            <div class="section__product-custom-content-body">
-                                <RichText value={block.content} />
-                            </div>
-                        </section>
-                        
-                        {index < contentBlocks.length - 1 && (
-                            <div class="divider__border"></div>
-                        )}
-                    </>
-                );
-            }
-            
-            return null;
-        })}
+                // TEXT CONTENT BLOCK
+                if (block._type === 'contentBlock') {
+                    return (
+                        <>
+                            <section class="section__product-custom-content">
+                                <div class="section__product-custom-content-title">
+                                    <h2>{block.title}</h2>
+                                </div>
+                                <div class="section__product-custom-content-body">
+                                    <RichText value={block.content} />
+                                </div>
+                            </section>
+                            {index < contentBlocks.length - 1 && <div class="divider__border"></div>}
+                        </>
+                    )
+                }
+                
+                return null
+            })
+        })()}
     </>
 )}
-
 
             <!-- Performance Table Section - Renders conditionally based on hasPerformanceTable -->
             {product.hasPerformanceTable && product.performanceSpecs && (
