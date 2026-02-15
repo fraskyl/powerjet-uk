@@ -217,9 +217,8 @@ const relatedProducts = product?.relatedProducts || [];
                                     
                                     <div class="section__product-detail-engine-specs">
                                     <div class="divider__border"></div>
-
                                         <div class="section__product-detail-engine-specs-title">
-                                             <h2>{block.title}</h2>  
+                                             <h2>{nextBlock.title}</h2>  
                                         </div>
                                         <div class="section__product-detail-engine-specs-content">
                                             {(nextBlock as SpecsListBlock).specs?.map((spec: SpecItem) => (
