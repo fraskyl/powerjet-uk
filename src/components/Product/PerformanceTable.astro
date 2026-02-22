@@ -2,73 +2,74 @@
 import Accordion from "../Layout/Accordion.astro";
 
 interface Props {
-    headers: string[];
-    rows: Array<{
-        cells: string[];
-    }>;
+  headers: string[];
+  rows: Array<{
+    cells: string[];
+  }>;
+  title: string;
 }
 
-const { headers, rows } = Astro.props;
+const { headers, rows, title } = Astro.props;
 ---
 
 <div class="performance-table__container">
-    <!-- Mobile: With Accordion -->
-    <div class="mobile-only">
-        <Accordion defaultOpen={true}>
-            <h2 slot="title">Performance Specifications</h2>
+  <!-- Mobile: With Accordion -->
+  <div class="mobile-only">
+    <Accordion defaultOpen={true}>
+      <h2 slot="title">{title}</h2>
 
-            <div class="performance-table__data">
-                <table class="performance-table">
-                    <thead>
-                        <tr>
-                            {headers.map((header) => <th>{header}</th>)}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            rows.map((row) => (
-                                <tr>
-                                    {row.cells.map((cell) => (
-                                        <td>{cell}</td>
-                                    ))}
-                                </tr>
-                            ))
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </Accordion>
+      <div class="performance-table__data">
+        <table class="performance-table">
+          <thead>
+            <tr>
+              {headers.map((header) => <th>{header}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {
+              rows.map((row) => (
+                <tr>
+                  {row.cells.map((cell) => (
+                    <td>{cell}</td>
+                  ))}
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </Accordion>
+  </div>
+
+  <!-- Desktop: No Accordion -->
+  <div class="desktop-only">
+    <h2 slot="title">{title}</h2>
+
+    <div class="performance-table__data">
+      <table class="performance-table">
+        <thead>
+          <tr>
+            {headers.map((header) => <th>{header}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {
+            rows.map((row) => (
+              <tr>
+                {row.cells.map((cell) => (
+                  <td>{cell}</td>
+                ))}
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
     </div>
-
-    <!-- Desktop: No Accordion -->
-    <div class="desktop-only">
-        <h2>Performance Specifications</h2>
-
-        <div class="performance-table__data">
-            <table class="performance-table">
-                <thead>
-                    <tr>
-                        {headers.map((header) => <th>{header}</th>)}
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        rows.map((row) => (
-                            <tr>
-                                {row.cells.map((cell) => (
-                                    <td>{cell}</td>
-                                ))}
-                            </tr>
-                        ))
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
+  </div>
 </div>
 
 <style>
-      /* Mobile: Show accordion only */
+  /* Mobile: Show accordion only */
   .mobile-only {
     display: block;
   }
@@ -76,112 +77,112 @@ const { headers, rows } = Astro.props;
     display: none;
   }
 
-    .performance-table__container {
-        width: 100%;
-    }
+  .performance-table__container {
+    width: 100%;
+  }
 
-    .performance-table__container h2 {
-        font-size: 1.5rem;
-        font-weight: 450;
-        color: var(--pj_blue_80);
-    }
+  .performance-table__container h2 {
+    font-size: 1.5rem;
+    font-weight: 450;
+    color: var(--pj_blue_80);
+  }
 
-    .performance-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 0.875rem;
-        background-color: white;
-    }
+  .performance-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    background-color: white;
+  }
 
-    .performance-table__data {
-        width: 100%;
-        background-color: white;
-        border-radius: 0.25rem;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-        overflow-x: auto; /* Horizontal scroll on mobile */
-        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-    }
+  .performance-table__data {
+    width: 100%;
+    background-color: white;
+    border-radius: 0.25rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    overflow-x: auto; /* Horizontal scroll on mobile */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  }
 
-    /* Header styling - Dark blue background like your image */
-    .performance-table thead {
-        background-color: var(--pj_brand_blue);
-        color: white;
-    }
+  /* Header styling - Dark blue background like your image */
+  .performance-table thead {
+    background-color: var(--pj_brand_blue);
+    color: white;
+  }
 
-    .performance-table th {
-        padding: 1rem;
-        text-align: center;
-        font-weight: 500;
-        font-size: 0.75rem;
-        white-space: nowrap; /* Prevents header text wrapping */
-        border-right: 1px solid rgba(255, 255, 255, 0.2); /* Subtle dividers */
-    }
+  .performance-table th {
+    padding: 1rem;
+    text-align: center;
+    font-weight: 500;
+    font-size: 0.75rem;
+    white-space: nowrap; /* Prevents header text wrapping */
+    border-right: 1px solid rgba(255, 255, 255, 0.2); /* Subtle dividers */
+  }
 
-    .performance-table th:last-child {
-        border-right: none;
-    }
+  .performance-table th:last-child {
+    border-right: none;
+  }
 
-    /* Body cell styling */
-    .performance-table td {
-        padding: 1rem;
-        text-align: center;
-        border-bottom: 1px solid var(--pj_blue_10);
-        border-right: 1px solid var(--pj_blue_10);
-        color: var(--pj_brand_blue);
-    }
+  /* Body cell styling */
+  .performance-table td {
+    padding: 1rem;
+    text-align: center;
+    border-bottom: 1px solid var(--pj_blue_10);
+    border-right: 1px solid var(--pj_blue_10);
+    color: var(--pj_brand_blue);
+  }
 
-    .performance-table td:last-child {
-        border-right: none;
-    }
+  .performance-table td:last-child {
+    border-right: none;
+  }
 
-    /* First column (Model) - Left align and bold */
-    .performance-table td:first-child {
-        font-weight: 500;
-        text-align: center;
-    }
+  /* First column (Model) - Left align and bold */
+  .performance-table td:first-child {
+    font-weight: 500;
+    text-align: center;
+  }
 
-    /* Zebra striping for rows 
+  /* Zebra striping for rows 
     .performance-table tbody tr:nth-child(even) {
         background-color: var(--pj_blue_05);
     }
         */
 
-    /* Remove bottom border from last row */
-    .performance-table tbody tr:last-child td {
-        border-bottom: none;
-    }
+  /* Remove bottom border from last row */
+  .performance-table tbody tr:last-child td {
+    border-bottom: none;
+  }
 
-    /* Hover effect */
-    .performance-table tbody tr:hover {
-        background-color: var(--pj_blue_10);
-    }
+  /* Hover effect */
+  .performance-table tbody tr:hover {
+    background-color: var(--pj_blue_10);
+  }
 
-    /* Mobile responsive */
-    @media screen and (min-width: 768px) {
-          /* Desktop: Show regular content */
-      .mobile-only {
-        display: none;
-      }
-      .desktop-only {
-        display: block;
-      }
+  /* Mobile responsive */
+  @media screen and (min-width: 768px) {
+    /* Desktop: Show regular content */
+    .mobile-only {
+      display: none;
+    }
+    .desktop-only {
+      display: block;
+    }
 
     .performance-table__container h2 {
-        margin-bottom: 2rem;
+      margin-bottom: 2rem;
     }
 
-        .performance-table {
-            font-size: 0.875rem;
-        }
-
-        .performance-table th,
-        .performance-table td {
-            padding: 0.75rem 0.5rem;
-        }
-
-        /* Make table scrollable horizontally */
-        .performance-table__container {
-            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-        }
+    .performance-table {
+      font-size: 0.875rem;
     }
+
+    .performance-table th,
+    .performance-table td {
+      padding: 0.75rem 0.5rem;
+    }
+
+    /* Make table scrollable horizontally */
+    .performance-table__container {
+      -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    }
+  }
 </style>

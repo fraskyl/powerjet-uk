@@ -288,9 +288,12 @@ const relatedProducts = product?.relatedProducts || [];
         <>
             <section class="section__product-performance-table">
                 <PerformanceTable
+                    title={block.title}
                     headers={(block as PerformanceTableBlock).headers}
                     rows={(block as PerformanceTableBlock).rows}
-                />
+                >
+                    
+                </PerformanceTable>
             </section>
         </>
     )
