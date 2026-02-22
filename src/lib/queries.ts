@@ -218,6 +218,21 @@ export const productBySlugQuery = `*[_type == "product" && slug.current == $slug
           "title": customTitle,
           specs
         }
+      },
+
+    // Performance Table Block
+    _type == "performanceTableBlock" => {
+        useTemplate,
+        useTemplate == true => {
+            "title": coalesce(titleOverride, template->defaultTitle, "Performance Specifications"),
+            "headers": template->columnHeaders[].header,
+            rows
+        },
+        useTemplate == false => {
+            "title": customTitle,
+            "headers": customColumns,
+            rows
+        }
       }
     },
 

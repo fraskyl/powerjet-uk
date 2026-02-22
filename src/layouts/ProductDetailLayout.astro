@@ -33,8 +33,18 @@ interface SpecsListBlock {
     specs: SpecItem[];
 }
 
+interface PerformanceTableBlock {
+     _type: 'performanceTableBlock';
+    _id: string;
+    title: string;
+    headers: string[];
+    rows: Array<{
+        cells: string[];
+    }>;
+}
+
 // Union type fro all block types
-type BlockType = ContentBlock | SpecsListBlock;
+type BlockType = ContentBlock | SpecsListBlock | PerformanceTableBlock;
 
 interface Props {
     title: string;
@@ -206,7 +216,7 @@ const relatedProducts = product?.relatedProducts || [];
                                               <h2>{block.title}</h2>
                                         </div>
                                         <div class="section__product-detail-physical-specs-content">
-                                            {block.specs?.map((spec: SpecItem) => (
+                                            {(block as SpecsListBlock).specs?.map((spec: SpecItem) => (
                                                 <div class="spec-item">
                                                     <span class="spec-label">{spec.label}</span>
                                                     <span class="spec-value">{spec.value}</span>
@@ -243,7 +253,7 @@ const relatedProducts = product?.relatedProducts || [];
                                     <h2>{block.title}</h2>
                                 </div>
                                 <div class="section__product-single-specs-content">
-                                    {block.specs?.map((spec: SpecItem) => (
+                                    {(block as SpecsListBlock).specs?.map((spec: SpecItem) => (
                                         <div class="spec-item">
                                             <span class="spec-label">{spec.label}</span>
                                             <span class="spec-value">{spec.value}</span>
@@ -271,6 +281,20 @@ const relatedProducts = product?.relatedProducts || [];
                         </>
                     )
                 }
+
+
+                if (block._type === 'performanceTableBlock') {
+    return (
+        <>
+            <section class="section__product-performance-table">
+                <PerformanceTable
+                    headers={(block as PerformanceTableBlock).headers}
+                    rows={(block as PerformanceTableBlock).rows}
+                />
+            </section>
+        </>
+    )
+}
                 
                 return null
             })
@@ -404,7 +428,7 @@ const relatedProducts = product?.relatedProducts || [];
 
 .spec-label {
     font-weight: 500;
-        color: var(--pj_blue_70);
+        color: var(--pj_blue_60);
 }
 
 .spec-value {
