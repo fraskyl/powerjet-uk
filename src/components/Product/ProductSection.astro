@@ -1,0 +1,164 @@
+---
+interface Props {
+  defaultOpen?: boolean;
+  className?: string;
+}
+
+const { defaultOpen = false, className = "" } = Astro.props;
+---
+
+<div class={`product-section ${className}`}>
+  <!-- Mobile: Native Accordion -->
+  <div class="mobile-only">
+    <details class="product-section__details" open={defaultOpen}>
+      <summary class="product-section__summary">
+        <div class="product-section__title">
+          <slot name="title">
+            <h2>Section Title</h2>
+          </slot>
+        </div>
+        <span class="product-section__icon" aria-hidden="true">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </span>
+      </summary>
+
+      <div class="product-section__content">
+        <slot />
+      </div>
+    </details>
+  </div>
+
+  <!-- Desktop: Always visible, no accordion -->
+  <div class="desktop-only">
+    <div class="product-section__title">
+      <slot name="title">
+        <h2>Section Title</h2>
+      </slot>
+    </div>
+    <div class="product-section__content">
+      <slot />
+    </div>
+  </div>
+</div>
+
+<style>
+  .product-section {
+    width: 100%;
+  }
+
+  /* ═══════════════════════════════════════════════════════════ */
+  /* Mobile/Desktop Toggle */
+  /* ═══════════════════════════════════════════════════════════ */
+
+  .mobile-only {
+    display: block;
+  }
+
+  .desktop-only {
+    display: none;
+  }
+
+  /* ═══════════════════════════════════════════════════════════ */
+  /* Native Details/Summary Styling (Mobile) */
+  /* ═══════════════════════════════════════════════════════════ */
+
+  .product-section__details {
+    border-bottom: 1px solid var(--pj_blue_20);
+  }
+
+  .product-section__summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    cursor: pointer;
+    list-style: none; /* Remove default marker */
+    user-select: none;
+  }
+
+  /* Remove default marker in all browsers */
+  .product-section__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .product-section__summary::marker {
+    display: none;
+  }
+
+  /* Hover effect */
+  .product-section__summary:hover {
+    background-color: var(--pj_blue_05);
+  }
+
+  .product-section__title {
+    flex: 1;
+  }
+
+  .product-section__title h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 450;
+    color: var(--pj_blue_80);
+  }
+
+  .product-section__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+    color: var(--pj_brand_blue);
+    flex-shrink: 0;
+    margin-left: 1rem;
+  }
+
+  /* Rotate icon when open */
+  .product-section__details[open] .product-section__icon {
+    transform: rotate(180deg);
+  }
+
+  /* Content */
+  .product-section__content {
+    padding: 1.5rem 0;
+  }
+
+  /* Smooth animation (optional enhancement) */
+  @media (prefers-reduced-motion: no-preference) {
+    .product-section__details {
+      transition: all 0.2s ease;
+    }
+  }
+
+  /* ═══════════════════════════════════════════════════════════ */
+  /* Desktop Styles - No Accordion */
+  /* ═══════════════════════════════════════════════════════════ */
+
+  @media screen and (min-width: 768px) {
+    .mobile-only {
+      display: none;
+    }
+
+    .desktop-only {
+      display: block;
+    }
+
+    .product-section__title h2 {
+      font-size: 1.5rem;
+      font-weight: 450;
+      color: var(--pj_blue_80);
+      margin-bottom: 2rem;
+    }
+
+    .product-section__content {
+      padding: 0;
+    }
+  }
+</style>
