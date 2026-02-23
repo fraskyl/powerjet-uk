@@ -2,9 +2,10 @@
 interface Props {
   defaultOpen?: boolean;
   className?: string;
+  title?: string;
 }
 
-const { defaultOpen = false, className = "" } = Astro.props;
+const { defaultOpen = false, className = "", title = "" } = Astro.props;
 ---
 
 <div class={`product-section ${className}`}>
@@ -14,7 +15,7 @@ const { defaultOpen = false, className = "" } = Astro.props;
       <summary class="product-section__summary">
         <div class="product-section__title">
           <slot name="title">
-            <h2>Section Title</h2>
+            <h2>{title}</h2>
           </slot>
         </div>
         <span class="product-section__icon" aria-hidden="true">
@@ -41,7 +42,7 @@ const { defaultOpen = false, className = "" } = Astro.props;
   <div class="desktop-only">
     <div class="product-section__title">
       <slot name="title">
-        <h2>Section Title</h2>
+        <h2>{title}</h2>
       </slot>
     </div>
     <div class="product-section__content">
@@ -53,6 +54,12 @@ const { defaultOpen = false, className = "" } = Astro.props;
 <style>
   .product-section {
     width: 100%;
+  }
+
+  .product-section h2 {
+    font-size: 1.5rem;
+    font-weight: 450;
+    color: var(--pj_blue_80);
   }
 
   /* ═══════════════════════════════════════════════════════════ */
@@ -71,15 +78,10 @@ const { defaultOpen = false, className = "" } = Astro.props;
   /* Native Details/Summary Styling (Mobile) */
   /* ═══════════════════════════════════════════════════════════ */
 
-  .product-section__details {
-    border-bottom: 1px solid var(--pj_blue_20);
-  }
-
   .product-section__summary {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 0;
     cursor: pointer;
     list-style: none; /* Remove default marker */
     user-select: none;

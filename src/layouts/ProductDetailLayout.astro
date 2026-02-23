@@ -5,12 +5,10 @@ import Header from "../components/Layout/Header.astro";
 import ContactBlock from "../components/Sections/ContactBlock.astro";
 import Card from "../components/UI/Card.astro";
 import PerformanceTable from "../components/Product/PerformanceTable.astro";
-import EngineData from "../components/Product/EngineData.astro";
-import BuildOptions from "../components/Product/BuildOptions.astro";
-import PhysicalSpecs from "../components/Product/PhysicalSpecs.astro";
 import BaseLayout from "./BaseLayout.astro";
 import ProductHero from "../components/Product/ProductHero.astro";
 import RichText from "../components/Content/RichText.astro";
+import ProductSection from "../components/Product/ProductSection.astro";
 
 
 interface ContentBlock {
@@ -209,11 +207,13 @@ const relatedProducts = product?.relatedProducts || [];
                         return (
                             <>
                                 <section class="section__product-detail-additional-specs-wrapper">
+                                    <div class="spec-column">
+                                        <div class="divider__border"></div>
+                                    <ProductSection
+                                    defaultOpen = {index === 0}
+                                    title={block.title}
+                                    >
                                     <div class="section__product-detail-physical-specs">
-                                    <div class="divider__border"></div>
-                                        <div class="section__product-detail-physical-specs-title">
-                                              <h2>{block.title}</h2>
-                                        </div>
                                         <div class="section__product-detail-physical-specs-content">
                                             {(block as SpecsListBlock).specs?.map((spec: SpecItem) => (
                                                 <div class="spec-item">
@@ -223,12 +223,16 @@ const relatedProducts = product?.relatedProducts || [];
                                             ))}
                                         </div>
                                     </div>
-                                    
+                                    </ProductSection>
+                                    </div>
+
+                                    <div class="spec-column">
+                                        <div class="divider__border"></div>
+                                    <ProductSection
+                                    defaultOpen = {index === 0}
+                                    title={nextBlock.title}
+                                    >
                                     <div class="section__product-detail-engine-specs">
-                                    <div class="divider__border"></div>
-                                        <div class="section__product-detail-engine-specs-title">
-                                             <h2>{nextBlock.title}</h2>  
-                                        </div>
                                         <div class="section__product-detail-engine-specs-content">
                                             {(nextBlock as SpecsListBlock).specs?.map((spec: SpecItem) => (
                                                 <div class="spec-item">
@@ -237,6 +241,8 @@ const relatedProducts = product?.relatedProducts || [];
                                                 </div>
                                             ))}
                                         </div>
+                                    </div>
+                                    </ProductSection>
                                     </div>
                                 </section>
                             </>
@@ -248,9 +254,10 @@ const relatedProducts = product?.relatedProducts || [];
                         <>
                             {index > 0 && <div class="divider__border"></div>}
                             <section class="section__product-single-specs">
-                                <div class="section__product-single-specs-title">
-                                    <h2>{block.title}</h2>
-                                </div>
+                                <ProductSection
+                                    defaultOpen = {index === 0}
+                                    title={block.title}
+                                    >
                                 <div class="section__product-single-specs-content">
                                     {(block as SpecsListBlock).specs?.map((spec: SpecItem) => (
                                         <div class="spec-item">
@@ -259,6 +266,7 @@ const relatedProducts = product?.relatedProducts || [];
                                         </div>
                                     ))}
                                 </div>
+                                </ProductSection>
                             </section>
                         </>
                     )
@@ -270,12 +278,14 @@ const relatedProducts = product?.relatedProducts || [];
                         <>
                             {index > 0 && <div class="divider__border"></div>}
                             <section class="section__product-custom-content">
-                                <div class="section__product-custom-content-title">
-                                    <h2>{block.title}</h2>
-                                </div>
+                                <ProductSection 
+                                    defaultOpen = {index === 0}
+                                    title={block.title}
+                                >
                                 <div class="section__product-custom-content-body">
                                     <RichText value={block.content} />
                                 </div>
+                                </ProductSection> 
                             </section>
                         </>
                     )
@@ -304,68 +314,6 @@ const relatedProducts = product?.relatedProducts || [];
         })()}
     </>
 )}
-
-           <!-- Performance Table Section - Renders conditionally based on hasPerformanceTable 
-            {product.hasPerformanceTable && product.performanceSpecs && (
-            <div class="divider__border"></div>
-                <section class="section__product-performance-table">
-                 
-                    <div class="section__product-performance-table-content">
-                        <PerformanceTable
-                            headers={[
-                                "Model",
-                                "Plunger Size",
-                                "PSI",
-                                "BAR",
-                                "L/min",
-                                "GPM",
-                                "kW",
-                                "HP",
-                            ]}
-                            rows={product.performanceSpecs.map((spec) => ({
-                                cells: [
-                                    spec.model || '-',
-                                    spec.plungerSize || '-',
-                                    spec.psi || '-',
-                                    spec.bar || '-',
-                                    spec.lpm || '-',
-                                    spec.gpm || '-',
-                                    spec.kw || '-',
-                                    spec.hp || '-'
-                                ]
-                            }))}
-                        />
-                    </div>
-                </section>
-            )}
-     
-
-        <section class="section__product-detail-additional-specs-wrapper">
-
-            {product.hasPhysicalSpecs && product.physicalSpecs && (
-                <div class="section__product-detail-physical-specs">
-                <div class="divider__border"></div>
-                <PhysicalSpecs physicalSpecs={product.physicalSpecs} />
-                </div> 
-           )}
-
-            {product.hasEngineData && product.engineData && (
-                <div class="section__product-detail-engine-specs">
-                    <div class="divider__border"></div>
-                    <EngineData engineData={product.engineData} />
-                </div>
-            )}
-        </section>
-
-        {product.hasBuildOptions && product.buildOptions && (
-            <>
-                <div class="divider__border"></div>
-                <BuildOptions options={product.buildOptions} />
-            </>
-        )}
-
--->
-
 
 {
                 relatedProducts.length > 0 && (
@@ -439,6 +387,18 @@ const relatedProducts = product?.relatedProducts || [];
     text-align: right;
     color: var(--pj_blue_70);
 
+}
+
+/* Wrapper for each column in paired specs */
+.spec-column {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Override divider grid positioning when inside spec columns */
+.spec-column .divider__border {
+    grid-column: auto; /* Don't span, stay in column */
+    margin-bottom: 1rem;
 }
 
 /* Desktop: single specs block */
