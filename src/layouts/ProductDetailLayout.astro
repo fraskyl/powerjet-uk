@@ -286,6 +286,7 @@ const relatedProducts = product?.relatedProducts || [];
                 if (block._type === 'performanceTableBlock') {
     return (
         <>
+            {index > 0 && <div class="divider__border"></div>}
             <section class="section__product-performance-table">
                 <PerformanceTable
                     title={block.title}
