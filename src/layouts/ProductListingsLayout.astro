@@ -1,14 +1,12 @@
 ---
-// Sidebar Navigation Layout for Product Listings
-// Mobile: Expandable dropdown menu | Desktop/Tablet: Fixed sidebar with nested categories
-
 import "../styles/global.css";
 import { sanityClient } from "../lib/sanity";
 import { 
   topLevelProductCategoriesQuery,
   allProductsWithCategoriesQuery,
   allProductCategoriesWithParentsQuery,
-} from "../lib/queries";
+} 
+from "../lib/queries";
 
 import BaseLayout from "./BaseLayout.astro";
 import Header from "../components/Layout/Header.astro";

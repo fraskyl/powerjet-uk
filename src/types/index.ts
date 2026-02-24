@@ -217,11 +217,6 @@ export interface Product {
   };
   featured: boolean;
   order: number;
-  // Detailed specs
-  performanceSpecs?: PerformanceSpec[];
-  physicalSpecs?: PhysicalSpecs;
-  engineSpecs?: EngineSpecs;
-  buildOptions?: BuildOption[];
   relatedProducts?: Product[];
 }
 

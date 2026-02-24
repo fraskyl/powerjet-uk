@@ -173,15 +173,6 @@ export const productBySlugQuery = `*[_type == "product" && slug.current == $slug
   hasDatasheet,
   "datasheetUrl": datasheet.asset->url,
   "datasheetFileName": datasheet.asset->originalFilename,
-  hasPerformanceTable,
-  performanceSpecs,
-  hasPhysicalSpecs,
-  physicalSpecs,
-  hasEngineData,
-  engineData,
-  hasBuildOptions,
-  buildOptions,
-
   contentBlocks[] {
       _type,
 
