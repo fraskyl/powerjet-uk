@@ -108,7 +108,9 @@ export const productCategorysQuery = `*[_type == "productCategory"] | order(orde
   title,
   "slug": slug.current,
   description,
-  order
+  order,
+   "coverImageUrl": coverImage.asset->url,
+  "coverImageAlt": coalesce(coverImage.alt, title)
 }`;
 
 /**
@@ -250,7 +252,9 @@ export const topLevelProductCategoriesQuery = `
     _id,
     description,
     order,
-    availability
+    availability,
+    "coverImageUrl": coverImage.asset->url,
+    "coverImageAlt": coalesce(coverImage.alt, title)
   }
 `;
 
@@ -269,6 +273,21 @@ export const categoryHierarchyQuery = `
         _id
       }
     }
+  }
+`;
+
+// fetches a flat list of all categories with parent info
+// for a given availability to build the sidebar tree client-side
+export const categorySidebarQuery = `
+  *[_type == "productCategory" && $availability in availability] | order(order asc) {
+    title,
+    "slug": slug.current,
+    _id,
+    order,
+    "parentId": parentCategory->_id,
+    "parentSlug": parentCategory->slug.current,
+    "coverImageUrl": coverImage.asset->url,
+    "coverImageAlt": coalesce(coverImage.alt, title)
   }
 `;
 
@@ -311,6 +330,16 @@ export const allProductCategoriesWithParentsQuery = `
     availability,
     "parentSlug": parentCategory->slug.current,
     "parentId": parentCategory->_id
+  }
+`;
+
+export const productTypeByCategorySlugQuery = `
+  *[_type == "productCategory" && slug.current == $categorySlug][0] {
+    title,
+    "slug": slug.current,
+    description,
+    "coverImageUrl": coverImage.asset->url,
+    "coverImageAlt": coalesce(coverImage.alt, title)
   }
 `;
 

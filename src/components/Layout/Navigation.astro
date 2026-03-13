@@ -3,76 +3,76 @@
 ---
 
 <div class="nav__links">
-    <ul>
-        <li>
-            <a href="/sales">Sales</a>
-        </li>
-        <li>
-            <a href="/rentals">Rentals</a>
-        </li>
-        <li>
-            <a href="/services">Services</a>
-        </li>
-        <li>
-            <a href="/applications">Applications</a>
-        </li>
-    </ul>   
+  <ul>
+    <li>
+      <a href="/sales">Sales</a>
+    </li>
+    <li>
+      <a href="/rentals">Rentals</a>
+    </li>
+    <li>
+      <a href="/services">Services</a>
+    </li>
+    <li>
+      <a href="/applications">Applications</a>
+    </li>
+  </ul>
 </div>
 
 <style>
-    /* nav styles */
+  /* nav styles */
 
+  .nav__links {
+    width: 100%;
+    margin: 0;
+  }
+
+  .nav__links ul {
+    display: flex;
+
+    list-style-type: none;
+    flex-direction: column;
+
+    padding: 0;
+    margin: 0;
+    gap: 0.5rem;
+  }
+
+  .nav__links li {
+    padding: 0;
+  }
+
+  .nav__links a {
+    display: block;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 400;
+    color: white;
+    margin-bottom: 0;
+  }
+
+  .nav__links a:hover,
+  a:focus {
+    color: var(--pj_blue_20);
+  }
+
+  @media screen and (min-width: 768px) {
     .nav__links {
-        width: 100%;
-        margin: 0;
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      transition: max-height 0.3s ease-in-out;
+      gap: 1rem;
+    }
+
+    .nav__links.active {
+      max-height: 400px;
     }
 
     .nav__links ul {
-        display: flex;
-
-        list-style-type: none;
-        flex-direction: column;
-
-        padding: 0;
-        margin: 0;
-        gap: 0.5rem;
+      display: flex;
+      flex-direction: row;
+      gap: 2rem;
     }
-
-    .nav__links li {
-        padding: 0;
-    }
-
-    .nav__links a {
-        display: block;
-        text-decoration: none;
-        font-size: 1rem;
-        font-weight: 400;
-        color: white;
-        margin-bottom: 0;
-    }
-
-    .nav__links a:hover,
-    a:focus {
-        color: var(--pj_blue_20);
-    }
-
-    @media screen and (min-width: 768px) {
-        .nav__links {
-            display: flex;
-            flex-direction: row;
-            width: 100%;
-            transition: max-height 0.3s ease-in-out;
-            gap: 1rem;
-        }
-
-        .nav__links.active {
-            max-height: 400px;
-        }
-
-        .nav__links ul {
-            display: flex;
-            flex-direction: row;
-            gap: 2rem;
-        }
-    }
+  }
 </style>

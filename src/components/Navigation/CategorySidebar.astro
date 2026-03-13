@@ -1,0 +1,176 @@
+---
+interface Category {
+  title: string;
+  slug: string;
+  _id: string;
+  parentId?: string;
+  parentSlug?: string;
+  children?: Category[];
+}
+
+interface Props {
+  categories: Category[];
+  currentSlug: string;
+  pageType: "rental" | "sale";
+  depth?: number;
+}
+
+const { categories, currentSlug, pageType, depth = 0 } = Astro.props;
+
+// Build tree from flat list — only run at top level (depth === 0)
+function buildTree(flatCategories: Category[]): Category[] {
+  const map = new Map<string, Category>();
+  const roots: Category[] = [];
+
+  // First pass: map all categories by ID
+  flatCategories.forEach((cat) => {
+    map.set(cat._id, { ...cat, children: [] });
+  });
+
+  // Second pass: assign children to parents
+  flatCategories.forEach((cat) => {
+    const node = map.get(cat._id)!;
+    if (cat.parentId) {
+      const parent = map.get(cat.parentId);
+      if (parent) {
+        parent.children = parent.children || [];
+        parent.children.push(node);
+      }
+    } else {
+      roots.push(node);
+    }
+  });
+
+  return roots;
+}
+
+// Only build the tree at the top level call
+const tree = depth === 0 ? buildTree(categories) : categories;
+
+// Check if current slug is within a branch (for expanding active parent)
+function isActiveBranch(category: Category, currentSlug: string): boolean {
+  if (category.slug === currentSlug) return true;
+  return (
+    category.children?.some((child) => isActiveBranch(child, currentSlug)) ??
+    false
+  );
+}
+
+const basePath = pageType === "rental" ? "/rentals" : "/sales";
+---
+
+<ul class:list={["sidebar-list", { "sidebar-list--nested": depth > 0 }]}>
+  {
+    tree.map((category) => {
+      const hasChildren = category.children && category.children.length > 0;
+      const isActive = category.slug === currentSlug;
+      const isBranchActive = isActiveBranch(category, currentSlug);
+
+      return (
+        <li class:list={["sidebar-item", { "has-children": hasChildren }]}>
+          <a
+            href={`${basePath}/${category.slug}`}
+            class:list={[
+              "sidebar-link",
+              { active: isActive },
+              { "branch-active": isBranchActive && !isActive },
+            ]}
+          >
+            {category.title}
+            {hasChildren && (
+              <span
+                class:list={["sidebar-chevron", { rotated: isBranchActive }]}
+              >
+                <span class="material-symbols-outlined">chevron_right</span>
+              </span>
+            )}
+          </a>
+
+          {/* Recursively render children if this branch is active */}
+          {hasChildren && isBranchActive && (
+            <Astro.self
+              categories={category.children}
+              currentSlug={currentSlug}
+              pageType={pageType}
+              depth={depth + 1}
+            />
+          )}
+        </li>
+      );
+    })
+  }
+</ul>
+
+<style>
+  .sidebar-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  /* Nested lists always vertical */
+  .sidebar-list--nested {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    padding-left: 1rem;
+    margin-top: 0.5rem;
+    border-left: 2px solid var(--pj_blue_20);
+    gap: 0.25rem;
+  }
+
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--pj_blue_20);
+    border-radius: 100px;
+    font-size: 0.875rem;
+    color: var(--pj_brand_blue);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    width: 100%;
+  }
+
+  .sidebar-link:hover,
+  .sidebar-link.active {
+    background-color: var(--pj_brand_blue);
+    color: white;
+    border-color: var(--pj_brand_blue);
+  }
+
+  .sidebar-link.branch-active {
+    border-color: var(--pj_brand_blue);
+    font-weight: 500;
+  }
+
+  .sidebar-chevron {
+    display: inline-flex;
+    transition: transform 0.2s ease;
+  }
+
+  .sidebar-chevron.rotated {
+    transform: rotate(90deg);
+  }
+
+  .sidebar-chevron .material-symbols-outlined {
+    font-size: 1rem;
+  }
+
+  /* Desktop: vertical layout */
+  @media screen and (min-width: 768px) {
+    .sidebar-list {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      gap: 0.25rem;
+    }
+
+    .sidebar-link {
+      border-radius: 0.25rem;
+    }
+  }
+</style>
