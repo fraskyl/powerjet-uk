@@ -63,7 +63,7 @@ const partnerLogos = homepage?.partnerLogos || [];
                         imageURL={card.imageUrl}
                         imageAlt={card.imageAlt}
                         href={card.link}
-                        buttonLabel={card.title}
+                        buttonLabel={`View ${card.title.toLowerCase()}`}
                     />
                 ))
             ) : (
@@ -72,13 +72,13 @@ const partnerLogos = homepage?.partnerLogos || [];
                     imageURL="/src/assets/New_Image_Magtrack-lrg.jpeg"
                     imageAlt="Equipment"
                     href="/rentals"
-                    buttonLabel="Rentals"
+                    buttonLabel="Browse rentals"
                 />
                 <Card
                     imageURL="/src/assets/New_Image_Magtrack-lrg.jpeg"
                     imageAlt="Equipment"
                     href="/sales"
-                    buttonLabel="Sales"
+                    buttonLabel="Browse sales"
                 />
             )}
         </div>

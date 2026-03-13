@@ -291,6 +291,7 @@ export const categorySidebarQuery = `
   }
 `;
 
+
 export const allProductsWithCategoriesQuery = `
   *[_type == "product" && $availability in availability] | order(desc, order asc, title asc) {
     title,
