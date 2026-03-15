@@ -34,7 +34,7 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
 ---
 
 <BaseLayout title={title}>
-  <Header />
+  <Header transition:persist />
   <div class="page-grid">
     <TextHero headline={headline} />
     <div class="category-grid">
@@ -55,7 +55,7 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
     </div>
     <ContactBlock />
   </div>
-  <Footer />
+  <Footer transition:persist />
 </BaseLayout>
 
 <style>

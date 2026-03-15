@@ -6,19 +6,19 @@ import Header from "../components/Layout/Header.astro";
 import HomeHero from "../components/Sections/HomeHero.astro";
 
 interface Props {
-	title: string;
-	heroVideoUrl?: string;
-	heroHeadline?: string;
+  title: string;
+  heroVideoUrl?: string;
+  heroHeadline?: string;
 }
 
 const { title } = Astro.props;
 ---
 
 <BaseLayout title={title}>
-	<Header />
-	<slot name="hero" />
-	<div class="page-grid">
-		<slot />
-	</div>
-	<Footer />
+  <Header transition:persist />
+  <slot name="hero" />
+  <div class="page-grid">
+    <slot />
+  </div>
+  <Footer transition:persist />
 </BaseLayout>
