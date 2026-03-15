@@ -355,7 +355,7 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
     grid-column: 2 / -2;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 6rem;
     margin-bottom: 5rem; 
   }
 
@@ -377,12 +377,12 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
     margin: 0;
    }
 
-  .products-grid { 
-    grid-column: 2 / -2;
-    display: grid; 
-    grid-template-columns: 1fr; 
-    gap: 2rem; 
-    margin-bottom: 5rem;
+  .products-main .products-grid { 
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: 2rem; 
+  row-gap: 6rem;
+  margin-bottom: 5rem;
   }
 
   .product-card { 
@@ -422,16 +422,20 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
     .products-layout {
       flex-direction: row;
       gap: 3rem;
+      
     }
 
       .product-card {
       max-width: 350px; /* Prevents excessive stretching */
     }
     
-      .products-grid {
-       grid-template-columns: repeat(auto-fill, minmax(240px, 350px));
-      justify-content: start; /* Left-align when not filling row */
-    }
+    .products-main .products-grid { 
+     grid-template-columns: repeat(auto-fill, minmax(240px, 350px));
+    justify-content: start;
+    column-gap: 2rem; 
+    row-gap: 6rem; 
+  }
+
     
     .category-nav {
       display: flex;
@@ -564,10 +568,12 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
       width: 320px;
     }
     
-        .products-grid {
-      grid-column: 3 / -3;
+     .products-main .products-grid { 
       grid-template-columns: repeat(auto-fill, minmax(280px, 340px));
-    }
+    column-gap: 2rem; 
+    row-gap: 6rem;
+  }
+
 
     .product-card {
       max-width: 380px;
