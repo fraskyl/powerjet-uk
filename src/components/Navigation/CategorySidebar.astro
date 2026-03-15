@@ -76,7 +76,8 @@ const basePath = pageType === "rental" ? "/rentals" : "/sales";
               { "branch-active": isBranchActive && !isActive },
             ]}
           >
-            {category.title}
+            <span class="sidebar-checkbox" aria-hidden="true" />
+            <span class="sidebar-label">{category.title}</span>
             {hasChildren && (
               <span
                 class:list={["sidebar-chevron", { rotated: isBranchActive }]}
@@ -109,7 +110,6 @@ const basePath = pageType === "rental" ? "/rentals" : "/sales";
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 0.5rem;
   }
 
   /* Nested lists always vertical */
@@ -118,7 +118,6 @@ const basePath = pageType === "rental" ? "/rentals" : "/sales";
     flex-wrap: nowrap;
     padding-left: 1rem;
     margin-top: 0.5rem;
-    border-left: 2px solid var(--pj_blue_20);
     gap: 0.25rem;
   }
 
@@ -126,9 +125,8 @@ const basePath = pageType === "rental" ? "/rentals" : "/sales";
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.5rem 1rem;
-    border: 1px solid var(--pj_blue_20);
-    border-radius: 100px;
+    gap: 0.625rem;
+    padding: 0.25rem 0rem;
     font-size: 0.875rem;
     color: var(--pj_brand_blue);
     text-decoration: none;
@@ -136,16 +134,35 @@ const basePath = pageType === "rental" ? "/rentals" : "/sales";
     width: 100%;
   }
 
+  .sidebar-label {
+    flex: 1;
+  }
+
+  .sidebar-checkbox {
+    display: inline-flex;
+    flex-shrink: 0;
+    width: 0.75rem;
+    height: 0.75rem;
+    border: 1px solid var(--pj_blue_30);
+    border-radius: 1px;
+    transition: background-color 0.2 ease;
+  }
+
   .sidebar-link:hover,
   .sidebar-link.active {
-    background-color: var(--pj_brand_blue);
-    color: white;
-    border-color: var(--pj_brand_blue);
+    background-color: transparent;
+    color: var(--pj_brand_blue);
+    font-weight: 500;
   }
 
   .sidebar-link.branch-active {
     border-color: var(--pj_brand_blue);
     font-weight: 500;
+  }
+
+  .sidebar-link.active .sidebar-checkbox,
+  .sidebar-link.branch-active .sidebar-checkbox {
+    background-color: var(--pj_blue_30);
   }
 
   .sidebar-chevron {
@@ -170,7 +187,6 @@ const basePath = pageType === "rental" ? "/rentals" : "/sales";
     }
 
     .sidebar-link {
-      border-radius: 0.25rem;
     }
   }
 </style>
