@@ -81,7 +81,7 @@ const title = `${category.title} | Rentals | Powerjet`;
 ---
 
 <BaseLayout title={title}>
-  <Header />
+  <Header transition:persist />
   <div class="page-grid">
     <TextHero headline={category.title} />
 
@@ -125,7 +125,7 @@ const title = `${category.title} | Rentals | Powerjet`;
 
     <ContactBlock />
   </div>
-  <Footer />
+  <Footer transition:persist />
 </BaseLayout>
 
 <style>

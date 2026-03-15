@@ -36,7 +36,7 @@ const { title } = Astro.props;
 ---
 
 <BaseLayout title={title}> 
-    <Header />
+    <Header transition:persist />
     <body>
         <div class ="page-grid">
         <TextHero
@@ -78,7 +78,7 @@ const { title } = Astro.props;
 
  </div>
     </body>
-    <Footer />
+    <Footer transition:persist />
 </BaseLayout>
 
 
