@@ -59,50 +59,130 @@ function isActiveBranch(category: Category, currentSlug: string): boolean {
 const basePath = pageType === "rental" ? "/rentals" : "/sales";
 ---
 
-<ul class:list={["sidebar-list", { "sidebar-list--nested": depth > 0 }]}>
-  {
-    tree.map((category) => {
-      const hasChildren = category.children && category.children.length > 0;
-      const isActive = category.slug === currentSlug;
-      const isBranchActive = isActiveBranch(category, currentSlug);
+<div class="sidebar-wrapper">
+  <button
+    class="sidebar-mobile-toggle"
+    id="sidebar-toggle"
+    aria-expanded="false"
+  >
+    <span class="toggle-label">
+      <span class="material-symbols-outlined">filter_list</span>
+      <span>Filter by category</span>
+    </span>
+    <span class="material-symbols-outlined toggle-chevron">expand_more</span>
+  </button>
 
-      return (
-        <li class:list={["sidebar-item", { "has-children": hasChildren }]}>
-          <a
-            href={`${basePath}/${category.slug}`}
-            class:list={[
-              "sidebar-link",
-              { active: isActive },
-              { "branch-active": isBranchActive && !isActive },
-            ]}
-          >
-            <span class="sidebar-checkbox" aria-hidden="true" />
-            <span class="sidebar-label">{category.title}</span>
-            {hasChildren && (
-              <span
-                class:list={["sidebar-chevron", { rotated: isBranchActive }]}
+  <div class="sidebar-dropdown" id="sidebar-dropdown">
+    <ul class:list={["sidebar-list", { "sidebar-list--nested": depth > 0 }]}>
+      {
+        tree.map((category) => {
+          const hasChildren = category.children && category.children.length > 0;
+          const isActive = category.slug === currentSlug;
+          const isBranchActive = isActiveBranch(category, currentSlug);
+
+          return (
+            <li class:list={["sidebar-item", { "has-children": hasChildren }]}>
+              <a
+                href={`${basePath}/${category.slug}`}
+                class:list={[
+                  "sidebar-link",
+                  { active: isActive },
+                  { "branch-active": isBranchActive && !isActive },
+                ]}
               >
-                <span class="material-symbols-outlined">chevron_right</span>
-              </span>
-            )}
-          </a>
+                <span class="sidebar-checkbox" aria-hidden="true" />
+                <span class="sidebar-label">{category.title}</span>
+                {hasChildren && (
+                  <span
+                    class:list={[
+                      "sidebar-chevron",
+                      { rotated: isBranchActive },
+                    ]}
+                  >
+                    <span class="material-symbols-outlined">chevron_right</span>
+                  </span>
+                )}
+              </a>
 
-          {/* Recursively render children if this branch is active */}
-          {hasChildren && isBranchActive && (
-            <Astro.self
-              categories={category.children}
-              currentSlug={currentSlug}
-              pageType={pageType}
-              depth={depth + 1}
-            />
-          )}
-        </li>
-      );
-    })
-  }
-</ul>
+              {hasChildren && isBranchActive && (
+                <Astro.self
+                  categories={category.children}
+                  currentSlug={currentSlug}
+                  pageType={pageType}
+                  depth={depth + 1}
+                />
+              )}
+            </li>
+          );
+        })
+      }
+    </ul>
+  </div>
+</div>
 
 <style>
+  /* Mobile toggle button */
+  .sidebar-mobile-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: white;
+    border: 1px solid var(--pj_blue_30);
+    border-radius: 0.25rem;
+    font-family: "Instrument Sans", sans-serif;
+    font-size: 0.9375rem;
+    color: var(--pj_brand_blue);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .sidebar-mobile-toggle:hover {
+    border-color: var(--pj_brand_blue);
+    background-color: var(--pj_blue_05);
+  }
+
+  .toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+  }
+
+  .toggle-chevron {
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar-mobile-toggle[aria-expanded="true"] .toggle-chevron {
+    transform: rotate(180deg);
+  }
+
+  /* Mobile dropdown panel */
+  .sidebar-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 0.25rem);
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid var(--pj_blue_30);
+    border-radius: 0.25rem;
+    box-shadow: 0 4px 12px rgba(0, 51, 102, 0.1);
+    max-height: 60vh;
+    overflow-y: auto;
+    z-index: 100;
+    padding: 0.5rem;
+  }
+
+  .sidebar-dropdown.open {
+    display: block;
+  }
+
+  .sidebar-wrapper {
+    position: relative; /* Anchor for absolute dropdown */
+  }
+
   .sidebar-list {
     list-style: none;
     padding: 0;
@@ -186,7 +266,48 @@ const basePath = pageType === "rental" ? "/rentals" : "/sales";
       gap: 0.25rem;
     }
 
-    .sidebar-link {
+    .sidebar-mobile-toggle {
+      display: none;
+    }
+
+    .sidebar-dropdown {
+      display: block; /* Always visible on desktop */
+      position: static; /* Back in normal flow */
+      border: none;
+      box-shadow: none;
+      padding: 0;
+      max-height: none;
+      overflow: visible;
     }
   }
 </style>
+
+<script>
+  const toggle = document.getElementById("sidebar-toggle");
+  const dropdown = document.getElementById("sidebar-dropdown");
+
+  toggle?.addEventListener("click", () => {
+    const isOpen = dropdown?.classList.contains("open");
+    dropdown?.classList.toggle("open");
+    toggle.setAttribute("aria-expanded", String(!isOpen));
+  });
+
+  // Close when clicking outside
+  document.addEventListener("click", (e) => {
+    if (
+      !toggle?.contains(e.target as Node) &&
+      !dropdown?.contains(e.target as Node)
+    ) {
+      dropdown?.classList.remove("open");
+      toggle?.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  // Close on nav (page will reload anyway, but keeps it tidy)
+  dropdown?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      dropdown.classList.remove("open");
+      toggle?.setAttribute("aria-expanded", "false");
+    });
+  });
+</script>

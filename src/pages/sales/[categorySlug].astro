@@ -183,7 +183,8 @@ const title = `${category.title} | Sales | Powerjet`;
   .products-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    column-gap: 2rem;
+    row-gap: 4rem;
   }
 
   .empty-state {
@@ -210,6 +211,8 @@ const title = `${category.title} | Sales | Powerjet`;
 
     .products-grid {
       grid-template-columns: repeat(3, 1fr);
+      column-gap: 2rem;
+      row-gap: 5rem;
     }
   }
 
