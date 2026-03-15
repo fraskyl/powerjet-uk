@@ -11,7 +11,7 @@ const title = "404: Page Not Found | Powerjet";
 ---
 
 <BaseLayout title={title}>
-  <Header />
+  <Header transition:persist />
   <body>
     <div class="page-grid">
       <section class="section__contact-details">
@@ -23,7 +23,7 @@ const title = "404: Page Not Found | Powerjet";
     </div>
   </body>
 </BaseLayout>
-<Footer />
+<Footer transition:persist />
 
 <style>
   .section__contact-details {

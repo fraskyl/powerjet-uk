@@ -262,23 +262,18 @@ import Navigation from "./Navigation.astro";
     mobileMenu?.classList.toggle("active");
     hamburger?.classList.toggle("active");
 
-    // Prevent body scroll when menu is open
     document.body.style.overflow = mobileMenu?.classList.contains("active")
       ? "hidden"
       : "";
   }
 
-  // Attach event listener after DOM is loaded
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("astro:page-load", () => {
     const hamburger = document.querySelector(".header__mobile-hamburger");
     hamburger?.addEventListener("click", toggleMenu);
 
-    // Close menu when clicking nav links
     const navLinks = document.querySelectorAll(".header__mobile-menu a");
     navLinks.forEach((link) => {
-      link.addEventListener("click", () => {
-        toggleMenu();
-      });
+      link.addEventListener("click", toggleMenu);
     });
   });
 </script>

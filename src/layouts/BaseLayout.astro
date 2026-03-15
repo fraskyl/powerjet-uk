@@ -1,5 +1,7 @@
 ---
 import EnvironmentBadge from "../components/Dev/EnvironmentBadge.astro";
+import { ClientRouter } from "astro:transitions";
+
 interface Props {
   title?: string;
 }
@@ -27,6 +29,7 @@ const { title = "Powerjet Rentals UK" } = Astro.props;
     />
   </head>
   <body>
+    <ClientRouter />
     <slot />
     <EnvironmentBadge />
   </body>

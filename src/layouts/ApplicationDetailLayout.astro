@@ -54,7 +54,7 @@ const appRecommendedProducts = application?.recommendedProducts || [];
 ---
 
 <BaseLayout title={title}>
-    <Header />
+    <Header transition:persist />
     <body>
         <div class="page-grid">
             <div class="link__prev-page-wrapper">
@@ -104,7 +104,7 @@ const appRecommendedProducts = application?.recommendedProducts || [];
             <ContactBlock />
         </div>
     </body> 
- <Footer />
+ <Footer transition:persist/>
  </BaseLayout>
 
 

@@ -72,7 +72,7 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
 ---
 
 <BaseLayout title={title}>
-  <Header />
+  <Header transition:persist/>
   <body>
     <div class="page-grid">
       <TextHero headline={headline} />
@@ -171,7 +171,7 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
       <ContactBlock />
     </div>
   </body>
-  <Footer />
+  <Footer transition:persist/>
 </BaseLayout>
 
 <style is:global>
@@ -1016,6 +1016,5 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
     console.log('✅ Sidebar navigation initialized\n');
   }
 
-  document.addEventListener('DOMContentLoaded', init);
-  document.addEventListener('astro:page-load', init);
+  document.addEventListener('astro:page-load', initProductFilters);
 </script>
