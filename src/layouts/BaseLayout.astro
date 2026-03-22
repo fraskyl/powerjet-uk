@@ -30,7 +30,24 @@ const { title = "Powerjet Rentals UK" } = Astro.props;
     <ClientRouter />
   </head>
   <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <slot />
-    <EnvironmentBadge />
+    <!-- <EnvironmentBadge /> -->
   </body>
 </html>
+
+<style is:global>
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    padding: 0.5rem 1rem;
+    background: var(--pj_brand_blue);
+    color: white;
+    text-decoration: none;
+    z-index: 9999;
+  }
+  .skip-link:focus {
+    top: 1rem;
+  }
+</style>
