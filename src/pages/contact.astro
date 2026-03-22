@@ -48,11 +48,11 @@ const title = "Contact | Powerjet";
           <div class="contact__details-block-wrapper">
             <div class="contact__details-block">
               <h5>Call us</h5>
-              <tel>{phoneDisplay}</tel>
+              <a href={`tel:${phone}`}>{phoneDisplay}</a>
             </div>
             <div class="contact__details-block">
               <h5>Email us</h5>
-              <p>mail@powerjet-uk.com</p>
+              <a href={`mailto:${email}`}>{email}</a>
             </div>
           </div>
           <div class="contact__details-office">
@@ -175,6 +175,12 @@ const title = "Contact | Powerjet";
   .contact__details-block p {
     font-weight: 500;
     color: var(--pj_blue_90);
+  }
+
+  .contact__details-block:hover {
+    font-weight: 500;
+    color: var(--pj_blue_10);
+    background-color: var(--pj_brand_blue);
   }
 
   .contact__details-block-wrapper {
