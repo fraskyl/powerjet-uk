@@ -17,7 +17,6 @@ const title = "Applications | Powerjet";
 
 try {
   applications = await sanityClient.fetch(applicationsIndexQuery);
-  console.log("✅ Fetched applications:", applications?.length || 0);
 
   // Process applications to extract first image from images array
   applications = applications.map((app: any) => {
@@ -37,7 +36,6 @@ try {
     };
   });
 } catch (error) {
-  console.error("❌ Sanity fetch error:", error);
   fetchError = true;
 }
 ---

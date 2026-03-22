@@ -1,5 +1,4 @@
 ---
-// src/layouts/ProductListingsLayout.astro
 // Now shows category cards, not individual products
 
 import "../styles/global.css";
@@ -26,9 +25,7 @@ try {
   productTypes = await sanityClient.fetch(topLevelProductCategoriesQuery, {
     availability: pageType,
   });
-} catch (error) {
-  console.error(`❌ Error fetching product types:`, error);
-}
+} catch (error) {}
 
 const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
 ---

@@ -64,7 +64,6 @@ try {
   });
   
 } catch (error) {
-  console.error(`❌ Error fetching ${pageType} products:`, error);
   fetchError = true;
 }
 
@@ -588,29 +587,6 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
     allTypes: allProductCategories,
   };
 
-  // Initial debug logging
-  console.log('\n🎯 SIDEBAR NAVIGATION INITIALIZED');
-  console.log('=====================================');
-  console.log('Data received:');
-  console.log('  - Products:', categoryData.products.length);
-  console.log('  - Top-level categories:', categoryData.topLevel.length);
-  console.log('  - All product types:', categoryData.allTypes.length);
-  
-  if (categoryData.topLevel.length > 0) {
-    console.log('\nTop-level categories:');
-    categoryData.topLevel.forEach(cat => {
-      console.log(`  - ${cat.title} (${cat.slug})`);
-    });
-  }
-  
-  if (categoryData.products.length > 0) {
-    console.log('\nSample product:');
-    const sample = categoryData.products[0];
-    console.log(`  Title: ${sample.title}`);
-    console.log(`  Category path:`, sample.categoryPath);
-  }
-  console.log('=====================================\n');
-
   function getChildCategories(parentSlug) {
     return categoryData.allTypes
       .filter(type => type.parentSlug === parentSlug)
@@ -625,8 +601,6 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
   }
 
   function filterProducts(categorySlug) {
-    console.log(`🔎 Filtering products for: "${categorySlug}"`);
-    
     const products = document.querySelectorAll('.product-card');
     let visibleCount = 0;
     
@@ -639,9 +613,7 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
         product.classList.add('hidden');
       }
     });
-    
-    console.log(`📊 Result: ${visibleCount} products visible`);
-    
+
     // Update product count
     const countElement = document.getElementById('visible-product-count');
     if (countElement) {
@@ -668,12 +640,9 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
     const container = document.getElementById(containerId);
     
     if (!container || children.length === 0) {
-      console.log(`  ℹ️ No children to build for "${parentSlug}"`);
       return;
     }
-    
-    console.log(`  ✓ Building ${children.length} nested items for "${parentSlug}"`);
-    
+
     container.innerHTML = children.map(cat => {
       const productCount = countProductsInCategory(cat.slug);
       const hasChildren = getChildCategories(cat.slug).length > 0;
@@ -697,8 +666,6 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
         
         const categorySlug = item.getAttribute('data-category');
         const hasChildren = item.classList.contains('has-children');
-        
-        console.log(`👆 Nested item clicked: "${categorySlug}" (hasChildren: ${hasChildren})`);
         
         // Update active states
         document.querySelectorAll('.category-item, .nested-item').forEach(el => 
@@ -735,7 +702,6 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
             
             // Build deeper nested menu if needed
             if (nested.classList.contains('active') && nested.children.length === 0) {
-              console.log(`  → Building deeper nested categories for "${categorySlug}"`);
               buildNestedCategories(categorySlug, `nested-${categorySlug}`);
             }
           }
@@ -749,12 +715,9 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
     const container = document.getElementById(containerId);
     
     if (!container || children.length === 0) {
-      console.log(`  ℹ️ No mobile children to build for "${parentSlug}"`);
       return;
     }
-    
-    console.log(`  ✓ Building ${children.length} mobile nested items for "${parentSlug}"`);
-    
+
     container.innerHTML = children.map(cat => {
       const productCount = countProductsInCategory(cat.slug);
       const hasChildren = getChildCategories(cat.slug).length > 0;
@@ -776,8 +739,6 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
         const categorySlug = item.getAttribute('data-category');
         const categoryTitle = item.getAttribute('data-title');
         const hasChildren = item.classList.contains('has-children');
-        
-        console.log(`👆 Mobile nested item clicked: "${categorySlug}" (hasChildren: ${hasChildren})`);
         
         if (hasChildren) {
           // Has children - toggle expansion
@@ -806,22 +767,16 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
     const categoryItems = document.querySelectorAll('.sidebar-nav .category-item');
     
     if (categoryItems.length === 0) {
-      console.warn('⚠️ No desktop category items found');
       return;
     }
-    
-    console.log(`✅ Initializing ${categoryItems.length} desktop category items`);
-    
+
     categoryItems.forEach(item => {
       item.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
         
         const categorySlug = item.getAttribute('data-category');
-        const level = item.getAttribute('data-level');
-        
-        console.log(`👆 Desktop category clicked: "${categorySlug}" (level: ${level})`);
-        
+
         // Update active states - remove from all items
         categoryItems.forEach(el => el.classList.remove('active'));
         item.classList.add('active');
@@ -832,8 +787,6 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
         );
         
         if (categorySlug === 'all') {
-          console.log('  → Showing all products');
-          
           // Hide all nested menus and remove expanded states
           document.querySelectorAll('.nested-categories').forEach(el => 
             el.classList.remove('active')
@@ -848,13 +801,9 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
           // Check for children
           const children = getChildCategories(categorySlug);
           const nested = document.getElementById(`nested-${categorySlug}`);
-          
-          console.log(`  → Found ${children.length} children for "${categorySlug}"`);
-          
+
           if (children.length > 0 && nested) {
             // Has children - toggle expansion
-            const wasExpanded = item.classList.contains('expanded');
-            
             // Close all other nested menus
             document.querySelectorAll('.nested-categories').forEach(el => {
               if (el.id !== `nested-${categorySlug}`) {
@@ -870,17 +819,12 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
             // Toggle this menu
             item.classList.toggle('expanded');
             nested.classList.toggle('active');
-            
-            console.log(`  → ${wasExpanded ? 'Closing' : 'Opening'} nested menu`);
-            
+
             // Build nested menu if not already built
             if (nested.classList.contains('active') && nested.children.length === 0) {
-              console.log('  → Building nested categories');
               buildNestedCategories(categorySlug, `nested-${categorySlug}`);
             }
           } else {
-            console.log('  → No children, closing other menus');
-            
             // No children - close all nested menus
             document.querySelectorAll('.nested-categories').forEach(el => 
               el.classList.remove('active')
@@ -902,16 +846,12 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
     const menu = document.getElementById('mobile-filter-menu');
     
     if (!toggle || !menu) {
-      console.warn('⚠️ Mobile dropdown elements not found');
       return;
     }
-    
-    console.log('✅ Initializing mobile dropdown');
-    
+
     // Toggle menu
     toggle.addEventListener('click', (e) => {
       e.stopPropagation();
-      console.log('👆 Mobile toggle clicked');
       toggle.classList.toggle('active');
       menu.classList.toggle('active');
     });
@@ -932,8 +872,6 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
         const categorySlug = item.getAttribute('data-category');
         const categoryTitle = item.getAttribute('data-title');
         const isParent = item.classList.contains('mobile-parent');
-        
-        console.log(`👆 Mobile category clicked: "${categorySlug}" (isParent: ${isParent})`);
         
         if (isParent) {
           // Parent category - check if it has children
@@ -962,8 +900,6 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
   }
   
   function selectMobileCategory(item, categorySlug, categoryTitle, menu, toggle) {
-    console.log(`✅ Selecting mobile category: "${categoryTitle}"`);
-    
     // Update active states
     document.querySelectorAll('.mobile-category-item, .mobile-nested-item').forEach(el => 
       el.classList.remove('active')
@@ -985,15 +921,8 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
   }
 
   function init() {
-    console.log('\n🚀 Initializing sidebar navigation...');
-    console.log('  Products:', categoryData.products.length);
-    console.log('  Top-level categories:', categoryData.topLevel.length);
-    console.log('  All types:', categoryData.allTypes.length);
-    
-    // Check if we're on mobile or desktop
     const isMobile = window.innerWidth < 768;
-    console.log(`  Device: ${isMobile ? 'Mobile' : 'Desktop/Tablet'}`);
-    
+
     // Initialize appropriate navigation
       initMobileDropdown();
       initDesktopSidebar();
@@ -1007,14 +936,12 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
         const nowMobile = window.innerWidth < 768;
         
         if (wasMobile !== nowMobile) {
-          console.log('📱 Device changed, re-initializing...');
           init();
         }
       }, 250);
     });
     
-    console.log('✅ Sidebar navigation initialized\n');
   }
 
-  document.addEventListener('astro:page-load', initProductFilters);
+  document.addEventListener('astro:page-load', init);
 </script>

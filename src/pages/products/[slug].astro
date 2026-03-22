@@ -12,20 +12,10 @@ export async function getStaticPaths() {
   try {
     const products = await sanityClient.fetch(productSlugsQuery);
 
-    // 🔍 DEBUG: Log all slugs being generated
-    console.log("=== PRODUCTS FOUND ===");
-    console.log("Total products:", products?.length || 0);
-    console.log(
-      "Slugs:",
-      products?.map((p: any) => p.slug),
-    );
-    console.log("=====================");
-
     return products.map((product: any) => ({
       params: { slug: product.slug },
     }));
   } catch (error) {
-    console.error("❌ Error generating product paths:", error);
     return [];
   }
 }
@@ -37,9 +27,7 @@ const { slug } = Astro.params;
 let product;
 try {
   product = await sanityClient.fetch(productBySlugQuery, { slug });
-  console.log("✅ Fetched product:", product?.title);
 } catch (error) {
-  console.error("❌ Error fetching product:", error);
 }
 
 // If no product found, you might want to redirect to 404

@@ -15,9 +15,7 @@ import ContactBlock from "../../components/Sections/ContactBlock.astro";
 let servicesPage;
 try {
     servicesPage = await sanityClient.fetch(servicesPageQuery);
-    console.log("✅ Services page data:", servicesPage);
 } catch (error) {
-    console.error("❌ Sanity fetch error:", error);
 }
 
 // Extract data with fallbacks

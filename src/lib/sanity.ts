@@ -19,12 +19,6 @@ const apiVersion =
 
 const token = import.meta.env.SANITY_TOKEN;
 
-// Log for debugging (will show in build logs)
-console.log('🔍 Sanity Config Check:');
-console.log('  Project ID:', projectId);
-console.log('  Dataset:', dataset);
-console.log('  API Version:', apiVersion);
-
 // Create Sanity client
 export const sanityClient = createClient({
   projectId,
@@ -43,16 +37,6 @@ export const sanityConfig = {
   environment: import.meta.env.MODE || 'development',
 };
 
-// Development logging
-if (import.meta.env.DEV) {
-  console.group('📦 Sanity Configuration');
-  console.log('Project ID:', projectId);
-  console.log('Dataset:', dataset);
-  console.log('API Version:', apiVersion);
-  console.log('Using CDN:', dataset === 'production');
-  console.log('Environment:', import.meta.env.MODE);
-  console.groupEnd();
-}
 
 export function getCurrentDataset(): string {
   return dataset;

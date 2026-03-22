@@ -14,10 +14,8 @@ import HomeHero from "../components/Sections/HomeHero.astro";
 let homepage; 
 try {
 	homepage = await sanityClient.fetch(homepageQuery);
-	console.log("Fetched from Sanity:", homepage);
 }
 catch (error) {
-	console.error("Sanity fetch error", error);
 }
 
 

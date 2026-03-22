@@ -1,8 +1,7 @@
 ---
 import "../../styles/global.css";
 import { sanityClient } from "../../lib/sanity";
-import { 
-  topLevelProductCategoriesQuery,
+import {
   allProductsWithCategoriesQuery,
   productTypeByCategorySlugQuery,
   categorySidebarQuery,
@@ -21,12 +20,10 @@ export async function getStaticPaths() {
     const allCategories = await sanityClient.fetch(categorySidebarQuery, {
       availability: "rental"
     });
-    console.log("✅ Generating sales category paths:", allCategories?.length || 0);
     return allCategories.map((category: any) => ({
       params: { categorySlug: category.slug }
     }));
   } catch (error) {
-    console.error("❌ Error generating rentals category paths:", error);
     return [];
   }
 }
@@ -37,17 +34,14 @@ const { categorySlug } = Astro.params;
 // rental categories (for the sidebar)
 let category;
 let products = [];
-let allCategories = [];
 let sidebarCategories = [];
 let fetchError = false;
 
 try {
-  [category, products, allCategories, sidebarCategories] = await Promise.all([
+  [category, products, sidebarCategories] = await Promise.all([
     sanityClient.fetch(productTypeByCategorySlugQuery, { categorySlug }),
     sanityClient.fetch(allProductsWithCategoriesQuery, { availability: "rental" }),
-    sanityClient.fetch(topLevelProductCategoriesQuery, { availability: "rental" }),
     sanityClient.fetch(categorySidebarQuery, { availability: "rental" })
-
   ]);
 
   // Filter products to only those in this category
@@ -69,9 +63,7 @@ products = products.filter((product: any) =>
   categoryAndDescendantSlugs.includes(product.productCategory?.slug)
 );
 
-  console.log(`✅ Category: ${category?.title}, Products: ${products.length}`);
 } catch (error) {
-  console.error("❌ Error fetching category detail:", error);
   fetchError = true;
 }
 

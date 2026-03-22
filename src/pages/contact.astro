@@ -14,9 +14,7 @@ let contactData;
 try {
   // Fetch contact information
   contactData = await sanityClient.fetch(contactPageQuery);
-  console.log("✅ Contact info fetched");
 } catch (error) {
-  console.error("❌ Error fetching contact data:", error);
 }
 
 // === Contact info defaults ===

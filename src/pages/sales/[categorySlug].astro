@@ -1,8 +1,7 @@
 ---
 import "../../styles/global.css";
 import { sanityClient } from "../../lib/sanity";
-import { 
-  topLevelProductCategoriesQuery,
+import {
   allProductsWithCategoriesQuery,
   productTypeByCategorySlugQuery,
   categorySidebarQuery
@@ -13,7 +12,6 @@ import Footer from "../../components/Layout/Footer.astro";
 import TextHero from "../../components/Sections/TextHero.astro";
 import Card from "../../components/UI/Card.astro";
 import ContactBlock from "../../components/Sections/ContactBlock.astro";
-import SectionTitle from "../../components/Content/SectionTitle.astro";
 import CategorySidebar from "../../components/Navigation/CategorySidebar.astro";
 
 export async function getStaticPaths() {
@@ -22,12 +20,10 @@ export async function getStaticPaths() {
     const allCategories = await sanityClient.fetch(categorySidebarQuery, {
       availability: "sale"
     });
-    console.log("✅ Generating sales category paths:", allCategories?.length || 0);
     return allCategories.map((category: any) => ({
       params: { categorySlug: category.slug }
     }));
   } catch (error) {
-    console.error("❌ Error generating sales category paths:", error);
     return [];
   }
 }
@@ -38,15 +34,13 @@ const { categorySlug } = Astro.params;
 // sales categories (for the sidebar)
 let category;
 let products = [];
-let allCategories = [];
 let sidebarCategories = [];
 let fetchError = false;
 
 try {
-  [category, products, allCategories, sidebarCategories] = await Promise.all([
+  [category, products, sidebarCategories] = await Promise.all([
     sanityClient.fetch(productTypeByCategorySlugQuery, { categorySlug }),
     sanityClient.fetch(allProductsWithCategoriesQuery, { availability: "sale" }),
-    sanityClient.fetch(topLevelProductCategoriesQuery, { availability: "sale" }),
     sanityClient.fetch(categorySidebarQuery, { availability: "sale" })
   ]);
 
@@ -69,9 +63,7 @@ products = products.filter((product: any) =>
   categoryAndDescendantSlugs.includes(product.productCategory?.slug)
 );
 
-  console.log(`✅ Category: ${category?.title}, Products: ${products.length}`);
 } catch (error) {
-  console.error("❌ Error fetching category detail:", error);
   fetchError = true;
 }
 
