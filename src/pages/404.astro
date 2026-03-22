@@ -10,18 +10,16 @@ const title = "404: Page Not Found | Powerjet";
 
 <BaseLayout title={title}>
   <Header transition:persist />
-  <body>
-    <div class="page-grid">
-      <section class="section__contact-details">
-        <div class="contact__title">
-          <h1>Page not found</h1>
-        </div>
-        <div class="divider__border"></div>
-      </section>
-    </div>
-  </body>
+  <div class="page-grid">
+    <section class="section__contact-details">
+      <div class="contact__title">
+        <h1>Page not found</h1>
+      </div>
+      <div class="divider__border"></div>
+    </section>
+  </div>
+  <Footer transition:persist />
 </BaseLayout>
-<Footer transition:persist />
 
 <style>
   .section__contact-details {

@@ -4,12 +4,21 @@ import Navigation from "./Navigation.astro";
 
 <header class="header__wrapper">
   <div class="header__logo">
-    <a href="/"> <img src="/images/logos/POWERJET HPWJS_Logo-white.svg" /></a>
+    <a href="/">
+      <img
+        src="/images/logos/POWERJET HPWJS_Logo-white.svg"
+        alt="Powerjet Logo"
+      /></a
+    >
   </div>
 
   <nav class="header__nav">
     <!-- Hamburger button (mobile only) -->
-    <button class="header__mobile-hamburger" aria-label="Toggle menu">
+    <button
+      class="header__mobile-hamburger"
+      aria-label="Toggle menu"
+      aria-expanded="false"
+    >
       <span></span>
       <span></span>
       <span></span>
@@ -261,6 +270,11 @@ import Navigation from "./Navigation.astro";
 
     mobileMenu?.classList.toggle("active");
     hamburger?.classList.toggle("active");
+
+    hamburger?.setAttribute(
+      "aria-expanded",
+      mobileMenu?.classList.contains("active") ? "true" : "false",
+    );
 
     document.body.style.overflow = mobileMenu?.classList.contains("active")
       ? "hidden"

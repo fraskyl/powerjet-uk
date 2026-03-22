@@ -42,37 +42,35 @@ try {
 
 <BaseLayout title={title}>
   <Header transition:persist />
-  <body>
-    <div class="page-grid">
-      <TextHero headline="Applications" />
+  <div class="page-grid">
+    <TextHero headline="Applications" />
 
-      <div class="section__applications">
-        <div class="section__applications-cards">
-          {
-            fetchError ? (
-              <div class="error-message">
-                <p>Unable to load applications. Please try again later.</p>
-              </div>
-            ) : applications.length > 0 ? (
-              applications.map((app: any) => (
-                <Card
-                  imageURL={app.imageUrl}
-                  imageAlt={app.imageAlt}
-                  href={`/applications/${app.slug}`}
-                  buttonLabel={app.title}
-                  icon={true}
-                />
-              ))
-            ) : (
-              <div class="empty-state">
-                <p>No applications available yet. Check back soon!</p>
-              </div>
-            )
-          }
-        </div>
+    <div class="section__applications">
+      <div class="section__applications-cards">
+        {
+          fetchError ? (
+            <div class="error-message">
+              <p>Unable to load applications. Please try again later.</p>
+            </div>
+          ) : applications.length > 0 ? (
+            applications.map((app: any) => (
+              <Card
+                imageURL={app.imageUrl}
+                imageAlt={app.imageAlt}
+                href={`/applications/${app.slug}`}
+                buttonLabel={app.title}
+                icon={true}
+              />
+            ))
+          ) : (
+            <div class="empty-state">
+              <p>No applications available yet. Check back soon!</p>
+            </div>
+          )
+        }
       </div>
     </div>
-  </body>
+  </div>
   <Footer transition:persist />
 </BaseLayout>
 

@@ -7,16 +7,27 @@ import Navigation from "./Navigation.astro";
     <div class="footer__row">
       <div class="footer__logo">
         <a href="/">
-          <img src="/images/logos/POWERJET HPWJS_Logo-white.svg" /></a
+          <img
+            src="/images/logos/POWERJET HPWJS_Logo-white.svg"
+            alt="Powerjet logo"
+          /></a
         >
       </div>
       <div class="footer__associate-logos">
         <div class="footer__logo__right">
-          <a href="/"> <img src="/images/logos/Dark Logo.svg" /></a>
+          <a href="/">
+            <img
+              src="/images/logos/Dark Logo.svg"
+              alt="Hire Association Europe logo"
+            /></a
+          >
         </div>
         <div class="footer__logo__right">
           <a href="/">
-            <img src="/images/logos/Water Jetting Association.svg" /></a
+            <img
+              src="/images/logos/Water Jetting Association.svg"
+              alt="Water Jetting Association logo"
+            /></a
           >
         </div>
       </div>
@@ -29,8 +40,9 @@ import Navigation from "./Navigation.astro";
 
     <div class="footer__copyright">
       <p>
-        © Powerjet Rentals Ltd | Powerjet Solutions Ltd 2025. All Rights
-        Reserved.
+        © Powerjet Rentals Ltd | Powerjet Solutions Ltd {
+          new Date().getFullYear()
+        }. All Rights Reserved.
       </p>
     </div>
   </div>
