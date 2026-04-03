@@ -16,6 +16,7 @@ let servicesPage;
 try {
     servicesPage = await sanityClient.fetch(servicesPageQuery);
 } catch (error) {
+  console.error("Failed to fetch services page data from Sanity:", error);
 }
 
 // Extract data with fallbacks

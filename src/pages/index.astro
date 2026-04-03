@@ -16,6 +16,7 @@ try {
 	homepage = await sanityClient.fetch(homepageQuery);
 }
 catch (error) {
+  console.error("Failed to fetch homepage data from Sanity:", error);
 }
 
 

@@ -64,6 +64,7 @@ try {
   });
   
 } catch (error) {
+  console.error("Failed to fetch product listings data from Sanity:", error);
   fetchError = true;
 }
 
@@ -579,7 +580,7 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
     }
   }
 </style>
-<script define:vars={{ allProducts, topLevelCategories, allProductCategories }}>
+<script is:inline define:vars={{ allProducts, topLevelCategories, allProductCategories }}>
   // Category navigation data
   const categoryData = {
     products: allProducts,
@@ -705,8 +706,6 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
         
         // Handle expansion if has children
         if (hasChildren) {
-          const wasExpanded = item.classList.contains('expanded');
-          
           // Close other nested menus at same level
           const parent = item.closest('.nested-categories');
           if (parent) {
@@ -973,28 +972,28 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
     filterProducts(categorySlug);
   }
 
-  function init() {
-    const isMobile = window.innerWidth < 768;
+  // Declared outside init() so it persists across calls and the resize
+  // listener can read the latest value rather than a stale closure snapshot.
+  let isMobile = window.innerWidth < 768;
+  let resizeTimer;
 
-    // Initialize appropriate navigation
-      initMobileDropdown();
-      initDesktopSidebar();
-    
-    // Re-initialize on window resize (debounced)
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => {
-        const wasMobile = isMobile;
-        const nowMobile = window.innerWidth < 768;
-        
-        if (wasMobile !== nowMobile) {
-          init();
-        }
-      }, 250);
-    });
-    
+  function init() {
+    isMobile = window.innerWidth < 768;
+    initMobileDropdown();
+    initDesktopSidebar();
   }
+
+  // Attached once, outside init(), so it is never duplicated on re-init.
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      const nowMobile = window.innerWidth < 768;
+      if (isMobile !== nowMobile) {
+        isMobile = nowMobile;
+        init();
+      }
+    }, 250);
+  });
 
   document.addEventListener('astro:page-load', init);
 </script>

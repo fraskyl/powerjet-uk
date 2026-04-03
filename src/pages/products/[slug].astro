@@ -28,6 +28,7 @@ let product;
 try {
   product = await sanityClient.fetch(productBySlugQuery, { slug });
 } catch (error) {
+  console.error(`Failed to fetch product data for slug "${slug}" from Sanity:`, error);
 }
 
 // If no product found, you might want to redirect to 404

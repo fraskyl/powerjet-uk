@@ -25,7 +25,9 @@ try {
   productTypes = await sanityClient.fetch(topLevelProductCategoriesQuery, {
     availability: pageType,
   });
-} catch (error) {}
+} catch (error) {
+  console.error("Failed to fetch product categories from Sanity:", error);
+}
 
 const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
 ---

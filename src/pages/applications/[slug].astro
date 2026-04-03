@@ -31,7 +31,9 @@ const { slug } = Astro.params;
 let application;
 try {
   application = await sanityClient.fetch(applicationBySlugQuery, { slug });
-} catch (error) {}
+} catch (error) {
+  console.error(`Failed to fetch application data for slug "${slug}" from Sanity:`, error);
+}
 
 // If no application found, you might want to redirect to 404
 if (!application) {

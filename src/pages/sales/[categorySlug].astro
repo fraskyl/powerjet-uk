@@ -64,6 +64,7 @@ products = products.filter((product: any) =>
 );
 
 } catch (error) {
+  console.error(`Failed to fetch sales category data for slug "${categorySlug}" from Sanity:`, error);
   fetchError = true;
 }
 

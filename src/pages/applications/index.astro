@@ -36,6 +36,7 @@ try {
     };
   });
 } catch (error) {
+  console.error("Failed to fetch applications page data from Sanity:", error);
   fetchError = true;
 }
 ---
