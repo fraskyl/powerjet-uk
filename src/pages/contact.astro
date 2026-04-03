@@ -20,7 +20,6 @@ try {
 const phone = contactData?.phone || "+441414405757";
 const phoneDisplay = contactData?.phoneDisplay || "+44 (0) 141 440 5757";
 const email = contactData?.email || "mail@powerjet-uk.com";
-const showEmail = contactData?.showEmailPublicly ?? false;
 const address = contactData?.address;
 const openingHours = contactData?.openingHours || [];
 const mapUrl = contactData?.mapUrl;
@@ -40,7 +39,7 @@ const title = "Contact | Powerjet";
   description="Contact Powerjet for equipment enquiries"
 >
   <Header transition:persist />
-  <div class="page-grid">
+  <div id="main-content" class="page-grid">
     <section class="section__contact-details">
       <div class="contact__title">
         <h1>Contact</h1>
@@ -216,12 +215,6 @@ const title = "Contact | Powerjet";
     color: var(--pj_blue_80);
   }
 
-  .contact__details-opening-hours {
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-  }
-
   .section__contact-form {
     grid-column: 2 / -2;
     margin: 1rem 0 7.75rem 0;
@@ -229,7 +222,7 @@ const title = "Contact | Powerjet";
 
   .section__contact-form h2 {
     font-size: 2rem;
-    line-height: auto;
+    line-height: normal;
     font-weight: 450;
     color: var(--pj_blue_80);
     margin-bottom: 3rem;
@@ -265,14 +258,6 @@ const title = "Contact | Powerjet";
   }
 
   @media screen and (min-width: 1024px) {
-    .section__contact-details {
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-column: 2 / -2;
-      gap: 1rem;
-      margin-top: 4rem;
-    }
-
     .contact__details-office {
       flex-direction: row;
       gap: 3rem;

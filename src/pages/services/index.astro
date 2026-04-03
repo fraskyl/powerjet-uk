@@ -23,19 +23,12 @@ const heroHeadline = servicesPage?.heroHeadline || 'Services';
 const contentBlocks = servicesPage?.contentBlocks || [];
 const showContactBanner = servicesPage?.showContactBanner ?? true;
 
-interface Props {
-	title: string;
-	heroVideoUrl?: string;
-	heroHeadline?: string;
-}
-
-const { title } = Astro.props;
 
 ---
 
-<BaseLayout title={title} description="View Powerjet's services"> 
+<BaseLayout title={heroHeadline} description="View Powerjet's services"> 
     <Header transition:persist />
-        <div class ="page-grid">
+        <div id="main-content" class ="page-grid">
         <TextHero
             headline={heroHeadline}
         />
