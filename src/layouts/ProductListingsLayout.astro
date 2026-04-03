@@ -643,20 +643,47 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
       return;
     }
 
-    container.innerHTML = children.map(cat => {
+    container.innerHTML = '';
+    children.forEach(cat => {
       const productCount = countProductsInCategory(cat.slug);
       const hasChildren = getChildCategories(cat.slug).length > 0;
-      return `
-        <button class="nested-item ${hasChildren ? 'has-children' : ''}" data-category="${cat.slug}" data-level="2" data-parent="${parentSlug}">
-          <span class="category-content">
-            <span class="category-title">${cat.title}</span>
-            ${hasChildren ? '<span class="category-icon material-symbols-outlined">chevron_right</span>' : ''}
-          </span>
-          <span class="category-count">(${productCount})</span>
-        </button>
-        ${hasChildren ? `<div class="nested-categories" id="nested-${cat.slug}"></div>` : ''}
-      `;
-    }).join('');
+
+      const btn = document.createElement('button');
+      btn.className = `nested-item${hasChildren ? ' has-children' : ''}`;
+      btn.dataset.category = cat.slug;
+      btn.dataset.level = '2';
+      btn.dataset.parent = parentSlug;
+
+      const content = document.createElement('span');
+      content.className = 'category-content';
+
+      const title = document.createElement('span');
+      title.className = 'category-title';
+      title.textContent = cat.title;
+      content.appendChild(title);
+
+      if (hasChildren) {
+        const icon = document.createElement('span');
+        icon.className = 'category-icon material-symbols-outlined';
+        icon.textContent = 'chevron_right';
+        content.appendChild(icon);
+      }
+
+      const count = document.createElement('span');
+      count.className = 'category-count';
+      count.textContent = `(${productCount})`;
+
+      btn.appendChild(content);
+      btn.appendChild(count);
+      container.appendChild(btn);
+
+      if (hasChildren) {
+        const nested = document.createElement('div');
+        nested.className = 'nested-categories';
+        nested.id = `nested-${cat.slug}`;
+        container.appendChild(nested);
+      }
+    });
     
     // Attach click handlers to newly created nested items
     container.querySelectorAll('.nested-item').forEach(item => {
@@ -718,18 +745,44 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
       return;
     }
 
-    container.innerHTML = children.map(cat => {
+    container.innerHTML = '';
+    children.forEach(cat => {
       const productCount = countProductsInCategory(cat.slug);
       const hasChildren = getChildCategories(cat.slug).length > 0;
-      return `
-        <button class="mobile-nested-item ${hasChildren ? 'has-children' : ''}" data-category="${cat.slug}" data-title="${cat.title}" data-parent="${parentSlug}">
-          <span class="category-text">${cat.title}</span>
-          <span class="mobile-count">(${productCount})</span>
-          ${hasChildren ? '<span class="expand-icon material-symbols-outlined">chevron_right</span>' : ''}
-        </button>
-        ${hasChildren ? `<div class="mobile-nested-container" id="mobile-nested-${cat.slug}"></div>` : ''}
-      `;
-    }).join('');
+
+      const btn = document.createElement('button');
+      btn.className = `mobile-nested-item${hasChildren ? ' has-children' : ''}`;
+      btn.dataset.category = cat.slug;
+      btn.dataset.title = cat.title;
+      btn.dataset.parent = parentSlug;
+
+      const text = document.createElement('span');
+      text.className = 'category-text';
+      text.textContent = cat.title;
+
+      const mobileCount = document.createElement('span');
+      mobileCount.className = 'mobile-count';
+      mobileCount.textContent = `(${productCount})`;
+
+      btn.appendChild(text);
+      btn.appendChild(mobileCount);
+
+      if (hasChildren) {
+        const icon = document.createElement('span');
+        icon.className = 'expand-icon material-symbols-outlined';
+        icon.textContent = 'chevron_right';
+        btn.appendChild(icon);
+      }
+
+      container.appendChild(btn);
+
+      if (hasChildren) {
+        const nested = document.createElement('div');
+        nested.className = 'mobile-nested-container';
+        nested.id = `mobile-nested-${cat.slug}`;
+        container.appendChild(nested);
+      }
+    });
     
     // Attach click handlers to newly created mobile nested items
     container.querySelectorAll('.mobile-nested-item').forEach(item => {
