@@ -75,7 +75,7 @@ const title = `${category.title} | Rentals | Powerjet`;
 
 <BaseLayout title={title}>
   <Header transition:persist />
-  <div class="page-grid">
+  <main id="main-content" class="page-grid">
     <TextHero headline={category.title} />
 
     {fetchError ? (
@@ -117,7 +117,7 @@ const title = `${category.title} | Rentals | Powerjet`;
     )}
 
     <ContactBlock />
-  </div>
+    </main>
   <Footer transition:persist />
 </BaseLayout>
 

@@ -10,7 +10,7 @@ const title = "404: Page Not Found | Powerjet";
 
 <BaseLayout title={title}>
   <Header transition:persist />
-  <div class="page-grid">
+  <div id="main-content" class="page-grid">
     <section class="section__contact-details">
       <div class="contact__title">
         <h1>Page not found</h1>
@@ -29,9 +29,6 @@ const title = "404: Page Not Found | Powerjet";
     gap: 1rem;
     margin-top: 4rem;
     overflow: hidden;
-  }
-
-  @media screen and (min-width: 768px) {
   }
 
   @media screen and (min-width: 1024px) {

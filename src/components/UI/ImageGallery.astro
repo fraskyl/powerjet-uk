@@ -463,9 +463,6 @@ const isSingleImage = galleryImages.length === 1;
     });
   }
   
-  // Initialize on page load
-  document.addEventListener('DOMContentLoaded', initImageGallery);
-  
-  // Re-initialize on Astro view transitions (if using)
+  // Initialize on Astro view transitions
   document.addEventListener('astro:page-load', initImageGallery);
 </script>

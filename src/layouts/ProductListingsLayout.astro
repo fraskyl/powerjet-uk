@@ -73,8 +73,7 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
 
 <BaseLayout title={title}>
   <Header transition:persist/>
-  <body>
-    <div class="page-grid">
+    <main id="main-content" class="page-grid">
       <TextHero headline={headline} />
 
       {fetchError ? (
@@ -169,8 +168,7 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
       )}
 
       <ContactBlock />
-    </div>
-  </body>
+        </main>
   <Footer transition:persist/>
 </BaseLayout>
 

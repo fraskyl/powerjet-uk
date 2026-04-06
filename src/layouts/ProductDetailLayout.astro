@@ -154,9 +154,9 @@ const relatedProducts = product?.relatedProducts || [];
 
 <BaseLayout>
     <Header transition:persist/>
-        <div id="main-content" class="page-grid">
+        <main id="main-content" class="page-grid">
             <div class="link__prev-page-wrapper">
-                <a href="/rentals">
+                <a href={product.availability?.includes('sale') ? '/sales' : '/rentals'}>
                     <div class="link__prev-page">
                         <span class="material-symbols-outlined">arrow_back</span
                         >
@@ -339,7 +339,7 @@ const relatedProducts = product?.relatedProducts || [];
             }
 
         <ContactBlock />
-           </div>
+        </main>
 
 <Footer transition:persist />
 </BaseLayout>

@@ -29,7 +29,7 @@ const showContactBanner = servicesPage?.showContactBanner ?? true;
 
 <BaseLayout title={heroHeadline} description="View Powerjet's services"> 
     <Header transition:persist />
-        <div id="main-content" class ="page-grid">
+        <main id="main-content" class ="page-grid">
         <TextHero
             headline={heroHeadline}
         />
@@ -67,7 +67,7 @@ const showContactBanner = servicesPage?.showContactBanner ?? true;
     <!-- Contact block -->
      {showContactBanner && <ContactBlock />}
 
- </div>
+</main>
     <Footer transition:persist />
 </BaseLayout>
 

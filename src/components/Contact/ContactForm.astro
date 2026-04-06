@@ -35,7 +35,13 @@ const {
 
     <div class="form-group">
       <label for="email">Email *</label>
-      <input type="email" id="email" name="email" required autocomplete="email" />
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        autocomplete="email"
+      />
     </div>
   </div>
 
@@ -44,7 +50,13 @@ const {
       requirePhone && (
         <div class="form-group">
           <label for="phone">Phone *</label>
-          <input type="tel" id="phone" name="phone" required autocomplete="tel" />
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            required
+            autocomplete="tel"
+          />
         </div>
       )
     }
@@ -53,7 +65,13 @@ const {
       requireCompany && (
         <div class="form-group">
           <label for="company">Company *</label>
-          <input type="text" id="company" name="company" required autocomplete="organization" />
+          <input
+            type="text"
+            id="company"
+            name="company"
+            required
+            autocomplete="organization"
+          />
         </div>
       )
     }
@@ -76,48 +94,56 @@ const {
     role="alert"
     aria-live="assertive"
     data-success-message={successMessage}
-  ></div>
+  >
+  </div>
 </form>
 
 <script>
-  document.querySelectorAll(".contact-form").forEach((form) => {
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
+  document.addEventListener("astro:page-load", () => {
+    document.querySelectorAll(".contact-form").forEach((form) => {
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-      const formElement = e.target as HTMLFormElement;
-      const messageDiv = formElement.querySelector(".form-message") as HTMLElement;
-      const submitBtn = formElement.querySelector('button[type="submit"]') as HTMLButtonElement;
-      const successMessage = messageDiv.getAttribute("data-success-message") || "Thank you!";
+        const formElement = e.target as HTMLFormElement;
+        const messageDiv = formElement.querySelector(
+          ".form-message",
+        ) as HTMLElement;
+        const submitBtn = formElement.querySelector(
+          'button[type="submit"]',
+        ) as HTMLButtonElement;
+        const successMessage =
+          messageDiv.getAttribute("data-success-message") || "Thank you!";
 
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Sending...";
-      messageDiv.className = "form-message";
-      messageDiv.textContent = "";
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Sending...";
+        messageDiv.className = "form-message";
+        messageDiv.textContent = "";
 
-      try {
-        const formData = new FormData(formElement);
+        try {
+          const formData = new FormData(formElement);
 
-        const response = await fetch("/", {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: new URLSearchParams(formData as any).toString(),
-        });
+          const response = await fetch("/", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams(formData as any).toString(),
+          });
 
-        if (response.ok) {
-          messageDiv.textContent = successMessage;
-          messageDiv.className = "form-message success";
-          formElement.reset();
-        } else {
-          throw new Error(`Server responded with ${response.status}`);
+          if (response.ok) {
+            messageDiv.textContent = successMessage;
+            messageDiv.className = "form-message success";
+            formElement.reset();
+          } else {
+            throw new Error(`Server responded with ${response.status}`);
+          }
+        } catch (error) {
+          messageDiv.textContent =
+            "Sorry, there was a problem sending your message. Please try again or email us directly.";
+          messageDiv.className = "form-message error";
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Send Message";
         }
-      } catch (error) {
-        messageDiv.textContent =
-          "Sorry, there was a problem sending your message. Please try again or email us directly.";
-        messageDiv.className = "form-message error";
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Send Message";
-      }
+      });
     });
   });
 </script>

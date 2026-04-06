@@ -14,8 +14,8 @@ const { title } = Astro.props;
 <BaseLayout title={title}>
   <Header transition:persist />
   <slot name="hero" />
-  <div id="main-content" class="page-grid">
+  <main id="main-content" class="page-grid">
     <slot />
-  </div>
+  </main>
   <Footer transition:persist />
 </BaseLayout>
