@@ -1,109 +1,101 @@
 ---
 import Link from "../UI/Link.astro";
 
-
 interface Props {
-    headline? : string;
-    bodyCopy? : string;
-    buttonLabel? : string;
-    buttonLink? : string;
-    imageURL? : string;
-    imageAlt? : string;
+  headline?: string;
+  bodyCopy?: string;
+  buttonLabel?: string;
+  buttonLink?: string;
+  imageURL?: string;
+  imageAlt?: string;
 }
 
-const { 
-    headline = "WJA Training",
-    bodyCopy = "We offer fully registered training with The Water Jetting Association, the benchmark for safety in the water jetting industry throughout the U.K.",
-    buttonLabel ="Find out more",
-    buttonLink = "/services",
-    imageURL = "/src/assets/PJ-Screen-cap-tst-wash.png",
-    imageAlt = "Power jetting operative wearing TST safety gear whilst operating power jet washer",
+const {
+  headline = "WJA Training",
+  bodyCopy = "We offer fully registered training with The Water Jetting Association, the benchmark for safety in the water jetting industry throughout the U.K.",
+  buttonLabel = "Find out more",
+  buttonLink = "/services",
+  imageURL = "/src/assets/PJ-Screen-cap-tst-wash.png",
+  imageAlt = "Power jetting operative wearing TST safety gear whilst operating power jet washer",
 } = Astro.props;
-
-
-
 ---
 
 <div class="cta__banner__wrapper span-full">
-    <div class="cta__banner__content">
-        <div class="cta__banner__text">
-            <h3>{headline}</h3>
-            <p>
-                {bodyCopy}
-            </p>
-        </div>
-        <Link href={buttonLink} variant="inverse">{buttonLabel}</Link>
+  <div class="cta__banner__content">
+    <div class="cta__banner__text">
+      <h3>{headline}</h3>
+      <p>
+        {bodyCopy}
+      </p>
     </div>
-        <div class="cta__banner__image">
-            <img
-            src={imageURL}
-            alt={imageAlt} />
-        </div>
+    <Link href={buttonLink} variant="inverse">{buttonLabel}</Link>
+  </div>
+  <div class="cta__banner__image">
+    <img src={imageURL} alt={imageAlt} />
+  </div>
 </div>
 
-
 <style>
+  .cta__banner__wrapper {
+    grid-column: 2 / -2; /* Skip first and last content column (inset by 1) */
+    display: flex;
+    height: 335px;
+    flex-direction: column;
+    background-color: var(--pj_brand_blue);
+    color: white;
+    border-radius: 0.25rem;
+    margin-bottom: 7.75rem;
+  }
+
+  .cta__banner__content {
+    display: flex;
+    flex: 1;
+    padding: 2rem;
+    justify-content: space-between;
+    flex-direction: column;
+  }
+
+  .cta__banner__text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4); /* THIS controls spacing between h2 and p */
+    width: 90%;
+  }
+
+  .cta__banner__text h3 {
+    font-weight: 500;
+    font-size: 1.6rem;
+  }
+
+  .cta__banner__text p {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+
+  .cta__banner__image {
+    display: none;
+  }
+
+  /* Show on tablet and desktop */
+  @media (min-width: 768px) {
     .cta__banner__wrapper {
-        grid-column: 2 / -2; /* Skip first and last content column (inset by 1) */
-        display: flex;
-        height: 335px;
-        flex-direction: column;
-        background-color: var(--pj_brand_blue);
-        color: white;
-        border-radius: 0.25rem;
-        margin-bottom: 7.75rem;
-    }
-
-    .cta__banner__content {
-        display: flex;
-        flex: 1;
-        padding: 2rem;
-        justify-content: space-between;
-        flex-direction: column;
-    }
-
-    .cta__banner__text {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-4); /* THIS controls spacing between h2 and p */
-        width: 90%
-    }
-
-    .cta__banner__text h3 {
-        font-weight: 500;
-        font-size: 1.6rem;
-    }
-
-    .cta__banner__text p {
-        font-size: 1rem;
-        line-height: 1.5rem;
+      display: flex;
+      flex-direction: row;
+      height: 335px;
+      width: 100%;
     }
 
     .cta__banner__image {
-        display: none;
+      display: flex;
+      flex: 1;
+      overflow: hidden;
     }
 
-   /* Show on tablet and desktop */
-    @media (min-width: 768px) {
-
-         .cta__banner__wrapper {
-            display: flex;
-            flex-direction: row;
-            height: 335px;
-            width: 100%;
-         }
-
-        .cta__banner__image {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-        }        }
-
-        .cta__banner__image img {
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-            border-radius: 0 0.25rem 0.25rem 0;
-        }
-}
+    .cta__banner__image img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      border-radius: 0 0.25rem 0.25rem 0;
+    }
+  }
 </style>
