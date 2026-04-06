@@ -16,6 +16,7 @@ export async function getStaticPaths() {
       params: { slug: product.slug },
     }));
   } catch (error) {
+    console.error("Failed to fetch product slugs from Sanity:", error);
     return [];
   }
 }
@@ -28,7 +29,10 @@ let product;
 try {
   product = await sanityClient.fetch(productBySlugQuery, { slug });
 } catch (error) {
-  console.error(`Failed to fetch product data for slug "${slug}" from Sanity:`, error);
+  console.error(
+    `Failed to fetch product data for slug "${slug}" from Sanity:`,
+    error,
+  );
 }
 
 // If no product found, you might want to redirect to 404

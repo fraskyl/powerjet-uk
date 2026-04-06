@@ -135,9 +135,6 @@ export const allProductsQuery = `*[_type == "product"] | order(order asc, _creat
 }`;
 
 
-// Temporary debug query - shows ALL fields
-//export const allProductsQuery = `*[_type == "product"][0...3]`;
-
 // Get products filtered by availability (rental or sale)
 export const productsByAvailabilityQuery = `*[_type == "product" && $availability in availability] | order(desc, order asc, title asc) {
   title,

@@ -24,6 +24,7 @@ export async function getStaticPaths() {
       params: { categorySlug: category.slug }
     }));
   } catch (error) {
+      console.error("Failed to fetch rental product slugs from Sanity:", error);
     return [];
   }
 }

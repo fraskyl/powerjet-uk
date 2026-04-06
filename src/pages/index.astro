@@ -69,13 +69,13 @@ const partnerLogos = homepage?.partnerLogos || [];
                 <!-- Fallback: Show default cards if CMS not set up yet -->
                 <Card
                     imageURL="/src/assets/New_Image_Magtrack-lrg.jpeg"
-                    imageAlt="Equipment"
+                    imageAlt="Rentals product image"
                     href="/rentals"
                     buttonLabel="Browse rentals"
                 />
                 <Card
                     imageURL="/src/assets/New_Image_Magtrack-lrg.jpeg"
-                    imageAlt="Equipment"
+                    imageAlt="Sales product image"
                     href="/sales"
                     buttonLabel="Browse sales"
                 />
@@ -123,9 +123,14 @@ const partnerLogos = homepage?.partnerLogos || [];
       ) : (
         <!-- Fallback to existing hardcoded logos -->
         <div class="grid__partner-logo">
-          <img src="/src/assets/logos/partners/jetstream-logo-color.png" />
+          <img src="/src/assets/logos/partners/jetstream-logo-color.png" alt="Jetstream logo"/>
+          <img src="/src/assets/logos/partners/DERC Salotech_liggend_2kleur" alt="Derc Salotech logo"/>
+          <img src="/src/assets/logos/partners/stoneage-logo-color" alt="Stoneage logo"/>
+          <img src="/src/assets/logos/partners/tetraCORE-Logo" alt="TetraCore logo"/>
+          <img src="/src/assets/logos/partners/tst_logotype_001_vertical_RGB" alt="TST logo"/>
+
         </div>
-        <!-- ... rest of hardcoded logos ... -->
+
       )}
     </div>
 	</section>
