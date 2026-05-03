@@ -12,18 +12,16 @@ import ContactForm from "../components/Contact/ContactForm.astro";
 let contactData;
 
 try {
-	// Fetch contact information
-	contactData = await sanityClient.fetch(contactPageQuery);
-	console.log("✅ Contact info fetched");
+  // Fetch contact information
+  contactData = await sanityClient.fetch(contactPageQuery);
 } catch (error) {
-	console.error("❌ Error fetching contact data:", error);
+  console.error("Failed to fetch contact page data from Sanity:", error);
 }
 
 // === Contact info defaults ===
 const phone = contactData?.phone || "+441414405757";
 const phoneDisplay = contactData?.phoneDisplay || "+44 (0) 141 440 5757";
 const email = contactData?.email || "mail@powerjet-uk.com";
-const showEmail = contactData?.showEmailPublicly ?? false;
 const address = contactData?.address;
 const openingHours = contactData?.openingHours || [];
 const mapUrl = contactData?.mapUrl;
@@ -33,267 +31,253 @@ const enableHoneypot = contactData?.enableHoneypot ?? true;
 const requirePhone = contactData?.requiredFields?.requirePhone ?? false;
 const requireCompany = contactData?.requiredFields?.requireCompany ?? false;
 const successMessage =
-	contactData?.successMessage || "Thank you for your message!";
+  contactData?.successMessage || "Thank you for your message!";
 
 const title = "Contact | Powerjet";
 ---
 
-<BaseLayout title={title}>
-	<Header />
-	<body>
-		<div class="page-grid">
-			<section class="section__contact-details">
-				<div class="contact__title">
-					<h1>Contact</h1>
-				</div>
-				<div class="divider__border"></div>
-				<div class="contact__details-wrapper">
-					<div class="contact__details">
-						<div class="contact__details-block-wrapper">
-							<div class="contact__details-block">
-								<h5>Call us</h5>
-								<tel>{phoneDisplay}</tel>
-							</div>
-							<div class="contact__details-block">
-								<h5>Email us</h5>
-								<p>mail@powerjet-uk.com</p>
-							</div>
-						</div>
-						<div class="contact__details-office">
-							{
-								address && (
-									<div class="contact__details-address">
-										<h5>Head Office</h5>
-										<address>
-											<p>{address.line1}</p>
-											{address.line2 && (
-												<p>{address.line2}</p>
-											)}
-											<p>{address.city}</p>
-											<p>{address.postcode}</p>
-											<p>{address.country}</p>
-										</address>
-									</div>
-								)
-							}
-							{
-								openingHours.length > 0 && (
-									<div class="contact__details-opening-hours-wrapper">
-										<h5>Opening Hours</h5>
-										<div class="contact__details-opening-hours">
-											<div class="contact__details-opening-hours-days">
-												{openingHours.map(
-													(item: any) => (
-														<p>{item.days}:</p>
-													),
-												)}
-											</div>
-											<div class="contact__details-opening-hours-time">
-												{openingHours.map(
-													(item: any) => (
-														<p>{item.hours}</p>
-													),
-												)}
-											</div>
-										</div>
-									</div>
-								)
-							}
-						</div>
-					</div>
-					<div class="contact__details-map">
-						<iframe
-							src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d4478.647979499521!2d-4.317614!3d55.857045!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x488846097d869d2d%3A0xb21be2c11900d55f!2s97%20Loanbank%20Quadrant%2C%20Glasgow%20G51%203HZ%2C%20UK!5e0!3m2!1sen!2sus!4v1769361705475!5m2!1sen!2sus"
-							width="100%"
-							height="100%"
-							style="border:0;"
-							allowfullscreen=""
-							loading="lazy"
-							referrerpolicy="no-referrer-when-downgrade"
-						></iframe>
-					</div>
-				</div>
-			</section>
+<BaseLayout
+  title={title}
+  description="Contact Powerjet for equipment enquiries"
+>
+  <Header transition:persist />
+  <main id="main-content" class="page-grid">
+    <section class="section__contact-details">
+      <div class="contact__title">
+        <h1>Contact</h1>
+      </div>
+      <div class="divider__border"></div>
+      <div class="contact__details-wrapper">
+        <div class="contact__details">
+          <div class="contact__details-block-wrapper">
+            <div class="contact__details-block">
+              <h5>Call us</h5>
+              <a href={`tel:${phone}`}>{phoneDisplay}</a>
+            </div>
+            <div class="contact__details-block">
+              <h5>Email us</h5>
+              <a href={`mailto:${email}`}>{email}</a>
+            </div>
+          </div>
+          <div class="contact__details-office">
+            {
+              address && (
+                <div class="contact__details-address">
+                  <h5>Head Office</h5>
+                  <address>
+                    <p>{address.line1}</p>
+                    {address.line2 && <p>{address.line2}</p>}
+                    <p>{address.city}</p>
+                    <p>{address.postcode}</p>
+                    <p>{address.country}</p>
+                  </address>
+                </div>
+              )
+            }
+            {
+              openingHours.length > 0 && (
+                <div class="contact__details-opening-hours-wrapper">
+                  <h5>Opening Hours</h5>
+                  <div class="contact__details-opening-hours">
+                    <div class="contact__details-opening-hours-days">
+                      {openingHours.map((item: any) => (
+                        <p>{item.days}:</p>
+                      ))}
+                    </div>
+                    <div class="contact__details-opening-hours-time">
+                      {openingHours.map((item: any) => (
+                        <p>{item.hours}</p>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )
+            }
+          </div>
+        </div>
+        <div class="contact__details-map">
+          <iframe
+            title="Google maps showing Powerjet office location"
+            src={mapUrl ||
+              "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d4478.647979499521!2d-4.317614!3d55.857045!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x488846097d869d2d%3A0xb21be2c11900d55f!2s97%20Loanbank%20Quadrant%2C%20Glasgow%20G51%203HZ%2C%20UK!5e0!3m2!1sen!2sus!4v1769361705475!5m2!1sen!2sus"}
+            width="100%"
+            height="100%"
+            style="border:0;"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+    </section>
 
-			<div class="divider__border"></div>
+    <div class="divider__border"></div>
 
-			<div class="section__contact-form">
-				<h2>Have an enquiry? <br>Let's talk</h2>
-				<ContactForm
-					enableHoneypot={enableHoneypot}
-					requirePhone={requirePhone}
-					requireCompany={requireCompany}
-					successMessage={successMessage}
-				/>
-			</div>
-		</div>
-	</body>
-	<Footer />
+    <div class="section__contact-form">
+      <h2>Have an enquiry? <br />Let's talk</h2>
+      <ContactForm
+        enableHoneypot={enableHoneypot}
+        requirePhone={requirePhone}
+        requireCompany={requireCompany}
+        successMessage={successMessage}
+      />
+    </div>
+  </main>
+  <Footer transition:persist />
 </BaseLayout>
 
 <style>
-	.section__contact-details {
-		display: grid;
-		grid-template-columns: 1fr;
-		grid-column: 2 / -2;
-		gap: 1rem;
-		margin-top: 4rem;
-		overflow: hidden;
-	}
+  .section__contact-details {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-column: 2 / -2;
+    gap: 1rem;
+    margin-top: 4rem;
+    overflow: hidden;
+  }
 
-	.contact__details-wrapper {
-			display: flex;
-			flex-direction: column;
-			justify-content: space-between;
-			gap: 2rem;
-			margin-bottom: 4rem;
-			flex-wrap: nowrap;
-		}
-	
+  .contact__details-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 4rem;
+    flex-wrap: nowrap;
+  }
 
-	.contact__details {
-		display: flex;
-		flex-direction: column;
-		gap: 2rem;
-		flex-shrink: 0;
-		min-width: 0;
-	}
+  .contact__details {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    flex-shrink: 0;
+    min-width: 0;
+  }
 
-	.contact__details-opening-hours {
-		display: flex;
-		flex-direction: row;
-		gap: 1rem;
-	}
+  .contact__details-opening-hours {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+  }
 
-	.section__contact-details h1 {
-		font-weight: 500;
-		color: var(--pj_blue_80);
-	}	
+  .section__contact-details h1 {
+    font-weight: 500;
+    color: var(--pj_blue_80);
+  }
 
-	.contact__details-map {
-		width: 100%;
-		height: 300px;
-		border-radius: 4px;
-		overflow: hidden;
-		flex-shrink: 1;
-		aspect-ratio: 5/4;
-	}
+  .contact__details-map {
+    width: 100%;
+    height: 300px;
+    border-radius: 4px;
+    overflow: hidden;
+    flex-shrink: 1;
+    aspect-ratio: 5/4;
+  }
 
-	.contact__details-map iframe {
-		width: 100%;
-		height: 100%;
-		max-width: 100%;
-	}
+  .contact__details-map iframe {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+  }
 
-	.contact__details-block p {
-		font-weight: 500;
-		color: var(--pj_blue_90);
-	}
+  .contact__details-block p {
+    font-weight: 500;
+    color: var(--pj_blue_90);
+  }
 
-	.contact__details-block-wrapper {
-		display: flex;
-		flex-direction: column;
-		width: 100%;
-		gap: 1rem;
-	}
+  .contact__details-block:hover {
+    font-weight: 500;
+    color: var(--pj_blue_10);
+    background-color: var(--pj_brand_blue);
+  }
 
-	.contact__details-block {
-		display: flex;
-		padding: 1rem;
-		flex-direction: column;
-		align-items: flex-start;
-		width: 100%;
-		gap: 0.25rem;
-		flex: 1 0 0;
-		border-radius: 0.25rem;
-		background: var(--pj_blue_10);
-	}
+  .contact__details-block-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+  }
 
-	.contact__details-office {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-	}
+  .contact__details-block {
+    display: flex;
+    padding: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    gap: 0.25rem;
+    flex: 1 0 0;
+    border-radius: 0.25rem;
+    background: var(--pj_blue_10);
+  }
 
-	.contact__details-office  h5{
-		font-weight: 500;
-		color: var(--pj_blue_80);
-	}
+  .contact__details-office {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
 
-	.contact__details-opening-hours {
-		display: flex;
-		flex-direction: row;
-		gap: 1rem;
-	}
+  .contact__details-office h5 {
+    font-weight: 500;
+    color: var(--pj_blue_80);
+  }
 
+  .section__contact-form {
+    grid-column: 2 / -2;
+    margin: 1rem 0 7.75rem 0;
+  }
 
-	.section__contact-form{
-		grid-column: 2 / -2;
-		margin: 1rem 0 7.75rem 0;	
-	}
-
-	 .section__contact-form h2 {
+  .section__contact-form h2 {
     font-size: 2rem;
-	line-height: auto;
+    line-height: normal;
     font-weight: 450;
     color: var(--pj_blue_80);
     margin-bottom: 3rem;
   }
 
-	@media screen and (min-width: 768px) {
-		.contact__details-wrapper {
-			display: flex;
-			flex-direction: row;
-			gap: 2rem;
-			margin-bottom: 4rem;
-			flex-wrap: nowrap;
-		}
+  @media screen and (min-width: 768px) {
+    .contact__details-wrapper {
+      display: flex;
+      flex-direction: row;
+      gap: 2rem;
+      margin-bottom: 4rem;
+      flex-wrap: nowrap;
+    }
 
-		.contact__details-block-wrapper {
-			display: flex;
-			flex-direction: row;
-			width: 100%;
-			gap: 1rem;
-		}
+    .contact__details-block-wrapper {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      gap: 1rem;
+    }
 
-		.contact__details-office {
-			flex-direction: row;
-			gap: 2rem;
-		}
+    .contact__details-office {
+      flex-direction: row;
+      gap: 2rem;
+    }
 
-		.contact__details-map {
-		height: 500px;
-		width: 100%;
-		max-width: 800px;
-		aspect-ratio: 5 /4;
-	}
-	}
+    .contact__details-map {
+      height: 500px;
+      width: 100%;
+      max-width: 800px;
+      aspect-ratio: 5 /4;
+    }
+  }
 
-	@media screen and (min-width: 1024px) {
-		.section__contact-details {
-			display: grid;
-			grid-template-columns: 1fr;
-			grid-column: 2 / -2;
-			gap: 1rem;
-			margin-top: 4rem;
-		}
+  @media screen and (min-width: 1024px) {
+    .contact__details-office {
+      flex-direction: row;
+      gap: 3rem;
+    }
 
-			.contact__details-office {
-			flex-direction: row;
-			gap: 3rem;
-		}
+    .contact__details-block {
+      display: flex;
+      padding: 16px;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
 
-		.contact__details-block {
-			display: flex;
-			padding: 16px;
-			flex-direction: column;
-			align-items: flex-start;
-			width: 100%;
-
-			gap: 0.25rem;
-			flex: 1 0 0;
-			border-radius: 0.25rem;
-			background: var(--pj_blue_10);
-		}
-	}
+      gap: 0.25rem;
+      flex: 1 0 0;
+      border-radius: 0.25rem;
+      background: var(--pj_blue_10);
+    }
+  }
 </style>

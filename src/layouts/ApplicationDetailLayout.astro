@@ -4,7 +4,6 @@ import "../styles/global.css";
 import BaseLayout from "./BaseLayout.astro";
 import Footer from "../components/Layout/Footer.astro";
 import Header from "../components/Layout/Header.astro";
-import SectionTitle from "../components/Content/SectionTitle.astro";
 import ContactBlock from "../components/Sections/ContactBlock.astro";
 import Card from "../components/UI/Card.astro";
 import ApplicationHero from "../components/Sections/ApplicationHero.astro";
@@ -54,9 +53,8 @@ const appRecommendedProducts = application?.recommendedProducts || [];
 ---
 
 <BaseLayout title={title}>
-    <Header />
-    <body>
-        <div class="page-grid">
+    <Header transition:persist />
+        <main id="main-content" class="page-grid">
             <div class="link__prev-page-wrapper">
                 <a href="/applications">
                     <div class="link__prev-page">
@@ -102,9 +100,8 @@ const appRecommendedProducts = application?.recommendedProducts || [];
                 )
             }
             <ContactBlock />
-        </div>
-    </body> 
- <Footer />
+        </main>
+ <Footer transition:persist/>
  </BaseLayout>
 
 

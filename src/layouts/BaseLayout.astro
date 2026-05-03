@@ -1,10 +1,16 @@
 ---
 import EnvironmentBadge from "../components/Dev/EnvironmentBadge.astro";
+import { ClientRouter } from "astro:transitions";
+
 interface Props {
   title?: string;
+  description?: string;
 }
 
-const { title = "Powerjet Rentals UK" } = Astro.props;
+const {
+  title = "Powerjet Rentals UK",
+  description = "High-pressure and ultra high-pressure water jetting equipment",
+} = Astro.props;
 ---
 
 <!doctype html>
@@ -15,19 +21,51 @@ const { title = "Powerjet Rentals UK" } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
     <link
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
     />
+    <ClientRouter />
   </head>
   <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <slot />
-    <EnvironmentBadge />
+    <!-- <EnvironmentBadge /> -->
   </body>
 </html>
+
+<style is:global>
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    padding: 0.5rem 1rem;
+    background: var(--pj_brand_blue);
+    color: white;
+    text-decoration: none;
+    z-index: 9999;
+  }
+  .skip-link:focus {
+    top: 1rem;
+  }
+</style>

@@ -1,0 +1,34 @@
+[build]
+  command = "npm run build:staging"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NODE_ENV = "production"
+  NPM_VERSION = "10"
+
+# Environment variables (also set these in Netlify UI)
+[context.production.environment]
+  PUBLIC_SANITY_PROJECT_ID = "84258b3v"
+  PUBLIC_SANITY_DATASET = "staging"
+  PUBLIC_SANITY_API_VERSION = "2024-01-01"
+  SANITY_PROJECT_ID = "84258b3v"
+  SANITY_DATASET = "staging"
+  SANITY_API_VERSION = "2024-01-01"
+  PUBLIC_SITE_URL = "https://staging-powerjet.netlify.app"
+  NODE_ENV = "production"
+
+# Headers for security
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https://cdn.sanity.io data: blob:; media-src 'self' https://cdn.sanity.io; frame-src https://www.google.com;"
+
+# Cache static assets
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

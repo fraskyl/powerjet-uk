@@ -1,0 +1,51 @@
+// src/lib/sanity.ts
+import { createClient } from '@sanity/client';
+
+// Get environment variables with multiple fallback checks
+const projectId = 
+  import.meta.env.SANITY_PROJECT_ID || 
+  import.meta.env.PUBLIC_SANITY_PROJECT_ID || 
+  '84258b3v'; // Hard-coded fallback
+
+const dataset = 
+  import.meta.env.SANITY_DATASET || 
+  import.meta.env.PUBLIC_SANITY_DATASET || 
+  'staging'; // Hard-coded fallback
+
+const apiVersion = 
+  import.meta.env.SANITY_API_VERSION || 
+  import.meta.env.PUBLIC_SANITY_API_VERSION || 
+  '2024-01-01'; // Hard-coded fallback
+
+const token = import.meta.env.SANITY_TOKEN;
+
+// Create Sanity client
+export const sanityClient = createClient({
+  projectId,
+  dataset,
+  apiVersion,
+  useCdn: dataset === 'production',
+  token,
+});
+
+// Export configuration
+export const sanityConfig = {
+  projectId,
+  dataset,
+  apiVersion,
+  useCdn: dataset === 'production',
+  environment: import.meta.env.MODE || 'development',
+};
+
+
+export function getCurrentDataset(): string {
+  return dataset;
+}
+
+export function isProduction(): boolean {
+  return dataset === 'production';
+}
+
+export function isStaging(): boolean {
+  return dataset === 'staging';
+}

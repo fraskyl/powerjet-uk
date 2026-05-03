@@ -1,81 +1,87 @@
 ---
+import { homepageQuery } from "../../lib/queries";
+
 interface Props {
-    videoUrl? : string;
-    headline? : String;
+  videoUrl?: string;
+  imgFallback?: string;
+  headline?: String;
 }
 
-const { 
-    videoUrl = "/src/assets/PJ-Quick-Edit-for-web-mockup.mp4",
-    headline = "High-Pressure and Ultra High-Pressure Water Jetting Equipment"
+const {
+  videoUrl = "/src/assets/PJ-Quick-Edit-for-web-mockup.mp4",
+  imgFallback = "/src/assets/pj-web-fallback-homepage.jpeg",
+  headline = "High-Pressure and Ultra High-Pressure Water Jetting Equipment",
 } = Astro.props;
-
-
-
 ---
 
 <div class="hero" id="hero__video">
-    <video autoplay muted loop playsinline>
-        <source
-            src={videoUrl}
-            type="video/mp4"
-        />
-    </video>
+  <video
+    autoplay
+    muted
+    loop
+    playsinline
+    poster={imgFallback}
+    aria-label="Background video showing water jetting operations"
+  >
+    <source src={videoUrl} type="video/mp4" />
+    <img src={imgFallback} alt="Powerjet high-pressure water jetting equipment" />
+  </video>
 
-    <div class="hero__headline span-full">
-        <h1>{headline}</h1>
-    </div>
+  <div class="hero__headline span-full">
+    <h1>{headline}</h1>
+  </div>
 </div>
 
 <style>
-    .hero {
-        grid-column: 1 / -1;
-        max-height: 40rem; /* Don't exceed 80% of viewport */
-        overflow: hidden;
-        position: relative;
-        margin-bottom: 4rem;
-        width: 100vw;
+  .hero {
+    grid-column: 1 / -1;
+    max-height: 40rem; /* Don't exceed 80% of viewport */
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 4rem;
+    width: 100vw;
 
-        /* Create inner grid matching parent */
-        display: grid;
-        grid-template-columns: 1rem repeat(4, 1fr) 1rem;
+    /* Create inner grid matching parent */
+    display: grid;
+    grid-template-columns: 1rem repeat(4, 1fr) 1rem;
+  }
+
+  .hero__headline {
+    grid-column: 2 / -2; /* Span all but the padding columns */
+    grid-row: 1;
+    align-self: end;
+    margin-bottom: 2rem;
+    color: white;
+    text-align: left;
+    z-index: 1;
+  }
+
+  #hero__video video {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    width: 100%;
+    height: 642px;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  @media screen and (min-width: 768px) {
+    .hero {
+      grid-column: 1 / -1;
+      height: 642px;
+      overflow: hidden;
+      position: relative;
+      margin-bottom: 7.75rem;
+
+      /* Create inner grid matching parent */
+      grid-template-columns:
+        3rem
+        repeat(12, 1fr)
+        3rem;
     }
 
     .hero__headline {
-        grid-column: 2 / -2; /* Span all but the padding columns */
-        grid-row: 1;
-        align-self: end;
-        margin-bottom: 2rem;
-        color: white;
-        text-align: left;
-        z-index: 1;
+      grid-column: 2 / 9;
     }
-
-    #hero__video video {
-        grid-column: 1 / -1;
-        grid-row: 1;
-        width: 100%;
-        height: 642px;
-        object-fit: cover;
-        z-index: 0;
-    }
-
-    @media screen and (min-width: 768px) {
-        .hero {
-            grid-column: 1 / -1;
-            height: 642px;
-            overflow: hidden;
-            position: relative;
-            margin-bottom: 7.75rem;
-
-            /* Create inner grid matching parent */
-            grid-template-columns:
-                3rem
-                repeat(12, 1fr)
-                3rem;
-        }
-
-        .hero__headline {
-            grid-column: 2 / 9;
-        }
-    }
+  }
 </style>

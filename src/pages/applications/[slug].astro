@@ -4,24 +4,25 @@
 
 import "../../styles/global.css";
 import { sanityClient } from "../../lib/sanity";
-import { applicationSlugsQuery, applicationBySlugQuery } from "../../lib/queries";
+import {
+  applicationSlugsQuery,
+  applicationBySlugQuery,
+} from "../../lib/queries";
 import ApplicationDetailLayout from "../../layouts/ApplicationDetailLayout.astro";
 
 // Generate static paths for all applications at build time
 export async function getStaticPaths() {
-    try {
-        // Fetch all application slugs from Sanity
-        const applications = await sanityClient.fetch(applicationSlugsQuery);
-        console.log("✅ Generating paths for applications:", applications?.length || 0);
-
-        // Create a path for each application
-        return applications.map((app: any) => ({
-            params: { slug: app.slug },
-        }));
-    } catch (error) {
-        console.error("❌ Error generating application paths:", error);
-        return [];
-    }
+  try {
+    // Fetch all application slugs from Sanity
+    const applications = await sanityClient.fetch(applicationSlugsQuery);
+    // Create a path for each application
+    return applications.map((app: any) => ({
+      params: { slug: app.slug },
+    }));
+  } catch (error) {
+    console.error("Failed to fetch product slugs from Sanity:", error);
+    return [];
+  }
 }
 
 // Get the slug from the URL
@@ -30,22 +31,21 @@ const { slug } = Astro.params;
 // Fetch the specific application data
 let application;
 try {
-    application = await sanityClient.fetch(applicationBySlugQuery, { slug });
-    console.log("✅ Fetched application:", application?.title);
+  application = await sanityClient.fetch(applicationBySlugQuery, { slug });
 } catch (error) {
-    console.error("❌ Error fetching application:", error);
+  console.error(
+    `Failed to fetch application data for slug "${slug}" from Sanity:`,
+    error,
+  );
 }
 
 // If no application found, you might want to redirect to 404
 if (!application) {
-    return Astro.redirect("/404");
+  return Astro.redirect("/404");
 }
 
 // Set page title
 const title = `${application.title} | Applications | Powerjet`;
 ---
 
-<ApplicationDetailLayout 
-    title={title}
-    application={application}
-/>
+<ApplicationDetailLayout title={title} application={application} />

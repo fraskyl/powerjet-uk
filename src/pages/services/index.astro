@@ -15,9 +15,8 @@ import ContactBlock from "../../components/Sections/ContactBlock.astro";
 let servicesPage;
 try {
     servicesPage = await sanityClient.fetch(servicesPageQuery);
-    console.log("✅ Services page data:", servicesPage);
 } catch (error) {
-    console.error("❌ Sanity fetch error:", error);
+  console.error("Failed to fetch services page data from Sanity:", error);
 }
 
 // Extract data with fallbacks
@@ -25,20 +24,12 @@ const heroHeadline = servicesPage?.heroHeadline || 'Services';
 const contentBlocks = servicesPage?.contentBlocks || [];
 const showContactBanner = servicesPage?.showContactBanner ?? true;
 
-interface Props {
-	title: string;
-	heroVideoUrl?: string;
-	heroHeadline?: string;
-}
-
-const { title } = Astro.props;
 
 ---
 
-<BaseLayout title={title}> 
-    <Header />
-    <body>
-        <div class ="page-grid">
+<BaseLayout title={heroHeadline} description="View Powerjet's services"> 
+    <Header transition:persist />
+        <main id="main-content" class ="page-grid">
         <TextHero
             headline={heroHeadline}
         />
@@ -76,9 +67,8 @@ const { title } = Astro.props;
     <!-- Contact block -->
      {showContactBanner && <ContactBlock />}
 
- </div>
-    </body>
-    <Footer />
+</main>
+    <Footer transition:persist />
 </BaseLayout>
 
 

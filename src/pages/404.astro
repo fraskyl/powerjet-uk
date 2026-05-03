@@ -1,0 +1,33 @@
+---
+import "../styles/global.css";
+
+import Footer from "../components/Layout/Footer.astro";
+import Header from "../components/Layout/Header.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const title = "404: Page Not Found | Powerjet";
+---
+
+<BaseLayout title={title}>
+  <Header transition:persist />
+  <main id="main-content" class="page-grid">
+    <section class="section__contact-details">
+      <div class="contact__title">
+        <h1>Page not found</h1>
+      </div>
+      <div class="divider__border"></div>
+    </section>
+  </main>
+  <Footer transition:persist />
+</BaseLayout>
+
+<style>
+  .section__contact-details {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-column: 2 / -2;
+    gap: 1rem;
+    margin-top: 4rem;
+    overflow: hidden;
+  }
+</style>

@@ -1,14 +1,12 @@
 ---
-// Sidebar Navigation Layout for Product Listings
-// Mobile: Expandable dropdown menu | Desktop/Tablet: Fixed sidebar with nested categories
-
 import "../styles/global.css";
 import { sanityClient } from "../lib/sanity";
 import { 
-  topLevelProductTypesQuery,
+  topLevelProductCategoriesQuery,
   allProductsWithCategoriesQuery,
-  allProductTypesWithParentsQuery,
-} from "../lib/queries";
+  allProductCategoriesWithParentsQuery,
+} 
+from "../lib/queries";
 
 import BaseLayout from "./BaseLayout.astro";
 import Header from "../components/Layout/Header.astro";
@@ -27,14 +25,14 @@ const { pageType, headline } = Astro.props;
 
 let topLevelCategories = [];
 let allProducts = [];
-let allProductTypes = [];
+let allProductCategories = [];
 let fetchError = false;
 
 try {
-  allProductTypes = await sanityClient.fetch(allProductTypesWithParentsQuery, { 
+  allProductCategories = await sanityClient.fetch(allProductCategoriesWithParentsQuery, { 
     availability: pageType 
   });
-  topLevelCategories = await sanityClient.fetch(topLevelProductTypesQuery, {
+  topLevelCategories = await sanityClient.fetch(topLevelProductCategoriesQuery, {
     availability: pageType
   });
   const rawProducts = await sanityClient.fetch(allProductsWithCategoriesQuery, { 
@@ -52,12 +50,12 @@ try {
     }
     
     const categoryPath = [];
-    if (product.productType?.slug) {
-      categoryPath.push(product.productType.slug);
-      if (product.productType.parent?.slug) {
-        categoryPath.push(product.productType.parent.slug);
-        if (product.productType.parent.parent?.slug) {
-          categoryPath.push(product.productType.parent.parent.slug);
+    if (product.productCategory?.slug) {
+      categoryPath.push(product.productCategory.slug);
+      if (product.productCategory.parent?.slug) {
+        categoryPath.push(product.productCategory.parent.slug);
+        if (product.productCategory.parent.parent?.slug) {
+          categoryPath.push(product.productCategory.parent.parent.slug);
         }
       }
     }
@@ -66,7 +64,7 @@ try {
   });
   
 } catch (error) {
-  console.error(`❌ Error fetching ${pageType} products:`, error);
+  console.error("Failed to fetch product listings data from Sanity:", error);
   fetchError = true;
 }
 
@@ -74,9 +72,8 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
 ---
 
 <BaseLayout title={title}>
-  <Header />
-  <body>
-    <div class="page-grid">
+  <Header transition:persist/>
+    <main id="main-content" class="page-grid">
       <TextHero headline={headline} />
 
       {fetchError ? (
@@ -148,7 +145,7 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
 
             <div class="products-main">
               <div class="products-header">
-                <p class="products-count" id="visible-product-count">Showing {allProducts.length} products</p>
+                <p class="products-count" id="visible-product-count" aria-live="polite">Showing {allProducts.length} products</p>
               </div>
               
               <div class="products-grid">
@@ -171,9 +168,8 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
       )}
 
       <ContactBlock />
-    </div>
-  </body>
-  <Footer />
+        </main>
+  <Footer transition:persist/>
 </BaseLayout>
 
 <style is:global>
@@ -357,7 +353,7 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
     grid-column: 2 / -2;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 6rem;
     margin-bottom: 5rem; 
   }
 
@@ -379,12 +375,12 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
     margin: 0;
    }
 
-  .products-grid { 
-    grid-column: 2 / -2;
-    display: grid; 
-    grid-template-columns: 1fr; 
-    gap: 2rem; 
-    margin-bottom: 5rem;
+  .products-main .products-grid { 
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: 2rem; 
+  row-gap: 6rem;
+  margin-bottom: 5rem;
   }
 
   .product-card { 
@@ -424,16 +420,20 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
     .products-layout {
       flex-direction: row;
       gap: 3rem;
+      
     }
 
       .product-card {
       max-width: 350px; /* Prevents excessive stretching */
     }
     
-      .products-grid {
-       grid-template-columns: repeat(auto-fill, minmax(240px, 350px));
-      justify-content: start; /* Left-align when not filling row */
-    }
+    .products-main .products-grid { 
+     grid-template-columns: repeat(auto-fill, minmax(240px, 350px));
+    justify-content: start;
+    column-gap: 2rem; 
+    row-gap: 6rem; 
+  }
+
     
     .category-nav {
       display: flex;
@@ -566,46 +566,25 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
       width: 320px;
     }
     
-        .products-grid {
-      grid-column: 3 / -3;
+     .products-main .products-grid { 
       grid-template-columns: repeat(auto-fill, minmax(280px, 340px));
-    }
+    column-gap: 2rem; 
+    row-gap: 6rem;
+  }
+
 
     .product-card {
       max-width: 380px;
     }
   }
 </style>
-<script define:vars={{ allProducts, topLevelCategories, allProductTypes }}>
+<script is:inline define:vars={{ allProducts, topLevelCategories, allProductCategories }}>
   // Category navigation data
   const categoryData = {
     products: allProducts,
     topLevel: topLevelCategories,
-    allTypes: allProductTypes,
+    allTypes: allProductCategories,
   };
-
-  // Initial debug logging
-  console.log('\n🎯 SIDEBAR NAVIGATION INITIALIZED');
-  console.log('=====================================');
-  console.log('Data received:');
-  console.log('  - Products:', categoryData.products.length);
-  console.log('  - Top-level categories:', categoryData.topLevel.length);
-  console.log('  - All product types:', categoryData.allTypes.length);
-  
-  if (categoryData.topLevel.length > 0) {
-    console.log('\nTop-level categories:');
-    categoryData.topLevel.forEach(cat => {
-      console.log(`  - ${cat.title} (${cat.slug})`);
-    });
-  }
-  
-  if (categoryData.products.length > 0) {
-    console.log('\nSample product:');
-    const sample = categoryData.products[0];
-    console.log(`  Title: ${sample.title}`);
-    console.log(`  Category path:`, sample.categoryPath);
-  }
-  console.log('=====================================\n');
 
   function getChildCategories(parentSlug) {
     return categoryData.allTypes
@@ -621,8 +600,6 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
   }
 
   function filterProducts(categorySlug) {
-    console.log(`🔎 Filtering products for: "${categorySlug}"`);
-    
     const products = document.querySelectorAll('.product-card');
     let visibleCount = 0;
     
@@ -635,9 +612,7 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
         product.classList.add('hidden');
       }
     });
-    
-    console.log(`📊 Result: ${visibleCount} products visible`);
-    
+
     // Update product count
     const countElement = document.getElementById('visible-product-count');
     if (countElement) {
@@ -664,26 +639,50 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
     const container = document.getElementById(containerId);
     
     if (!container || children.length === 0) {
-      console.log(`  ℹ️ No children to build for "${parentSlug}"`);
       return;
     }
-    
-    console.log(`  ✓ Building ${children.length} nested items for "${parentSlug}"`);
-    
-    container.innerHTML = children.map(cat => {
+
+    container.innerHTML = '';
+    children.forEach(cat => {
       const productCount = countProductsInCategory(cat.slug);
       const hasChildren = getChildCategories(cat.slug).length > 0;
-      return `
-        <button class="nested-item ${hasChildren ? 'has-children' : ''}" data-category="${cat.slug}" data-level="2" data-parent="${parentSlug}">
-          <span class="category-content">
-            <span class="category-title">${cat.title}</span>
-            ${hasChildren ? '<span class="category-icon material-symbols-outlined">chevron_right</span>' : ''}
-          </span>
-          <span class="category-count">(${productCount})</span>
-        </button>
-        ${hasChildren ? `<div class="nested-categories" id="nested-${cat.slug}"></div>` : ''}
-      `;
-    }).join('');
+
+      const btn = document.createElement('button');
+      btn.className = `nested-item${hasChildren ? ' has-children' : ''}`;
+      btn.dataset.category = cat.slug;
+      btn.dataset.level = '2';
+      btn.dataset.parent = parentSlug;
+
+      const content = document.createElement('span');
+      content.className = 'category-content';
+
+      const title = document.createElement('span');
+      title.className = 'category-title';
+      title.textContent = cat.title;
+      content.appendChild(title);
+
+      if (hasChildren) {
+        const icon = document.createElement('span');
+        icon.className = 'category-icon material-symbols-outlined';
+        icon.textContent = 'chevron_right';
+        content.appendChild(icon);
+      }
+
+      const count = document.createElement('span');
+      count.className = 'category-count';
+      count.textContent = `(${productCount})`;
+
+      btn.appendChild(content);
+      btn.appendChild(count);
+      container.appendChild(btn);
+
+      if (hasChildren) {
+        const nested = document.createElement('div');
+        nested.className = 'nested-categories';
+        nested.id = `nested-${cat.slug}`;
+        container.appendChild(nested);
+      }
+    });
     
     // Attach click handlers to newly created nested items
     container.querySelectorAll('.nested-item').forEach(item => {
@@ -693,8 +692,6 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
         
         const categorySlug = item.getAttribute('data-category');
         const hasChildren = item.classList.contains('has-children');
-        
-        console.log(`👆 Nested item clicked: "${categorySlug}" (hasChildren: ${hasChildren})`);
         
         // Update active states
         document.querySelectorAll('.category-item, .nested-item').forEach(el => 
@@ -707,8 +704,6 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
         
         // Handle expansion if has children
         if (hasChildren) {
-          const wasExpanded = item.classList.contains('expanded');
-          
           // Close other nested menus at same level
           const parent = item.closest('.nested-categories');
           if (parent) {
@@ -731,7 +726,6 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
             
             // Build deeper nested menu if needed
             if (nested.classList.contains('active') && nested.children.length === 0) {
-              console.log(`  → Building deeper nested categories for "${categorySlug}"`);
               buildNestedCategories(categorySlug, `nested-${categorySlug}`);
             }
           }
@@ -745,24 +739,47 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
     const container = document.getElementById(containerId);
     
     if (!container || children.length === 0) {
-      console.log(`  ℹ️ No mobile children to build for "${parentSlug}"`);
       return;
     }
-    
-    console.log(`  ✓ Building ${children.length} mobile nested items for "${parentSlug}"`);
-    
-    container.innerHTML = children.map(cat => {
+
+    container.innerHTML = '';
+    children.forEach(cat => {
       const productCount = countProductsInCategory(cat.slug);
       const hasChildren = getChildCategories(cat.slug).length > 0;
-      return `
-        <button class="mobile-nested-item ${hasChildren ? 'has-children' : ''}" data-category="${cat.slug}" data-title="${cat.title}" data-parent="${parentSlug}">
-          <span class="category-text">${cat.title}</span>
-          <span class="mobile-count">(${productCount})</span>
-          ${hasChildren ? '<span class="expand-icon material-symbols-outlined">chevron_right</span>' : ''}
-        </button>
-        ${hasChildren ? `<div class="mobile-nested-container" id="mobile-nested-${cat.slug}"></div>` : ''}
-      `;
-    }).join('');
+
+      const btn = document.createElement('button');
+      btn.className = `mobile-nested-item${hasChildren ? ' has-children' : ''}`;
+      btn.dataset.category = cat.slug;
+      btn.dataset.title = cat.title;
+      btn.dataset.parent = parentSlug;
+
+      const text = document.createElement('span');
+      text.className = 'category-text';
+      text.textContent = cat.title;
+
+      const mobileCount = document.createElement('span');
+      mobileCount.className = 'mobile-count';
+      mobileCount.textContent = `(${productCount})`;
+
+      btn.appendChild(text);
+      btn.appendChild(mobileCount);
+
+      if (hasChildren) {
+        const icon = document.createElement('span');
+        icon.className = 'expand-icon material-symbols-outlined';
+        icon.textContent = 'chevron_right';
+        btn.appendChild(icon);
+      }
+
+      container.appendChild(btn);
+
+      if (hasChildren) {
+        const nested = document.createElement('div');
+        nested.className = 'mobile-nested-container';
+        nested.id = `mobile-nested-${cat.slug}`;
+        container.appendChild(nested);
+      }
+    });
     
     // Attach click handlers to newly created mobile nested items
     container.querySelectorAll('.mobile-nested-item').forEach(item => {
@@ -772,8 +789,6 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
         const categorySlug = item.getAttribute('data-category');
         const categoryTitle = item.getAttribute('data-title');
         const hasChildren = item.classList.contains('has-children');
-        
-        console.log(`👆 Mobile nested item clicked: "${categorySlug}" (hasChildren: ${hasChildren})`);
         
         if (hasChildren) {
           // Has children - toggle expansion
@@ -802,22 +817,16 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
     const categoryItems = document.querySelectorAll('.sidebar-nav .category-item');
     
     if (categoryItems.length === 0) {
-      console.warn('⚠️ No desktop category items found');
       return;
     }
-    
-    console.log(`✅ Initializing ${categoryItems.length} desktop category items`);
-    
+
     categoryItems.forEach(item => {
       item.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
         
         const categorySlug = item.getAttribute('data-category');
-        const level = item.getAttribute('data-level');
-        
-        console.log(`👆 Desktop category clicked: "${categorySlug}" (level: ${level})`);
-        
+
         // Update active states - remove from all items
         categoryItems.forEach(el => el.classList.remove('active'));
         item.classList.add('active');
@@ -828,8 +837,6 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
         );
         
         if (categorySlug === 'all') {
-          console.log('  → Showing all products');
-          
           // Hide all nested menus and remove expanded states
           document.querySelectorAll('.nested-categories').forEach(el => 
             el.classList.remove('active')
@@ -844,13 +851,9 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
           // Check for children
           const children = getChildCategories(categorySlug);
           const nested = document.getElementById(`nested-${categorySlug}`);
-          
-          console.log(`  → Found ${children.length} children for "${categorySlug}"`);
-          
+
           if (children.length > 0 && nested) {
             // Has children - toggle expansion
-            const wasExpanded = item.classList.contains('expanded');
-            
             // Close all other nested menus
             document.querySelectorAll('.nested-categories').forEach(el => {
               if (el.id !== `nested-${categorySlug}`) {
@@ -866,17 +869,12 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
             // Toggle this menu
             item.classList.toggle('expanded');
             nested.classList.toggle('active');
-            
-            console.log(`  → ${wasExpanded ? 'Closing' : 'Opening'} nested menu`);
-            
+
             // Build nested menu if not already built
             if (nested.classList.contains('active') && nested.children.length === 0) {
-              console.log('  → Building nested categories');
               buildNestedCategories(categorySlug, `nested-${categorySlug}`);
             }
           } else {
-            console.log('  → No children, closing other menus');
-            
             // No children - close all nested menus
             document.querySelectorAll('.nested-categories').forEach(el => 
               el.classList.remove('active')
@@ -898,16 +896,12 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
     const menu = document.getElementById('mobile-filter-menu');
     
     if (!toggle || !menu) {
-      console.warn('⚠️ Mobile dropdown elements not found');
       return;
     }
-    
-    console.log('✅ Initializing mobile dropdown');
-    
+
     // Toggle menu
     toggle.addEventListener('click', (e) => {
       e.stopPropagation();
-      console.log('👆 Mobile toggle clicked');
       toggle.classList.toggle('active');
       menu.classList.toggle('active');
     });
@@ -928,8 +922,6 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
         const categorySlug = item.getAttribute('data-category');
         const categoryTitle = item.getAttribute('data-title');
         const isParent = item.classList.contains('mobile-parent');
-        
-        console.log(`👆 Mobile category clicked: "${categorySlug}" (isParent: ${isParent})`);
         
         if (isParent) {
           // Parent category - check if it has children
@@ -958,8 +950,6 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
   }
   
   function selectMobileCategory(item, categorySlug, categoryTitle, menu, toggle) {
-    console.log(`✅ Selecting mobile category: "${categoryTitle}"`);
-    
     // Update active states
     document.querySelectorAll('.mobile-category-item, .mobile-nested-item').forEach(el => 
       el.classList.remove('active')
@@ -980,38 +970,28 @@ const title = pageType === "rental" ? "Rentals | Powerjet" : "Sales | Powerjet";
     filterProducts(categorySlug);
   }
 
+  // Declared outside init() so it persists across calls and the resize
+  // listener can read the latest value rather than a stale closure snapshot.
+  let isMobile = window.innerWidth < 768;
+  let resizeTimer;
+
   function init() {
-    console.log('\n🚀 Initializing sidebar navigation...');
-    console.log('  Products:', categoryData.products.length);
-    console.log('  Top-level categories:', categoryData.topLevel.length);
-    console.log('  All types:', categoryData.allTypes.length);
-    
-    // Check if we're on mobile or desktop
-    const isMobile = window.innerWidth < 768;
-    console.log(`  Device: ${isMobile ? 'Mobile' : 'Desktop/Tablet'}`);
-    
-    // Initialize appropriate navigation
-      initMobileDropdown();
-      initDesktopSidebar();
-    
-    // Re-initialize on window resize (debounced)
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => {
-        const wasMobile = isMobile;
-        const nowMobile = window.innerWidth < 768;
-        
-        if (wasMobile !== nowMobile) {
-          console.log('📱 Device changed, re-initializing...');
-          init();
-        }
-      }, 250);
-    });
-    
-    console.log('✅ Sidebar navigation initialized\n');
+    isMobile = window.innerWidth < 768;
+    initMobileDropdown();
+    initDesktopSidebar();
   }
 
-  document.addEventListener('DOMContentLoaded', init);
+  // Attached once, outside init(), so it is never duplicated on re-init.
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      const nowMobile = window.innerWidth < 768;
+      if (isMobile !== nowMobile) {
+        isMobile = nowMobile;
+        init();
+      }
+    }, 250);
+  });
+
   document.addEventListener('astro:page-load', init);
 </script>

@@ -211,17 +211,12 @@ export interface Product {
   datasheetFileName?: string;
   availability: string[];
   lede: string;
-  productType: {
+  productCategory: {
     title: string;
     slug: string;
   };
   featured: boolean;
   order: number;
-  // Detailed specs
-  performanceSpecs?: PerformanceSpec[];
-  physicalSpecs?: PhysicalSpecs;
-  engineSpecs?: EngineSpecs;
-  buildOptions?: BuildOption[];
   relatedProducts?: Product[];
 }
 

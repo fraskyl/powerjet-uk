@@ -1,0 +1,148 @@
+---
+interface Category {
+  title: string;
+  slug: string;
+  _id: string;
+  parentId?: string;
+  parentSlug?: string;
+  children?: Category[];
+}
+
+interface Props {
+  categories: Category[];
+  currentSlug: string;
+  pageType: "rental" | "sale";
+  depth?: number;
+}
+
+const { categories, currentSlug, pageType, depth = 0 } = Astro.props;
+
+const basePath = pageType === "rental" ? "/rentals" : "/sales";
+
+function isActiveBranch(category: Category, currentSlug: string): boolean {
+  if (category.slug === currentSlug) return true;
+  return (
+    category.children?.some((child) => isActiveBranch(child, currentSlug)) ??
+    false
+  );
+}
+---
+
+<ul class:list={["sidebar-list", { "sidebar-list--nested": depth > 0 }]}>
+  {
+    categories.map((category) => {
+      const hasChildren = category.children && category.children.length > 0;
+      const isActive = category.slug === currentSlug;
+      const isBranchActive = isActiveBranch(category, currentSlug);
+
+      return (
+        <li class:list={["sidebar-item", { "has-children": hasChildren }]}>
+          <a
+            href={`${basePath}/${category.slug}`}
+            class:list={[
+              "sidebar-link",
+              { active: isActive },
+              { "branch-active": isBranchActive && !isActive },
+            ]}
+          >
+            <span class="sidebar-checkbox" aria-hidden="true" />
+            <span class="sidebar-label">{category.title}</span>
+            {hasChildren && (
+              <span
+                class:list={["sidebar-chevron", { rotated: isBranchActive }]}
+              >
+                <span class="material-symbols-outlined">chevron_right</span>
+              </span>
+            )}
+          </a>
+          {hasChildren && isBranchActive && (
+            <Astro.self
+              categories={category.children}
+              currentSlug={currentSlug}
+              pageType={pageType}
+              depth={depth + 1}
+            />
+          )}
+        </li>
+      );
+    })
+  }
+</ul>
+
+<style>
+  .sidebar-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column; /* vertical by default on all sizes */
+    flex-wrap: nowrap;
+    gap: 0.25rem;
+  }
+
+  /* Nested lists always vertical */
+  .sidebar-list--nested {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    padding-left: 1rem;
+    margin-top: 0.5rem;
+    gap: 0.25rem;
+  }
+
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.625rem;
+    padding: 0.25rem 0rem;
+    font-size: 0.875rem;
+    color: var(--pj_brand_blue);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    width: 100%;
+  }
+
+  .sidebar-label {
+    flex: 1;
+  }
+
+  .sidebar-checkbox {
+    display: inline-flex;
+    flex-shrink: 0;
+    width: 0.75rem;
+    height: 0.75rem;
+    border: 1px solid var(--pj_blue_30);
+    border-radius: 1px;
+    transition: background-color 0.2 ease;
+  }
+
+  .sidebar-link:hover,
+  .sidebar-link.active {
+    background-color: transparent;
+    color: var(--pj_brand_blue);
+    font-weight: 500;
+  }
+
+  .sidebar-link.branch-active {
+    border-color: var(--pj_brand_blue);
+    font-weight: 500;
+  }
+
+  .sidebar-link.active .sidebar-checkbox,
+  .sidebar-link.branch-active .sidebar-checkbox {
+    background-color: var(--pj_blue_30);
+  }
+
+  .sidebar-chevron {
+    display: inline-flex;
+    transition: transform 0.2s ease;
+  }
+
+  .sidebar-chevron.rotated {
+    transform: rotate(90deg);
+  }
+
+  .sidebar-chevron .material-symbols-outlined {
+    font-size: 1rem;
+  }
+</style>

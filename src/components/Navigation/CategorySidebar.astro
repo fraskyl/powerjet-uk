@@ -1,0 +1,196 @@
+---
+import CategorySidebarList from "./CategorySidebarList.astro";
+
+interface Category {
+  title: string;
+  slug: string;
+  _id: string;
+  parentId?: string;
+  parentSlug?: string;
+  children?: Category[];
+}
+
+interface Props {
+  categories: Category[];
+  currentSlug: string;
+  pageType: "rental" | "sale";
+  depth?: number;
+}
+
+const { categories, currentSlug, pageType, depth = 0 } = Astro.props;
+
+// Build tree from flat list — only run at top level (depth === 0)
+function buildTree(flatCategories: Category[]): Category[] {
+  const map = new Map<string, Category>();
+  const roots: Category[] = [];
+
+  // First pass: map all categories by ID
+  flatCategories.forEach((cat) => {
+    map.set(cat._id, { ...cat, children: [] });
+  });
+
+  // Second pass: assign children to parents
+  flatCategories.forEach((cat) => {
+    const node = map.get(cat._id)!;
+    if (cat.parentId) {
+      const parent = map.get(cat.parentId);
+      if (parent) {
+        parent.children = parent.children || [];
+        parent.children.push(node);
+      }
+    } else {
+      roots.push(node);
+    }
+  });
+
+  return roots;
+}
+
+// Only build the tree at the top level call
+const tree = depth === 0 ? buildTree(categories) : categories;
+
+// Check if current slug is within a branch (for expanding active parent)
+function isActiveBranch(category: Category, currentSlug: string): boolean {
+  if (category.slug === currentSlug) return true;
+  return (
+    category.children?.some((child) => isActiveBranch(child, currentSlug)) ??
+    false
+  );
+}
+
+const basePath = pageType === "rental" ? "/rentals" : "/sales";
+---
+
+<div class="sidebar-wrapper">
+  <button
+    class="sidebar-mobile-toggle"
+    id="sidebar-toggle"
+    aria-expanded="false"
+  >
+    <span class="toggle-label">
+      <span class="material-symbols-outlined">filter_list</span>
+      <span>Filter products</span>
+    </span>
+    <span class="material-symbols-outlined toggle-chevron">expand_more</span>
+  </button>
+
+  <div class="sidebar-dropdown" id="sidebar-dropdown">
+    <CategorySidebarList
+      categories={tree}
+      currentSlug={currentSlug}
+      pageType={pageType}
+      depth={0}
+    />
+  </div>
+</div>
+
+<style>
+  /* Mobile toggle button */
+  .sidebar-mobile-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: white;
+    border: 1px solid var(--pj_blue_30);
+    border-radius: 0.25rem;
+    font-family: "Instrument Sans", sans-serif;
+    font-size: 0.9375rem;
+    color: var(--pj_brand_blue);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .sidebar-mobile-toggle:hover {
+    border-color: var(--pj_brand_blue);
+    background-color: var(--pj_blue_05);
+  }
+
+  .toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+  }
+
+  .toggle-chevron {
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar-mobile-toggle[aria-expanded="true"] .toggle-chevron {
+    transform: rotate(180deg);
+  }
+
+  /* Mobile dropdown panel */
+  .sidebar-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 0.25rem);
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid var(--pj_blue_30);
+    border-radius: 0.25rem;
+    box-shadow: 0 4px 12px rgba(0, 51, 102, 0.1);
+    max-height: 60vh;
+    overflow-y: auto;
+    z-index: 100;
+    padding: 0.5rem;
+  }
+
+  .sidebar-dropdown.open {
+    display: block;
+  }
+
+  .sidebar-wrapper {
+    position: relative; /* Anchor for absolute dropdown */
+  }
+
+  /* Desktop: vertical layout */
+  @media screen and (min-width: 768px) {
+    .sidebar-mobile-toggle {
+      display: none;
+    }
+
+    .sidebar-dropdown {
+      display: block; /* Always visible on desktop */
+      position: static; /* Back in normal flow */
+      border: none;
+      box-shadow: none;
+      padding: 0;
+      max-height: none;
+      overflow: visible;
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById("sidebar-toggle");
+  const dropdown = document.getElementById("sidebar-dropdown");
+
+  toggle?.addEventListener("click", () => {
+    const isOpen = dropdown?.classList.contains("open");
+    dropdown?.classList.toggle("open");
+    toggle.setAttribute("aria-expanded", String(!isOpen));
+  });
+
+  // Close when clicking outside
+  document.addEventListener("click", (e) => {
+    if (
+      !toggle?.contains(e.target as Node) &&
+      !dropdown?.contains(e.target as Node)
+    ) {
+      dropdown?.classList.remove("open");
+      toggle?.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  // Close on nav (page will reload anyway, but keeps it tidy)
+  dropdown?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      dropdown.classList.remove("open");
+      toggle?.setAttribute("aria-expanded", "false");
+    });
+  });
+</script>

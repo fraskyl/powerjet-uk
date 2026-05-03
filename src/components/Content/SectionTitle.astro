@@ -1,7 +1,7 @@
 ---
 interface Props {
-    headline: string;
-    headingSize?: "small" | "regular" | "large";
+  headline: string;
+  headingSize?: "small" | "regular" | "large";
 }
 
 const { headline } = Astro.props;
@@ -9,44 +9,43 @@ const { headingSize = "regular" } = Astro.props;
 ---
 
 <div class="section__title" data-variant={headingSize}>
-    <h2>{headline}</h2>
+  <h2>{headline}</h2>
 </div>
 
 <style>
-    .section__title h2 {
-        font-family: "Instrument Sans";
-        font-style: normal;
-        font-weight: 500;
-        line-height: 40px; /* 125% */
-        letter-spacing: -1.5%;
-        color: var(--pj_brand_blue);
-        margin-bottom: 1rem;
-    }
+  .section__title h2 {
+    font-family: "Instrument Sans";
+    font-style: normal;
+    font-weight: 500;
+    line-height: 40px; /* 125% */
+    letter-spacing: -0.015em;
+    color: var(--pj_brand_blue);
+    margin-bottom: 1rem;
+  }
 
+  .section__title[data-variant="small"] h2 {
+    font-size: 1.125rem;
+  }
+
+  .section__title[data-variant="regular"] h2 {
+    font-size: 1.5rem;
+  }
+
+  .section__title[data-variant="large"] h2 {
+    font-size: 1.75rem;
+  }
+
+  @media screen and (min-width: 768px) {
     .section__title[data-variant="small"] h2 {
-        font-size: 1.125rem;
+      font-size: 1.125rem;
     }
 
     .section__title[data-variant="regular"] h2 {
-        font-size: 1.5rem;
+      font-size: 2rem;
     }
 
-     .section__title[data-variant="large"] h2 {
-        font-size: 1.75rem;
+    .section__title[data-variant="large"] h2 {
+      font-size: 2.5rem;
     }
-
-      @media screen and (min-width: 768px) {
-             .section__title[data-variant="small"] h2 {
-        font-size: 1.125rem;
-    }
-
-    .section__title[data-variant="regular"] h2 {
-        font-size: 2rem;
-    }
-
-     .section__title[data-variant="large"] h2 {
-        font-size: 2.5rem;
-    }
-        }
-    
+  }
 </style>
