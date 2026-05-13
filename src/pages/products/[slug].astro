@@ -3,23 +3,8 @@
 
 import "../../styles/global.css";
 import { sanityClient } from "../../lib/sanity";
-import { productSlugsQuery, productBySlugQuery } from "../../lib/queries";
+import { productBySlugQuery } from "../../lib/queries";
 import ProductDetailLayout from "../../layouts/ProductDetailLayout.astro";
-
-// Generate static paths for all products at build time
-
-export async function getStaticPaths() {
-  try {
-    const products = await sanityClient.fetch(productSlugsQuery);
-
-    return products.map((product: any) => ({
-      params: { slug: product.slug },
-    }));
-  } catch (error) {
-    console.error("Failed to fetch product slugs from Sanity:", error);
-    return [];
-  }
-}
 
 // Get the slug from the URL
 const { slug } = Astro.params;
