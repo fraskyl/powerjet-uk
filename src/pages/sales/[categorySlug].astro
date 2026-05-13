@@ -14,21 +14,6 @@ import Card from "../../components/UI/Card.astro";
 import ContactBlock from "../../components/Sections/ContactBlock.astro";
 import CategorySidebar from "../../components/Navigation/CategorySidebar.astro";
 
-export async function getStaticPaths() {
-  try {
-    // Use categorySidebarQuery instead — returns ALL categories at all levels
-    const allCategories = await sanityClient.fetch(categorySidebarQuery, {
-      availability: "sale"
-    });
-    return allCategories.map((category: any) => ({
-      params: { categorySlug: category.slug }
-    }));
-  } catch (error) {
-      console.error("Failed to fetch sales product slugs from Sanity:", error);
-    return [];
-  }
-}
-
 const { categorySlug } = Astro.params;
 
 // Fetch the current category, all products in it, and all top-level 
