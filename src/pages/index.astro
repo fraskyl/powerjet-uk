@@ -61,6 +61,7 @@ const partnerLogos = homepage?.partnerLogos || [];
                     <Card
                         imageURL={card.imageUrl}
                         imageAlt={card.imageAlt}
+						imageFit="cover"
                         href={card.link}
                         buttonLabel={`View ${card.title.toLowerCase()}`}
                     />
@@ -70,6 +71,7 @@ const partnerLogos = homepage?.partnerLogos || [];
                 <Card
                     imageURL="/src/assets/New_Image_Magtrack-lrg.jpeg"
                     imageAlt="Rentals product image"
+					imageFit="cover"
                     href="/rentals"
                     buttonLabel="Browse rentals"
                 />
