@@ -28,12 +28,12 @@ const isSingleImage = galleryImages.length === 1;
 
 <div class="image-gallery" data-gallery={!isSingleImage}>
   {isSingleImage ? (
-    <!-- Single image view -->
+    // Single image view 
     <div class="image-gallery__single">
       <img src={galleryImages[0].url} alt={galleryImages[0].alt} />
     </div>
   ) : (
-    <!-- Gallery view -->
+    // Gallery view
     <div class="image-gallery__gallery">
       <!-- Main Image Display -->
       <div class="gallery-main">

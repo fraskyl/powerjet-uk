@@ -67,7 +67,7 @@ const partnerLogos = homepage?.partnerLogos || [];
                     />
                 ))
             ) : (
-                <!-- Fallback: Show default cards if CMS not set up yet -->
+                // Fallback: Show default cards if CMS not set up yet
                 <Card
                     imageURL="/src/assets/New_Image_Magtrack-lrg.jpeg"
                     imageAlt="Rentals product image"
@@ -95,10 +95,10 @@ const partnerLogos = homepage?.partnerLogos || [];
             imageAlt={ctaBanner.imageAlt}
         />
     ) : (
-        <!-- Fallback: Default CTA if not set in CMS -->
+        
         <CTABanner />
     )}
-
+	<!-- Fallback above : Default CTA if not set in CMS -->
 	<Divider />
 	<section class="section__about-us ">
 		<SectionTitle headline={homepage?.aboutHeadline || "About us"} headingSize="small" />
@@ -123,7 +123,7 @@ const partnerLogos = homepage?.partnerLogos || [];
           </div>
         ))
       ) : (
-        <!-- Fallback to existing hardcoded logos -->
+      // Fallback to existing hardcoded logos 
         <div class="grid__partner-logo">
           <img src="/src/assets/logos/partners/jetstream-logo-color.png" alt="Jetstream logo"/>
           <img src="/src/assets/logos/partners/DERC Salotech_liggend_2kleur" alt="Derc Salotech logo"/>
