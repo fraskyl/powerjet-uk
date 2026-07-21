@@ -150,17 +150,22 @@ const productImageAlt = product?.imageAlt || "Product image";
 
 const contentBlocks = product?.contentBlocks || [];
 const relatedProducts = product?.relatedProducts || [];
+
+const availabilityBasePath = product.availability?.includes('sale') ? '/sales' : '/rentals';
+const backHref = product.productCategory?.slug
+    ? `${availabilityBasePath}/${product.productCategory.slug}`
+    : availabilityBasePath;
 ---
 
 <BaseLayout>
     <Header transition:persist/>
         <main id="main-content" class="page-grid">
             <div class="link__prev-page-wrapper">
-                <a href={product.availability?.includes('sale') ? '/sales' : '/rentals'}>
+                <a href={backHref}>
                     <div class="link__prev-page">
                         <span class="material-symbols-outlined">arrow_back</span
                         >
-                        <p>Back to all products</p>
+                        <p>Back to category</p>
                     </div>
                 </a>
             </div>
