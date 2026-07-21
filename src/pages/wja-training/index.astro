@@ -1,0 +1,68 @@
+---
+import "../../styles/global.css";
+import { sanityClient } from "../../lib/sanity";
+import { servicesPageQuery } from "../../lib/queries";
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Footer from "../../components/Layout/Footer.astro";
+import Header from "../../components/Layout/Header.astro";
+import TextHero from "../../components/Sections/TextHero.astro";
+import ContentBlock from "../../components/Sections/ContentBlock.astro";
+import ContactBlock from "../../components/Sections/ContactBlock.astro";
+
+// Fetch services page content
+let servicesPage;
+try {
+  servicesPage = await sanityClient.fetch(servicesPageQuery);
+} catch (error) {
+  console.error("Failed to fetch services page data from Sanity:", error);
+}
+
+// Extract data with fallbacks
+const heroHeadline = servicesPage?.heroHeadline || "Services";
+const contentBlocks = servicesPage?.contentBlocks || [];
+const showContactBanner = servicesPage?.showContactBanner ?? true;
+---
+
+<BaseLayout title={heroHeadline} description="View Powerjet's services">
+  <Header transition:persist />
+  <main id="main-content" class="page-grid">
+    <TextHero headline={heroHeadline} />
+
+    <div class="section__content">
+      {
+        contentBlocks.length > 0 ? (
+          contentBlocks.map((block: any) => (
+            <ContentBlock
+              title={block.title}
+              lede={block.lede}
+              description={block.description}
+              imageURL={block.imageUrl}
+              imageAlt={block.imageAlt}
+              imagePosition={block.imagePosition}
+              showCTA={block.showCTA}
+              ctaLabel={block.ctaLabel}
+              ctaLink={block.ctaLink}
+            />
+          ))
+        ) : (
+          // Fallback content if CMS not set up
+          <ContentBlock
+            title="Repairs and Servicing"
+            description=" Our team of highly trained technicians can undertake work either on-site or at our fully equipped facility, ensuring equipment is maintained to the highest standards with minimal disruption to your operations."
+            imageURL="/src/assets/PJ-Screen-cap-tst-wash.png"
+            imageAlt="Service technician"
+            imagePosition="right"
+            showCTA={true}
+            ctaLabel="Find out more"
+            ctaLink="/contact"
+          />
+        )
+      }
+    </div>
+
+    <!-- Contact block -->
+    {showContactBanner && <ContactBlock />}
+  </main>
+  <Footer transition:persist />
+</BaseLayout>
