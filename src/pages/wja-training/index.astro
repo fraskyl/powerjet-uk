@@ -19,12 +19,15 @@ try {
 }
 
 // Extract data with fallbacks
-const heroHeadline = servicesPage?.heroHeadline || "Services";
+const heroHeadline = servicesPage?.heroHeadline || "WJA Training";
 const contentBlocks = servicesPage?.contentBlocks || [];
 const showContactBanner = servicesPage?.showContactBanner ?? true;
 ---
 
-<BaseLayout title={heroHeadline} description="View Powerjet's services">
+<BaseLayout
+  title={heroHeadline}
+  description="View Powerjet's WJA training services"
+>
   <Header transition:persist />
   <main id="main-content" class="page-grid">
     <TextHero headline={heroHeadline} />
@@ -48,8 +51,13 @@ const showContactBanner = servicesPage?.showContactBanner ?? true;
         ) : (
           // Fallback content if CMS not set up
           <ContentBlock
-            title="Repairs and Servicing"
-            description=" Our team of highly trained technicians can undertake work either on-site or at our fully equipped facility, ensuring equipment is maintained to the highest standards with minimal disruption to your operations."
+            title="WJA Training"
+            description="Powerjet are a fully-accredited WJA training provider. Courses can be provided at our facility or at a location of your preference.
+Available course(s): 
+Safety Awareness (SA), 
+Drain, Sewer and Gun (DSG), 
+Surface Preparation (SP), 
+Tube and Pipes (TP)"
             imageURL="/src/assets/PJ-Screen-cap-tst-wash.png"
             imageAlt="Service technician"
             imagePosition="right"
