@@ -33,12 +33,11 @@ export const homepageQuery = `
   }
 `
 
-export const servicesPageQuery = `
-  *[_type == "servicesPage" && _id == "servicesPage"][0] {
+const generalPageProjection = `{
   title,
   heroHeadline,
   heroSubheadline,
-  
+
   contentBlocks[] {
   title,
   description,
@@ -49,9 +48,16 @@ export const servicesPageQuery = `
   ctaLabel,
   ctaLink}
   ,
-  
+
   showContactBanner
-  }
+  }`
+
+export const servicesPageQuery = `
+  *[_type == "generalPage" && _id == "generalPage-services"][0] ${generalPageProjection}
+`
+
+export const wjaTrainingPageQuery = `
+  *[_type == "generalPage" && _id == "generalPage-wjaTraining"][0] ${generalPageProjection}
 `
 
 /**
