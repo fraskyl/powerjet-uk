@@ -172,7 +172,11 @@ export const productBySlugQuery = `*[_type == "product" && slug.current == $slug
   availability,
   "productCategory": productCategory->{
     title,
-    "slug": slug.current
+    "slug": slug.current,
+    "parentCategory": parentCategory->{
+      title,
+      "slug": slug.current
+    }
   },
   // Datasheet fields
   hasDatasheet,
