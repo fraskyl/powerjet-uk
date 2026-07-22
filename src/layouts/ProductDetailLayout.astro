@@ -357,9 +357,7 @@ const backHref = topLevelCategorySlug
 
 
 <style>
-/* ═══════════════════════════════════════════════════════════ */
-/* Specs List Blocks - Matches your existing component styling */
-/* ═══════════════════════════════════════════════════════════ */
+/* Specs List Blocks  */
 
 /* Single specs block (full width) */
 .section__product-single-specs {
@@ -589,6 +587,25 @@ const backHref = topLevelCategorySlug
             margin-bottom: 3rem;
             margin-top: 3rem;
             grid-column: 2 / -2;
+        }
+
+        /* Align label/value pairs into shared columns instead of each row
+           sizing its gap off its own label's length */
+        .section__product-single-specs-content,
+        .section__product-detail-physical-specs-content,
+        .section__product-detail-engine-specs-content {
+            display: grid;
+            grid-template-columns: max-content 1fr;
+            column-gap: 3rem;
+            row-gap: 1rem;
+        }
+
+        .spec-item {
+            display: contents;
+        }
+
+        .spec-value {
+            text-align: left;
         }
 
         .divider__border {
