@@ -69,6 +69,10 @@ interface Props {
         productCategory?: {
             title: string;
             slug: string;
+            parentCategory?: {
+                title: string;
+                slug: string;
+            };
         };
 
        
@@ -152,8 +156,10 @@ const contentBlocks = product?.contentBlocks || [];
 const relatedProducts = product?.relatedProducts || [];
 
 const availabilityBasePath = product.availability?.includes('sale') ? '/sales' : '/rentals';
-const backHref = product.productCategory?.slug
-    ? `${availabilityBasePath}/${product.productCategory.slug}`
+// Always link back to the top-level category, not the immediate (sub)category
+const topLevelCategorySlug = product.productCategory?.parentCategory?.slug || product.productCategory?.slug;
+const backHref = topLevelCategorySlug
+    ? `${availabilityBasePath}/${topLevelCategorySlug}`
     : availabilityBasePath;
 ---
 
@@ -165,7 +171,7 @@ const backHref = product.productCategory?.slug
                     <div class="link__prev-page">
                         <span class="material-symbols-outlined">arrow_back</span
                         >
-                        <p>Back to category</p>
+                        <p>Back to product search</p>
                     </div>
                 </a>
             </div>
