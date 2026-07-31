@@ -151,7 +151,6 @@ body {
   .page-grid {
     grid-template-columns:
       3rem repeat(12, 1fr) 3rem;
-    grid-auto-rows: var(--grid-header-height) var(--grid-content-ratio);
     column-gap: 1.5rem;
     /* Gutter between columns */
     min-height: 100vh;

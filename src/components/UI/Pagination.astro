@@ -18,7 +18,7 @@ const numbers = Array.from({ length: page.lastPage }, (_, i) => i + 1);
     <ul class="pagination__pages">
       {numbers.map((n) => (
         <li>
-          
+          <a
             href={`${base}/${n}`}
             class:list={["pagination__page", { "is-current": n === page.currentPage }]}
             aria-current={n === page.currentPage ? "page" : undefined}

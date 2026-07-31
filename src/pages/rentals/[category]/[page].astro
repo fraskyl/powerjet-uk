@@ -3,17 +3,20 @@ import type { GetStaticPaths } from "astro";
 import { buildProductPaths } from "../../../lib/productPagination";
 import ProductListingsLayout from "../../../layouts/ProductListingsLayout.astro";
 
+export const prerender = true;
+
 export const getStaticPaths = (async ({ paginate }) =>
   buildProductPaths(paginate, "rental")) satisfies GetStaticPaths;
 
-const { page, categories, activeCategory } = Astro.props;
+const { page, categoryTree, totalCount, activeCategory, activeTrail } = Astro.props;
 ---
 
 <ProductListingsLayout
   pageType="rental"
   headline="Rentals"
-  products={page.data}
   page={page}
-  categories={categories}
+  categoryTree={categoryTree}
+  totalCount={totalCount}
   activeCategory={activeCategory}
+  activeTrail={activeTrail}
 />

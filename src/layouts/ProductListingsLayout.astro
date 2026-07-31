@@ -59,7 +59,7 @@ const countLine =
 
 <BaseLayout title={title}>
   <Header transition:persist />
-  <main id="main-content" class="page-grid">
+  <main id="main-content" class="page-grid product-listings-grid">
     <TextHero headline={headline} />
 
     <div class="product-tab__header">
@@ -76,11 +76,13 @@ const countLine =
         <span class="material-symbols-outlined dropdown-icon">expand_more</span>
       </summary>
       <nav class="mobile-filter__menu" aria-label="Product categories">
-        href={`${base}/all/1`}
-        class:list={["category-item", { active: activeCategory === "all" }]}
+        <a
+          href={`${base}/all/1`}
+          class:list={["category-item", { active: activeCategory === "all" }]}
         >
-        <span class="category-title">All Products</span>
-        <span class="category-count">({totalCount})</span>
+          <span class="category-title">All Products</span>
+          <span class="category-count">({totalCount})</span>
+        </a>
       </nav>
       <CategoryNav
         nodes={categoryTree}
@@ -89,16 +91,17 @@ const countLine =
         activeTrail={activeTrail}
       />
     </details>
-  </main>
 
   <div class="products-layout">
     <aside class="sidebar-nav">
       <nav class="category-nav" aria-label="Product categories">
-        href={`${base}/all/1`}
-        class:list={["category-item", { active: activeCategory === "all" }]}
+        <a
+          href={`${base}/all/1`}
+          class:list={["category-item", { active: activeCategory === "all" }]}
         >
-        <span class="category-title">All Products</span>
-        <span class="category-count">({totalCount})</span>
+          <span class="category-title">All Products</span>
+          <span class="category-count">({totalCount})</span>
+        </a>
       </nav>
       <CategoryNav
         nodes={categoryTree}
@@ -107,45 +110,53 @@ const countLine =
         activeTrail={activeTrail}
       />
     </aside>
-  </div>
 
-  <div class="products-main">
-    <div class="products-header">
-      <p class="products-count" aria-live="polite">{countLine}</p>
+    <div class="products-main">
+      <div class="products-header">
+        <p class="products-count" aria-live="polite">{countLine}</p>
+      </div>
+
+      {
+        page.data.length > 0 ? (
+          <div class="products-grid">
+            {page.data.map((product: any) => (
+              <div class="product-card">
+                <Card
+                  imageURL={product.imageUrl}
+                  imageAlt={product.imageAlt}
+                  href={`/products/${product.slug}`}
+                  buttonLabel={product.title}
+                  icon={true}
+                  style="light"
+                />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div class="empty-state">
+            <p>Sorry, there are no products available in this category.</p>
+          </div>
+        )
+      }
+
+      <Pagination page={page} base={`${base}/${activeCategory}`} />
     </div>
-
-    {
-      page.data.length > 0 ? (
-        <div class="products-grid">
-          {page.data.map((product: any) => (
-            <div class="product-card">
-              <Card
-                imageURL={product.imageUrl}
-                imageAlt={product.imageAlt}
-                href={`/products/${product.slug}`}
-                buttonLabel={product.title}
-                icon={true}
-                style="light"
-              />
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div class="empty-state">
-          <p>Sorry, there are no products available in this category.</p>
-        </div>
-      )
-    }
-
-    <Pagination page={page} base={`${base}/${activeCategory}`} />
   </div>
-</BaseLayout>
 
-<ContactBlock />
+  <ContactBlock />
+  </main>
 
 <Footer transition:persist />
+</BaseLayout>
 
 <style is:global>
+  /* Only the products-layout row should absorb the page-grid's min-height:100vh
+     slack; the hero, category heading and mobile filter stay auto-sized so they
+     never resize based on how many products a category has. */
+  .product-listings-grid {
+    grid-template-rows: auto auto auto 1fr auto;
+  }
+
   .product-tab__header {
     grid-column: 2 / -2;
     margin-bottom: 2rem;
