@@ -28,6 +28,7 @@ const { nodes, base, activeCategory, activeTrail, level = 1 } = Astro.props;
             aria-current={isActive ? "page" : undefined}
           >
             <span class="category-content">
+              <span class="category-checkbox" aria-hidden="true" />
               <span class="category-title">{node.title}</span>
               {hasChildren && (
                 <span class="category-icon material-symbols-outlined">
