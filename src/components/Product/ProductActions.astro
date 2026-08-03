@@ -2,11 +2,16 @@
 import Button from "../UI/Button.astro";
 
 interface Props {
+  title: string;
   datasheetUrl?: string;
   datasheetFileName?: string;
 }
 
-const { datasheetUrl, datasheetFileName } = Astro.props;
+const { title, datasheetUrl, datasheetFileName } = Astro.props;
+
+const quoteEmail = "mail@powerjet-uk.com";
+const quoteSubject = encodeURIComponent(`Quote Request: ${title}`);
+const quoteHref = `mailto:${quoteEmail}?subject=${quoteSubject}`;
 ---
 
 <div class="product-actions">
@@ -24,7 +29,7 @@ const { datasheetUrl, datasheetFileName } = Astro.props;
       </Button>
     )
   }
-  <Button type="button" variant="primary" href="/contact">
+  <Button type="button" variant="primary" href={quoteHref}>
     Request a Quote
   </Button>
 </div>
