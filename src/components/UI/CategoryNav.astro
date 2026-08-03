@@ -1,0 +1,56 @@
+---
+import type { CategoryNode } from "../../lib/productPagination";
+
+interface Props {
+  nodes: CategoryNode[];
+  base: string;
+  activeCategory: string;
+  activeTrail: string[];
+  level?: number;
+}
+const { nodes, base, activeCategory, activeTrail, level = 1 } = Astro.props;
+---
+
+<ul class="category-nav__list" data-level={level}>
+  {
+    nodes.map((node) => {
+      const isActive = node.slug === activeCategory;
+      const onTrail = activeTrail.includes(node.slug);
+      const hasChildren = node.children.length > 0;
+      return (
+        <li>
+          <a
+            href={`${base}/${node.slug}/1`}
+            class:list={[
+              "category-item",
+              { active: isActive, expanded: onTrail },
+            ]}
+            aria-current={isActive ? "page" : undefined}
+          >
+            <span class="category-content">
+              <span class="category-checkbox" aria-hidden="true" />
+              <span class="category-title">{node.title}</span>
+              {hasChildren && (
+                <span class="category-icon material-symbols-outlined">
+                  chevron_right
+                </span>
+              )}
+            </span>
+            <span class="category-count">({node.count})</span>
+          </a>
+          {hasChildren && onTrail && (
+            <div class="nested-categories active">
+              <Astro.self
+                nodes={node.children}
+                base={base}
+                activeCategory={activeCategory}
+                activeTrail={activeTrail}
+                level={level + 1}
+              />
+            </div>
+          )}
+        </li>
+      );
+    })
+  }
+</ul>

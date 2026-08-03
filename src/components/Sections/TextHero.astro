@@ -49,8 +49,9 @@ const { headline } = Astro.props;
     /* Tablet */
     @media screen and (min-width: 768px) {
       h1 {
-        font-size: 88px;
-        line-height: 80px; /* 81.818% */
+        font-size: 3.6rem;
+        line-height: (3.6 * 1.4) rem;
+        text-wrap: balance;
       }
 
       .hero__text-wrapper {

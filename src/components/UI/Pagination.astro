@@ -1,0 +1,78 @@
+---
+import type { Page } from "astro";
+
+interface Props {
+  page: Page;
+  base: string; // e.g. "/rentals/tooling"
+}
+const { page, base } = Astro.props;
+const numbers = Array.from({ length: page.lastPage }, (_, i) => i + 1);
+---
+
+{page.lastPage > 1 && (
+  <nav class="pagination" aria-label="Product pages">
+    {page.url.prev
+      ? <a class="pagination__arrow" href={page.url.prev}>Previous</a>
+      : <span class="pagination__arrow is-disabled">Previous</span>}
+
+    <ul class="pagination__pages">
+      {numbers.map((n) => (
+        <li>
+          <a
+            href={`${base}/${n}`}
+            class:list={["pagination__page", { "is-current": n === page.currentPage }]}
+            aria-current={n === page.currentPage ? "page" : undefined}
+          >
+            {n}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    {page.url.next
+      ? <a class="pagination__arrow" href={page.url.next}>Next</a>
+      : <span class="pagination__arrow is-disabled">Next</span>}
+  </nav>
+)}
+
+<style>
+  .pagination {
+    grid-column: 2 / -2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 3rem;
+  }
+  .pagination__pages {
+    display: flex;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .pagination__page,
+  .pagination__arrow {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--pj_brand_blue);
+    border-radius: 100px;
+    color: var(--pj_brand_blue);
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+  }
+  .pagination__page.is-current {
+    background-color: var(--pj_brand_blue);
+    color: white;
+  }
+  .pagination__arrow.is-disabled {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  @media screen and (min-width: 1024px) {
+    .pagination { grid-column: 3 / -3; }
+  }
+</style>
