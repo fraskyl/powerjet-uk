@@ -36,7 +36,6 @@ export const homepageQuery = `
 const generalPageProjection = `{
   title,
   heroHeadline,
-  heroSubheadline,
 
   contentBlocks[] {
   title,

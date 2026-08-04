@@ -24,17 +24,16 @@ export interface LinkProps {
 
 
 /** 
- * Standard heading/title properts 
+ * Standard heading/title properties 
  * Used by: SectionTitle, TextHero, ContentBlock
 */
 export interface HeadingProps {
     headline: string;
-    subheadline?: string;
 }
 
 
 /** 
- * Standard heading/title properts 
+ * Standard heading/title properties 
  * Used by: SectionTitle, TextHero, ContentBlock
 */
 export interface TextProps {
@@ -291,7 +290,6 @@ export interface Homepage {
  */
 export interface ServicesPage {
   heroHeadline: string;
-  heroSubheadline: string;
   contentBlocks: Array<{
     title: string;
     description: any; // PortableText type
