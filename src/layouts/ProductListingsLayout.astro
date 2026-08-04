@@ -75,18 +75,6 @@ const countLine =
         </span>
         <span class="material-symbols-outlined dropdown-icon">expand_more</span>
       </summary>
-      <nav class="mobile-filter__menu" aria-label="Product categories">
-        <a
-          href={`${base}/all/1`}
-          class:list={["category-item", { active: activeCategory === "all" }]}
-        >
-          <span class="category-content">
-            <span class="category-checkbox" aria-hidden="true"></span>
-            <span class="category-title">All Products</span>
-          </span>
-          <span class="category-count">({totalCount})</span>
-        </a>
-      </nav>
       <CategoryNav
         nodes={categoryTree}
         base={base}
@@ -100,18 +88,6 @@ const countLine =
         <div class="sidebar-label">
           <span>Product categories</span>
         </div>
-        <nav class="category-nav" aria-label="Product categories">
-          <a
-            href={`${base}/all/1`}
-            class:list={["category-item", { active: activeCategory === "all" }]}
-          >
-            <span class="category-content">
-              <span class="category-checkbox" aria-hidden="true"></span>
-              <span class="category-title">All Products</span>
-            </span>
-            <span class="category-count">({totalCount})</span>
-          </a>
-        </nav>
         <CategoryNav
           nodes={categoryTree}
           base={base}
