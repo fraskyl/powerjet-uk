@@ -22,6 +22,11 @@ try {
 const heroHeadline = wjaTrainingPage?.heroHeadline || "WJA Training";
 const contentBlocks = wjaTrainingPage?.contentBlocks || [];
 const showContactBanner = wjaTrainingPage?.showContactBanner ?? true;
+
+//Enquiry request
+const trainingEmail = "mail@powerjet-uk.com";
+const trainingSubject = encodeURIComponent("WJA Training Course Enquiry");
+const trainingHref = `mailto:${trainingEmail}?subject=${trainingSubject}`;
 ---
 
 <BaseLayout
@@ -70,7 +75,15 @@ Tube and Pipes (TP)"
     </div>
 
     <!-- Contact block -->
-    {showContactBanner && <ContactBlock />}
+    {
+      showContactBanner && (
+        <ContactBlock
+          copy="Enquire about our WJA Training courses today"
+          buttonLabel="Book now"
+          buttonHref={trainingHref}
+        />
+      )
+    }
   </main>
   <Footer transition:persist />
 </BaseLayout>
