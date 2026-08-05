@@ -19,6 +19,7 @@ export const homepageQuery = `
     headline,
     bodyCopy,
     buttonLabel,
+    buttonLink,
     "imageUrl" : mainImage.asset->url,
     "imageAlt" : mainImage.alt
     },
