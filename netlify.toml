@@ -1,22 +1,42 @@
 [build]
-  command = "npm run build:staging"
+  command = "npm run build:production"
   publish = "dist"
 
+# Values that are the same in every deploy context.
+# Context-specific blocks below override these where they differ.
+# Note: values set here take precedence over the same keys set in the Netlify UI.
 [build.environment]
   NODE_VERSION = "22"
   NODE_ENV = "production"
   NPM_VERSION = "10"
-
-# Environment variables (also set these in Netlify UI)
-[context.production.environment]
   PUBLIC_SANITY_PROJECT_ID = "84258b3v"
-  PUBLIC_SANITY_DATASET = "staging"
-  PUBLIC_SANITY_API_VERSION = "2024-01-01"
   SANITY_PROJECT_ID = "84258b3v"
-  SANITY_DATASET = "staging"
+  PUBLIC_SANITY_API_VERSION = "2024-01-01"
   SANITY_API_VERSION = "2024-01-01"
+
+# The Sanity dataset is declared explicitly per context. src/lib/sanity.ts throws
+# when it is missing rather than guessing, so every context must set it here.
+# SANITY_TOKEN is a secret and is managed in the Netlify UI only.
+
+# Live site: published content.
+[context.production.environment]
+  PUBLIC_SANITY_DATASET = "production"
+  SANITY_DATASET = "production"
+  PUBLIC_APP_ENV = "production"
   PUBLIC_SITE_URL = "https://staging-powerjet.netlify.app"
   NODE_ENV = "production"
+
+# Branch deploys: staging content, so editors can review work in progress.
+[context.branch-deploy.environment]
+  PUBLIC_SANITY_DATASET = "staging"
+  SANITY_DATASET = "staging"
+  PUBLIC_APP_ENV = "staging"
+
+# Pull request previews: staging content.
+[context.deploy-preview.environment]
+  PUBLIC_SANITY_DATASET = "staging"
+  SANITY_DATASET = "staging"
+  PUBLIC_APP_ENV = "staging"
 
 # Headers for security
 [[headers]]
