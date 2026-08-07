@@ -67,6 +67,17 @@ import Navigation from "./Navigation.astro";
     box-shadow: inset 0 -1px 0 var(--pj_grey_10);
 
     padding-left: 1rem;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+    transition: transform 0.3s ease;
+  }
+
+  .header__wrapper.header--hidden {
+    transform: translateY(-100%);
   }
 
   .header__logo {
@@ -95,7 +106,6 @@ import Navigation from "./Navigation.astro";
     align-self: stretch;
     background-color: var(--pj_blue_90);
     transition: background-color 0.3s ease;
-
     border-radius: 0.25rem;
   }
 
@@ -107,7 +117,7 @@ import Navigation from "./Navigation.astro";
     color: var(--pj_blue_05);
     text-decoration: none;
     font-weight: 400;
-    font-size: 2rem;
+    font-size: 1.6rem;
     flex: 1; /* Fill container */
   }
 
@@ -201,7 +211,7 @@ import Navigation from "./Navigation.astro";
   }
 
   .header__mobile-menu :global(.nav__links a) {
-    font-size: 3rem;
+    font-size: 1.8rem;
     font-weight: 500;
 
     color: var(--pj_blue_10);
@@ -281,6 +291,54 @@ import Navigation from "./Navigation.astro";
       : "";
   }
 
+  // Below this scroll depth we start hiding on scroll-down/revealing on
+  // scroll-up; above it the header always stays visible so it doesn't
+  // flicker while the user is still near the top of the page.
+  const HIDE_THRESHOLD = 80;
+
+  function setHeaderHeightVar() {
+    const header = document.querySelector(".header__wrapper") as HTMLElement;
+    if (header) {
+      document.documentElement.style.setProperty(
+        "--header-height",
+        `${header.offsetHeight}px`,
+      );
+    }
+  }
+
+  function initScrollHide() {
+    const header = document.querySelector(".header__wrapper");
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+
+    function onScroll() {
+      const currentScrollY = window.scrollY;
+      const menuOpen = document.querySelector(".header__mobile-menu.active");
+
+      if (!menuOpen) {
+        if (currentScrollY > lastScrollY && currentScrollY > HIDE_THRESHOLD) {
+          header?.classList.add("header--hidden");
+        } else if (currentScrollY < lastScrollY) {
+          header?.classList.remove("header--hidden");
+        }
+      }
+
+      lastScrollY = currentScrollY;
+      ticking = false;
+    }
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (!ticking) {
+          window.requestAnimationFrame(onScroll);
+          ticking = true;
+        }
+      },
+      { passive: true },
+    );
+  }
+
   document.addEventListener("astro:page-load", () => {
     const hamburger = document.querySelector(".header__mobile-hamburger");
     hamburger?.addEventListener("click", toggleMenu);
@@ -289,5 +347,10 @@ import Navigation from "./Navigation.astro";
     navLinks.forEach((link) => {
       link.addEventListener("click", toggleMenu);
     });
+
+    setHeaderHeightVar();
+    initScrollHide();
   });
+
+  window.addEventListener("resize", setHeaderHeightVar);
 </script>
