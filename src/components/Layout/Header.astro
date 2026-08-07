@@ -73,11 +73,14 @@ import Navigation from "./Navigation.astro";
     left: 0;
     width: 100%;
     z-index: 999;
-    transition: transform 0.3s ease;
+    transition: top 0.3s ease;
   }
 
+  /* top, not transform: a transform here would make this element the
+     containing block for its position:fixed descendant (.header__mobile-menu),
+     breaking that overlay's fullscreen positioning while the header is hidden. */
   .header__wrapper.header--hidden {
-    transform: translateY(-100%);
+    top: calc(var(--header-height, 88px) * -1);
   }
 
   .header__logo {
