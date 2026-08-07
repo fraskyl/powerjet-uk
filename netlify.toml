@@ -23,7 +23,7 @@
   PUBLIC_SANITY_DATASET = "production"
   SANITY_DATASET = "production"
   PUBLIC_APP_ENV = "production"
-  PUBLIC_SITE_URL = "https://staging-powerjet.netlify.app"
+  PUBLIC_SITE_URL = "https://powerjet-uk.com/"
   NODE_ENV = "production"
 
 # Branch deploys: staging content, so editors can review work in progress.

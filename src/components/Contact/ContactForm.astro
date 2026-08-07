@@ -1,14 +1,10 @@
 ---
 interface Props {
-  requirePhone?: boolean;
-  requireCompany?: boolean;
   successMessage?: string;
   enableHoneypot?: boolean;
 }
 
 const {
-  requirePhone = false,
-  requireCompany = false,
   successMessage = "Thank you for your message! We'll be in touch shortly.",
 } = Astro.props;
 ---
@@ -46,36 +42,14 @@ const {
     </div>
   </div>
 
-  <div class="form-row">
-    {
-      requirePhone && (
-        <div class="form-group">
-          <label for="phone">Phone *</label>
-          <input
-            type="tel"
-            id="phone"
-            name="phone"
-            required
-            autocomplete="tel"
-          />
-        </div>
-      )
-    }
-
-    {
-      requireCompany && (
-        <div class="form-group">
-          <label for="company">Company *</label>
-          <input
-            type="text"
-            id="company"
-            name="company"
-            required
-            autocomplete="organization"
-          />
-        </div>
-      )
-    }
+  <div class="form-group">
+    <label for="company">Company</label>
+    <input
+      type="text"
+      id="company"
+      name="company"
+      autocomplete="organization"
+    />
   </div>
 
   <div class="form-group">

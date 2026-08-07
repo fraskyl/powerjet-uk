@@ -396,6 +396,5 @@ export const contactPageQuery = `*[_type == "contactPage"][0]{
   enableAutoReply,
   autoReplySubject,
   autoReplyMessage,
-  requiredFields,
   successMessage
 }`;
