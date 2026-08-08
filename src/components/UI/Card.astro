@@ -5,6 +5,7 @@ interface Props {
   href: string;
   buttonLabel: string;
   imageFit?: "contain" | "cover";
+  imageAspect?: "auto" | "square";
   icon?: boolean;
   style?: "light" | "dark";
 }
@@ -12,6 +13,7 @@ interface Props {
 const { imageURL } = Astro.props;
 const { imageAlt } = Astro.props;
 const { imageFit = "contain" } = Astro.props;
+const { imageAspect = "auto" } = Astro.props;
 
 const { href } = Astro.props;
 const { buttonLabel } = Astro.props;
@@ -19,12 +21,18 @@ const { buttonLabel } = Astro.props;
 const { icon = true } = Astro.props;
 
 const { style = "dark" } = Astro.props;
+
+// Square images sit in a fixed-ratio box instead of stretching to fill the
+// card, so the wrapper's fixed desktop height has to be released too —
+// otherwise leftover flex space reappears as a gap below the panel.
+const wrapperStyle = imageAspect === "square" ? "height: auto;" : undefined;
+const imageContainerStyle = `--image-fit: ${imageFit}; --image-aspect: ${imageAspect === "square" ? "1 / 1" : "auto"}; --image-flex: ${imageAspect === "square" ? "0 0 auto" : "1"};`;
 ---
 
-<div class="card__wrapper">
+<div class="card__wrapper" style={wrapperStyle}>
   <a href={href} class="card__link">
-    <div class="card__wrapper">
-      <div class="image__container" style={`--image-fit: ${imageFit}`}>
+    <div class="card__wrapper" style={wrapperStyle}>
+      <div class="image__container" style={imageContainerStyle}>
         <img src={imageURL} alt={imageAlt} />
       </div>
       <div class="card__panel" data-variant={style} data-icon={icon}>
@@ -54,9 +62,10 @@ const { style = "dark" } = Astro.props;
   }
 
   .image__container {
-    flex: 1;
+    flex: var(--image-flex, 1);
     overflow: hidden;
     flex-shrink: 0;
+    aspect-ratio: var(--image-aspect, auto);
   }
 
   .image__container img {

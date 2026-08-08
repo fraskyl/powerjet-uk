@@ -92,6 +92,7 @@ const appRecommendedProducts = application?.recommendedProducts || [];
                                 buttonLabel={product.title}
                                 icon={true}
                                 style="light"
+                                imageAspect="square"
                             />
                         ))}
                     </div>
@@ -231,9 +232,9 @@ const appRecommendedProducts = application?.recommendedProducts || [];
 
         .section__applications-recommended-products-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 320px));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 210px));
             justify-content: start;
-            gap: 1.5rem;
+            gap: 3.6rem;
             grid-column: 2 / -2;
             margin-bottom: 4rem;
         }
@@ -263,9 +264,9 @@ const appRecommendedProducts = application?.recommendedProducts || [];
 
          .section__applications-recommended-products-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 340px));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 210px));
             justify-content: start;
-            gap: 1.5rem;
+            gap: 3.6rem;
             grid-column: 2 / -2;
             margin-bottom: 4rem;
         }
