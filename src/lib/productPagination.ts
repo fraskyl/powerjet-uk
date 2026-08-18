@@ -1,4 +1,3 @@
-import type { PaginateFunction } from "astro";
 import { sanityClient } from "./sanity";
 import {
   allProductsWithCategoriesQuery,
@@ -35,10 +34,7 @@ function normaliseProduct(product: any) {
   return { ...product, imageUrl, imageAlt, categoryPath };
 }
 
-export async function buildProductPaths(
-  paginate: PaginateFunction,
-  pageType: "rental" | "sale"
-) {
+export async function getCategoryData(pageType: "rental" | "sale") {
   const [rawProducts, flatCategories] = await Promise.all([
     sanityClient.fetch(allProductsWithCategoriesQuery, { availability: pageType }),
     sanityClient.fetch(allProductCategoriesWithParentsQuery, { availability: pageType }),
@@ -80,38 +76,69 @@ export async function buildProductPaths(
   };
   sortTree(roots);
 
-  // Drop empty categories so we never generate a dead /rentals/foo/1
+  // Drop empty categories so we never link to a dead /rentals/foo/1
   const prune = (nodes: CategoryNode[]): CategoryNode[] =>
     nodes
       .map((n) => ({ ...n, children: prune(n.children) }))
       .filter((n) => n.count > 0);
   const categoryTree = prune(roots);
 
-  // "all" plus every non-empty category gets its own paginated route set
-  const groups = [
-    { slug: "all", items: products },
-    ...flatCategories
-      .map((c: any) => ({ slug: c.slug, items: itemsFor(c.slug) }))
-      .filter((g: any) => g.items.length > 0),
-  ];
+  return { products, categoryTree, itemsFor, parentOf };
+}
 
-  return groups.flatMap((group) => {
-    const trail: string[] = [];
-    let cur: string | undefined = group.slug === "all" ? undefined : group.slug;
-    while (cur) {
-      trail.push(cur);
-      cur = parentOf.get(cur);
-    }
+function buildTrail(categorySlug: string, parentOf: Map<string, string | undefined>) {
+  const trail: string[] = [];
+  let cur: string | undefined = categorySlug === "all" ? undefined : categorySlug;
+  while (cur) {
+    trail.push(cur);
+    cur = parentOf.get(cur);
+  }
+  return trail;
+}
 
-    return paginate(group.items, {
-      params: { category: group.slug },
-      pageSize: PAGE_SIZE,
-      props: {
-        categoryTree,
-        totalCount: products.length,
-        activeCategory: group.slug,
-        activeTrail: trail,
-      },
-    });
-  });
+export async function getProductPage(
+  pageType: "rental" | "sale",
+  categorySlug: string,
+  pageNumber: number
+) {
+  if (!Number.isInteger(pageNumber) || pageNumber < 1) return null;
+
+  const { products, categoryTree, itemsFor, parentOf } = await getCategoryData(pageType);
+
+  const items = categorySlug === "all" ? products : itemsFor(categorySlug);
+  if (categorySlug !== "all" && items.length === 0) return null;
+
+  const total = items.length;
+  const lastPage = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  if (pageNumber > lastPage) return null;
+
+  const start = (pageNumber - 1) * PAGE_SIZE;
+  const end = Math.min(start + PAGE_SIZE, total) - 1;
+  const data = items.slice(start, end + 1);
+
+  const base = pageType === "rental" ? "/rentals" : "/sales";
+  const page = {
+    data,
+    start,
+    end,
+    total,
+    currentPage: pageNumber,
+    size: PAGE_SIZE,
+    lastPage,
+    url: {
+      current: `${base}/${categorySlug}/${pageNumber}`,
+      prev: pageNumber > 1 ? `${base}/${categorySlug}/${pageNumber - 1}` : undefined,
+      next: pageNumber < lastPage ? `${base}/${categorySlug}/${pageNumber + 1}` : undefined,
+      first: pageNumber > 1 ? `${base}/${categorySlug}/1` : undefined,
+      last: pageNumber < lastPage ? `${base}/${categorySlug}/${lastPage}` : undefined,
+    },
+  };
+
+  return {
+    page,
+    categoryTree,
+    totalCount: products.length,
+    activeCategory: categorySlug,
+    activeTrail: buildTrail(categorySlug, parentOf),
+  };
 }

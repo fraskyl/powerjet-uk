@@ -1,11 +1,7 @@
 import type { APIRoute } from "astro";
+import { getCategoryData, type CategoryNode } from "../lib/productPagination";
 import { sanityClient } from "../lib/sanity";
-import {
-  productSlugsQuery,
-  applicationSlugsQuery,
-  allProductsWithCategoriesQuery,
-  allProductCategoriesWithParentsQuery,
-} from "../lib/queries";
+import { productSlugsQuery, applicationSlugsQuery } from "../lib/queries";
 
 const STATIC_ROUTES = [
   "/",
@@ -17,26 +13,10 @@ const STATIC_ROUTES = [
   "/rentals",
 ];
 
-function categoryPathOf(product: any): string[] {
-  const path: string[] = [];
-  const c = product.productCategory;
-  if (c?.slug) {
-    path.push(c.slug);
-    if (c.parent?.slug) {
-      path.push(c.parent.slug);
-      if (c.parent.parent?.slug) path.push(c.parent.parent.slug);
-    }
-  }
-  return path;
-}
-
-// Mirrors the pruning in productPagination.ts: only link to categories that
-// actually have a prerendered page (i.e. at least one product, ancestry included).
-function nonEmptyCategorySlugs(products: any[], categories: any[]): string[] {
-  const productPaths = products.map(categoryPathOf);
-  return categories
-    .map((c: any) => c.slug)
-    .filter((slug: string) => productPaths.some((path) => path.includes(slug)));
+// categoryTree from getCategoryData is already pruned to non-empty categories
+// (i.e. ones that actually resolve to a real listing page) — just flatten it.
+function collectSlugs(nodes: CategoryNode[]): string[] {
+  return nodes.flatMap((n) => [n.slug, ...collectSlugs(n.children)]);
 }
 
 export const GET: APIRoute = async () => {
@@ -44,20 +24,11 @@ export const GET: APIRoute = async () => {
     import.meta.env.PUBLIC_SITE_URL || "https://powerjet-uk.com"
   ).replace(/\/$/, "");
 
-  const [
-    productSlugs,
-    applicationSlugs,
-    saleProducts,
-    saleCategories,
-    rentalProducts,
-    rentalCategories,
-  ] = await Promise.all([
+  const [productSlugs, applicationSlugs, saleData, rentalData] = await Promise.all([
     sanityClient.fetch(productSlugsQuery),
     sanityClient.fetch(applicationSlugsQuery),
-    sanityClient.fetch(allProductsWithCategoriesQuery, { availability: "sale" }),
-    sanityClient.fetch(allProductCategoriesWithParentsQuery, { availability: "sale" }),
-    sanityClient.fetch(allProductsWithCategoriesQuery, { availability: "rental" }),
-    sanityClient.fetch(allProductCategoriesWithParentsQuery, { availability: "rental" }),
+    getCategoryData("sale"),
+    getCategoryData("rental"),
   ]);
 
   const paths = [
@@ -69,13 +40,9 @@ export const GET: APIRoute = async () => {
       .map((p: any) => `/products/${p.slug}`),
     ...applicationSlugs.map((a: any) => `/applications/${a.slug}`),
     "/sales/all/1",
-    ...nonEmptyCategorySlugs(saleProducts, saleCategories).map(
-      (slug) => `/sales/${slug}/1`
-    ),
+    ...collectSlugs(saleData.categoryTree).map((slug) => `/sales/${slug}/1`),
     "/rentals/all/1",
-    ...nonEmptyCategorySlugs(rentalProducts, rentalCategories).map(
-      (slug) => `/rentals/${slug}/1`
-    ),
+    ...collectSlugs(rentalData.categoryTree).map((slug) => `/rentals/${slug}/1`),
   ];
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>
