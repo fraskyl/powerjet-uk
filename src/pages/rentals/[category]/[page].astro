@@ -1,14 +1,15 @@
 ---
-import type { GetStaticPaths } from "astro";
-import { buildProductPaths } from "../../../lib/productPagination";
+import { getProductPage } from "../../../lib/productPagination";
 import ProductListingsLayout from "../../../layouts/ProductListingsLayout.astro";
 
-export const prerender = true;
+const { category, page: pageParam } = Astro.params;
+const result = category
+  ? await getProductPage("rental", category, Number(pageParam))
+  : null;
 
-export const getStaticPaths = (async ({ paginate }) =>
-  buildProductPaths(paginate, "rental")) satisfies GetStaticPaths;
+if (!result) return Astro.redirect("/404");
 
-const { page, categoryTree, totalCount, activeCategory, activeTrail } = Astro.props;
+const { page, categoryTree, totalCount, activeCategory, activeTrail } = result;
 ---
 
 <ProductListingsLayout
