@@ -1,17 +1,19 @@
 ---
 // src/components/RichText.astro
-import { PortableText } from 'astro-portabletext';
+import { PortableText } from "astro-portabletext";
 
 interface Props {
   value: any;
   className?: string;
 }
 
-const { value, className = '' } = Astro.props;
+const { value, className = "" } = Astro.props;
 ---
 
 <!-- Add explicit paragraph spacing with CSS -->
-<div class={`prose prose-lg max-w-none ${className}`}>
+<div
+  class={`prose prose-lg max-w-none ${className}`}
+  style="color:  var(--pj_grey_80)"
+>
   <PortableText value={value} />
 </div>
-
