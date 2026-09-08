@@ -24,7 +24,10 @@ const {
     aria-label="Background video showing water jetting operations"
   >
     <source src={videoUrl} type="video/mp4" />
-    <img src={imgFallback} alt="Powerjet high-pressure water jetting equipment" />
+    <img
+      src={imgFallback}
+      alt="Powerjet high-pressure water jetting equipment"
+    />
   </video>
 
   <div class="hero__headline span-full">
@@ -85,3 +88,15 @@ const {
     }
   }
 </style>
+
+<script>
+  function resetHeroVideo() {
+    const video =
+      document.querySelector<HTMLVideoElement>("#hero__video video");
+    if (!video) return;
+    video.load(); // discard stale decoder, rebuild the pipeline
+    video.play().catch(() => {}); // re-trigger autoplay; swallow the rejection
+  }
+
+  document.addEventListener("astro:page-load", resetHeroVideo);
+</script>
