@@ -87,3 +87,10 @@ Tube and Pipes (TP)"
   </main>
   <Footer transition:persist />
 </BaseLayout>
+
+<style>
+  /* Override ContentBlock's default object-fit: cover, only within this page */
+  .section__content :global(.content__block-media img) {
+    object-fit: contain;
+  }
+</style>
